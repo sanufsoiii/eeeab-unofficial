@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "open=false": {
+      "model": "eeeabsmobs:block/stepping_flame_trap_off"
+    },
+    "open=true": {
+      "model": "eeeabsmobs:block/stepping_flame_trap_on"
+    }
+  }
+}

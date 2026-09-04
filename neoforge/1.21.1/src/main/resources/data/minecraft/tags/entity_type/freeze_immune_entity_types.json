@@ -1,0 +1,10 @@
+{
+  "remove": [
+    "eeeabsmobs:immortal_executioner"
+  ],
+  "values": [
+    "eeeabsmobs:nameless_guardian",
+    "eeeabsmobs:corpse_warlock",
+    "#eeeabsmobs:immortal_army"
+  ]
+}

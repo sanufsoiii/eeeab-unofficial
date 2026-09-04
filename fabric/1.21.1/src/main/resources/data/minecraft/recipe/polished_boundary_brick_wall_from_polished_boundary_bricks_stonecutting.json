@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "eeeabsmobs:polished_boundary_bricks"
+  },
+  "result": {
+    "id": "eeeabsmobs:polished_boundary_brick_wall"
+  }
+}

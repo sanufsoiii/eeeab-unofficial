@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_wall_side",
+  "textures": {
+    "wall": "eeeabsmobs:block/polished_dark_erosion_rock"
+  }
+}

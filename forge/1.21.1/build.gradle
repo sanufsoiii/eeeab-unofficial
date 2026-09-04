@@ -1,0 +1,86 @@
+plugins {
+	id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+	id 'java'
+}
+
+version = mod_version
+group = mod_group
+base { archivesName = mod_id }
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+minecraft {
+	mappings channel: mapping_channel, version: mapping_version
+
+	runs {
+		// Стандартная форма из шаблона Forge: общие настройки через configureEach, а блок mods
+		// объявляется там же. Форма с mods внутри каждого запуска приводила к тому, что Forge считал
+		// build/resources/main отдельным файлом мода ("has mods that were not found") -- манифест там
+		// есть, а классов нет, потому что они лежат в build/classes.
+		configureEach {
+			workingDirectory project.file('run')
+			property 'forge.logging.console.level', 'info'
+			mods {
+				"${mod_id}" {
+					source sourceSets.main
+				}
+			}
+		}
+		client { }
+		server { args '--nogui' }
+	}
+}
+
+
+// ForgeGradle отдаёт классы и ресурсы двумя каталогами, и FML считает каталог ресурсов отдельным
+// модом: манифест в нём есть, классов нет -- "has mods that were not found", загрузка прерывается.
+// Складываем ресурсы туда же, где классы, тогда каталог один и раздваиваться нечему.
+sourceSets.main.output.resourcesDir = sourceSets.main.java.destinationDirectory
+
+// Датаген исключён по той же причине, что и в ветке NeoForge: это инструмент сборки, его вывод уже
+// лежит в src/main/resources, и в jar он не попадает.
+sourceSets {
+	main {
+		java {
+			exclude 'com/eeeab/eeeabsmobs/server/world/datagen/**'
+		}
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url = 'https://maven.blamejared.com/' }
+	maven { url = 'https://maven.theillusivec4.top/' }
+}
+
+dependencies {
+	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+	// JEI: compile-only so the mod loads fine without it. Curios is deliberately absent -- it has no
+	// Forge build for 1.21.1 (its Forge artifact stops at 1.20.6), so that integration is stubbed out.
+	// NOTE (build file changed, flagging per instructions): "jei-1.21.1-forge-api" only carries Forge-
+	// specific extras (mezz.jei.api.forge.*); IModPlugin/JeiPlugin/IRecipeRegistration etc. live in the
+	// separate "jei-1.21.1-common-api" artifact, which JEIModPlugin.java actually needs. Without this
+	// second line the mod does not compile at all, so this addition was unavoidable.
+	compileOnly fg.deobf("mezz.jei:jei-1.21.1-forge-api:19.51.0.417")
+	compileOnly fg.deobf("mezz.jei:jei-1.21.1-common-api:19.51.0.417")
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+	it.options.compilerArgs << "-Xmaxerrs" << "10000"
+}
+
+tasks.named('processResources', ProcessResources).configure {
+	def props = [mod_id: mod_id, mod_version: mod_version, mod_group: mod_group,
+	             minecraft_version: minecraft_version, forge_version: forge_version]
+	inputs.properties(props)
+	filesMatching(['META-INF/mods.toml']) { expand props }
+}
+
+jar {
+	from("LICENSE.txt") { rename { "${it}_${mod_id}" } }
+	manifest { attributes(['Specification-Title': mod_id, 'Implementation-Title': mod_id, 'Implementation-Version': mod_version]) }
+}

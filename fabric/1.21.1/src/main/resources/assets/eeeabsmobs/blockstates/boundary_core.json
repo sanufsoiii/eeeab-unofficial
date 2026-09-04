@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eeeabsmobs:block/boundary_core",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "eeeabsmobs:block/boundary_core",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "eeeabsmobs:block/boundary_core"
+    },
+    "facing=west": {
+      "model": "eeeabsmobs:block/boundary_core",
+      "y": 90
+    }
+  }
+}

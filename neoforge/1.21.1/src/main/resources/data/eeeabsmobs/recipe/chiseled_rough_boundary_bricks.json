@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "eeeabsmobs:polished_rough_boundary_stone_slab"
+    }
+  },
+  "pattern": [
+    "#",
+    "#"
+  ],
+  "result": {
+    "id": "eeeabsmobs:chiseled_rough_boundary_bricks"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "eeeabsmobs:ancient_drive_crystal"
+    },
+    "B": {
+      "item": "eeeabsmobs:boundary_brick"
+    },
+    "G": {
+      "item": "eeeabsmobs:guardian_cube"
+    },
+    "N": {
+      "item": "minecraft:netherite_axe"
+    }
+  },
+  "pattern": [
+    " BA",
+    "BGB",
+    "NB "
+  ],
+  "result": {
+    "id": "eeeabsmobs:doombolt_battleaxe"
+  },
+  "show_notification": true
+}

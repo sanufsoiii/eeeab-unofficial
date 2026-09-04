@@ -1,0 +1,394 @@
+{
+  "variants": {
+    "eeeabsmobs_character=a,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=a,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=a,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=a,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=b,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=b,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=b,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=b,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=c,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=c,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=c,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=c,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=d,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=d,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=d,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=d,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=e,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=e,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=e,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=e,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=f,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=f,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=f,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=f,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=g,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=g,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=g,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=g,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=h,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=h,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=h,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=h,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=i,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_i",
+      "y": 270
+    },
+    "eeeabsmobs_character=i,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_i",
+      "y": 180
+    },
+    "eeeabsmobs_character=i,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_i"
+    },
+    "eeeabsmobs_character=i,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_i",
+      "y": 90
+    },
+    "eeeabsmobs_character=j,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=j,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=j,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=j,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=k,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=k,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=k,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=k,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=l,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=l,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=l,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=l,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=m,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=m,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=m,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=m,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=n,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=n,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=n,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=n,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=o,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_o",
+      "y": 270
+    },
+    "eeeabsmobs_character=o,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_o",
+      "y": 180
+    },
+    "eeeabsmobs_character=o,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_o"
+    },
+    "eeeabsmobs_character=o,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_o",
+      "y": 90
+    },
+    "eeeabsmobs_character=p,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=p,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=p,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=p,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=q,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=q,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=q,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=q,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=r,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=r,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=r,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=r,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=s,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=s,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=s,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=s,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=t,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=t,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=t,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=t,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=u,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=u,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=u,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=u,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=v,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_v",
+      "y": 270
+    },
+    "eeeabsmobs_character=v,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_v",
+      "y": 180
+    },
+    "eeeabsmobs_character=v,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_v"
+    },
+    "eeeabsmobs_character=v,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_v",
+      "y": 90
+    },
+    "eeeabsmobs_character=w,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=w,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=w,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=w,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=x,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=x,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=x,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=x,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=y,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=y,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=y,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=y,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    },
+    "eeeabsmobs_character=z,facing=east": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 270
+    },
+    "eeeabsmobs_character=z,facing=north": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 180
+    },
+    "eeeabsmobs_character=z,facing=south": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d"
+    },
+    "eeeabsmobs_character=z,facing=west": {
+      "model": "eeeabsmobs:block/runic_boundary_stone_d",
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "bark",
+  "key": {
+    "#": {
+      "item": "eeeabsmobs:stripped_blighted_oak"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": {
+    "count": 3,
+    "id": "eeeabsmobs:stripped_blighted_oak_wood"
+  },
+  "show_notification": true
+}

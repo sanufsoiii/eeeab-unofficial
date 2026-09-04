@@ -1,0 +1,145 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:enchanted_count_increase",
+              "enchantment": "minecraft:looting"
+            }
+          ],
+          "name": "eeeabsmobs:boundary_brick"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 0.5,
+                "min": 0.0
+              },
+              "function": "minecraft:enchanted_count_increase",
+              "enchantment": "minecraft:looting"
+            },
+            {
+              "add": false,
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:enchanted_count_increase",
+              "enchantment": "minecraft:looting"
+            }
+          ],
+          "name": "eeeabsmobs:ancient_drive_crystal"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "eeeabsmobs:guardian_cube"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance_with_enchanted_bonus",
+              "unenchanted_chance": 0.5,
+              "enchanted_chance": {
+                "type": "minecraft:linear",
+                "base": 0.6,
+                "per_level_above_first": 0.1
+              },
+              "enchantment": "minecraft:looting"
+            }
+          ],
+          "name": "eeeabsmobs:realm_warden_theme_music_disc"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "unenchanted_chance": 0.025,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.035,
+            "per_level_above_first": 0.01
+          },
+          "enchantment": "minecraft:looting"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "eeeabsmobs:relicron_upgrade_smithing_template"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "eeeabsmobs:entities/realm_warden"
+}

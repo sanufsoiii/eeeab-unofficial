@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "eeeabsmobs:block/polished_boundary_bricks",
+    "side": "eeeabsmobs:block/polished_boundary_bricks",
+    "top": "eeeabsmobs:block/polished_boundary_bricks"
+  }
+}

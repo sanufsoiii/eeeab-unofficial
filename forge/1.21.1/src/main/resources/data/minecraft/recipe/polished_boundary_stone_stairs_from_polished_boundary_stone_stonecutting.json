@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "eeeabsmobs:polished_boundary_stone"
+  },
+  "result": {
+    "id": "eeeabsmobs:polished_boundary_stone_stairs"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "eeeabsmobs:block/polished_voidshard",
+    "side": "eeeabsmobs:block/polished_voidshard",
+    "top": "eeeabsmobs:block/polished_voidshard"
+  }
+}

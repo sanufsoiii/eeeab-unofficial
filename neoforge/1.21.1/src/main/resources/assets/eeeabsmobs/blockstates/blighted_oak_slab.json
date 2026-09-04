@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "eeeabsmobs:block/blighted_oak_slab"
+    },
+    "type=double": {
+      "model": "eeeabsmobs:block/blighted_oak_planks"
+    },
+    "type=top": {
+      "model": "eeeabsmobs:block/blighted_oak_slab_top"
+    }
+  }
+}

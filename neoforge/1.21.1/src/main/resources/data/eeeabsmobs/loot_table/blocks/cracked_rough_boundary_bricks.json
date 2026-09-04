@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "eeeabsmobs:cracked_rough_boundary_bricks"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "eeeabsmobs:blocks/cracked_rough_boundary_bricks"
+}

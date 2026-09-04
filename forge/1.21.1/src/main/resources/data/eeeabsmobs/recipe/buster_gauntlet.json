@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "eeeabsmobs:ancient_drive_crystal"
+    },
+    "B": {
+      "item": "eeeabsmobs:boundary_brick"
+    },
+    "D": {
+      "item": "minecraft:dispenser"
+    },
+    "I": {
+      "item": "minecraft:iron_sword"
+    }
+  },
+  "pattern": [
+    " BA",
+    "BDB",
+    "IB "
+  ],
+  "result": {
+    "id": "eeeabsmobs:buster_gauntlet"
+  },
+  "show_notification": true
+}

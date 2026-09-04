@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "eeeabsmobs:block/rough_boundary_bricks"
+  }
+}

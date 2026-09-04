@@ -1,0 +1,8 @@
+{
+  "comparator_output": 8,
+  "description": {
+    "translate": "jukebox_song.eeeabsmobs.the_immortal_theme_music_disc"
+  },
+  "length_in_seconds": 161.0,
+  "sound_event": "eeeabsmobs:music.the_immortal_theme"
+}

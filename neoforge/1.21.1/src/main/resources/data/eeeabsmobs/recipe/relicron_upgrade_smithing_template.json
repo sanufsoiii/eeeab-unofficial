@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "eeeabsmobs:boundary_brick"
+    },
+    "N": {
+      "item": "minecraft:netherite_upgrade_smithing_template"
+    },
+    "X": {
+      "item": "eeeabsmobs:ancient_drive_crystal"
+    }
+  },
+  "pattern": [
+    "X#X",
+    "#N#",
+    "X#X"
+  ],
+  "result": {
+    "id": "eeeabsmobs:relicron_upgrade_smithing_template"
+  },
+  "show_notification": true
+}

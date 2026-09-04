@@ -1,0 +1,69 @@
+plugins {
+	id 'net.neoforged.moddev' version "${moddev_version}"
+	id 'java'
+}
+
+version = mod_version
+group = mod_group
+
+neoForge {
+	version = project.neoforge_version
+
+	runs {
+		client { client() }
+		server { server() }
+	}
+
+	mods {
+		"${mod_id}" {
+			sourceSet sourceSets.main
+		}
+	}
+}
+
+
+// The datagen sources are a build-time tool: they regenerate the 37 JSON files that already sit
+// in src/main/resources/data. Porting them means fixing 101 compile errors against a heavily
+// churned 1.21 datagen API in order to reproduce files we can migrate directly in a fraction of
+// the effort -- and none of it ships in the jar. Excluded from compilation, kept in the tree so
+// the mod stays buildable upstream-side once someone wants to port them.
+sourceSets {
+	main {
+		java {
+			exclude 'com/eeeab/eeeabsmobs/server/world/datagen/**'
+		}
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url = 'https://maven.blamejared.com/' }        // JEI
+	maven { url = 'https://maven.theillusivec4.top/' }     // Curios
+}
+
+dependencies {
+	// Both integrations are already written as soft/runtime-optional (ModList presence checks for Curios,
+	// JEI's own @JeiPlugin/ServiceLoader discovery for JEI), so compileOnly is enough - and correct, since
+	// neither should be force-installed as a hard dependency of this mod. Versions are the latest available
+	// for NeoForge 1.21.1 on each project's own maven repo (declared above) as of this port.
+	compileOnly "top.theillusivec4.curios:curios-neoforge:9.5.1+1.21.1"
+	compileOnly "mezz.jei:jei-1.21.1-neoforge:19.51.0.417"
+}
+
+tasks.withType(JavaCompile).configureEach { it.options.release = 21
+	it.options.compilerArgs << "-Xmaxerrs" << "10000" }
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+tasks.named('processResources', ProcessResources).configure {
+	def expandProps = [mod_id: mod_id, mod_version: mod_version, mod_group: mod_group,
+	                   minecraft_version: minecraft_version, neoforge_version: neoforge_version]
+	inputs.properties(expandProps)
+	filesMatching(['META-INF/neoforge.mods.toml']) { expand expandProps }
+}
+
+jar {
+	from("LICENSE.txt") { rename { "${it}_${mod_id}" } }
+}

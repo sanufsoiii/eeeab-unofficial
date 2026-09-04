@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "eeeabsmobs:block/rough_boundary_bricks",
+    "side": "eeeabsmobs:block/rough_boundary_bricks",
+    "top": "eeeabsmobs:block/rough_boundary_bricks"
+  }
+}

@@ -1,0 +1,66 @@
+plugins {
+	id 'fabric-loom' version "${loom_version}"
+	id 'java'
+}
+
+version = mod_version
+group = mod_group
+base { archivesName = mod_id }
+
+// Ключевое решение этой ветки: официальные маппинги Mojang вместо Yarn. Версия игры та же, что у
+// сборок NeoForge и Forge, поэтому при тех же именах вся ванильная половина мода — 163 сущности,
+// рендереры, модели, предметы — переносится вообще без правок. С Yarn пришлось бы переименовывать
+// каждое обращение к игре, то есть переписывать почти весь мод ради нулевой выгоды.
+loom {
+	mods {
+		"${mod_id}" {
+			sourceSet sourceSets.main
+		}
+	}
+}
+
+// Датаген исключён по той же причине, что и в остальных ветках: инструмент сборки, в jar не идёт,
+// а его вывод уже лежит в src/main/resources.
+sourceSets {
+	main {
+		java {
+			exclude 'com/eeeab/eeeabsmobs/server/world/datagen/**'
+		}
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url = 'https://maven.blamejared.com/' }
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${minecraft_version}"
+	mappings loom.officialMojangMappings()
+	modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+
+	// JEI ships a Fabric build for 1.21.1; compile-only so the mod still loads without it.
+	// Curios does not exist on Fabric at all, so that integration is stubbed out like on the Forge branch.
+	modCompileOnly "mezz.jei:jei-1.21.1-fabric-api:19.51.0.417"
+}
+
+processResources {
+	def props = [mod_id: mod_id, mod_version: mod_version, minecraft_version: minecraft_version,
+	             loader_version: loader_version]
+	inputs.properties(props)
+	filesMatching('fabric.mod.json') { expand props }
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+	it.options.compilerArgs << "-Xmaxerrs" << "10000"
+}
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+jar {
+	from("LICENSE.txt") { rename { "${it}_${mod_id}" } }
+}

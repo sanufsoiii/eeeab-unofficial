@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "eeeabsmobs:item/nameless_guardian_theme_music_disc"
+  }
+}

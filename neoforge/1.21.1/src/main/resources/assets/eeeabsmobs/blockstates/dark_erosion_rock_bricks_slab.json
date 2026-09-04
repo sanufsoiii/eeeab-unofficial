@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "eeeabsmobs:block/dark_erosion_rock_bricks_slab"
+    },
+    "type=double": {
+      "model": "eeeabsmobs:block/dark_erosion_rock_bricks"
+    },
+    "type=top": {
+      "model": "eeeabsmobs:block/dark_erosion_rock_bricks_slab_top"
+    }
+  }
+}

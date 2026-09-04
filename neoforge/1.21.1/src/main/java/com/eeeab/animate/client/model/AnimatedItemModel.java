@@ -1,0 +1,35 @@
+package com.eeeab.animate.client.model;
+
+import com.eeeab.animate.client.animation.KeyframeAnimations;
+import com.eeeab.animate.client.util.ItemAnimationUtils;
+import com.eeeab.animate.client.animation.AnimationDefinition;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
+
+@OnlyIn(Dist.CLIENT)
+public abstract class AnimatedItemModel extends ModHierarchicalModel<Entity> {
+    private static final Vector3f ITEM_ANIMATION_VECTOR_CACHE = new Vector3f();
+
+    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    }
+
+    public abstract void setupAnim(ItemStack stack, float ageInTicks);
+
+    protected void animateItem(ItemStack itemStackIn, AnimationDefinition animationDefinition, float ageInTicks, float scale) {
+        animateItem(itemStackIn, animationDefinition, ageInTicks, 1F, scale);
+    }
+
+    protected void animateItem(ItemStack itemStackIn, AnimationDefinition animationDefinition, float ageInTicks, float speed, float scale) {
+        if (ItemAnimationUtils.updateTime(itemStackIn, ageInTicks, speed)) {
+            long accumulatedTime = ItemAnimationUtils.getAccumulatedTime(itemStackIn);
+            if (accumulatedTime / 1000F * 20F > animationDefinition.lengthInSeconds() * 20F) {
+                ItemAnimationUtils.stop(itemStackIn);
+                return;
+            }
+            KeyframeAnimations.animate(this, animationDefinition, accumulatedTime, scale, ITEM_ANIMATION_VECTOR_CACHE);
+        }
+    }
+}

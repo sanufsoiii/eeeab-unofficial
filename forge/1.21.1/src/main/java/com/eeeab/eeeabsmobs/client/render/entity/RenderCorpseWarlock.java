@@ -1,0 +1,39 @@
+package com.eeeab.eeeabsmobs.client.render.entity;
+
+import com.eeeab.eeeabsmobs.client.render.layer.LayerOuter;
+import com.eeeab.eeeabsmobs.EEEABMobs;
+import com.eeeab.eeeabsmobs.client.model.entity.ModelCorpseWarlock;
+import com.eeeab.eeeabsmobs.client.model.util.ModModelLayer;
+import com.eeeab.eeeabsmobs.client.render.layer.LayerGlow;
+import com.eeeab.eeeabsmobs.server.entity.mob.corpse.EntityCorpseWarlock;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
+public class RenderCorpseWarlock extends MobRenderer<EntityCorpseWarlock, ModelCorpseWarlock> {
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_warlock.png");
+    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_warlock_eyes.png");
+    private static final ResourceLocation NECKLACE_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_warlock_necklace.png");
+
+    public RenderCorpseWarlock(EntityRendererProvider.Context context) {
+        super(context, new ModelCorpseWarlock(context.bakeLayer(ModModelLayer.CORPSE_SLAVERY)), 0.3F);
+        this.addLayer(new LayerOuter<>(this, NECKLACE_LAYER, true, e -> !e.isInvisible()));
+        this.addLayer(new LayerGlow<>(this, GLOW_LAYER, e -> !e.isInvisible() && !e.glowControlled.isStop(),
+                (entity, partialTicks) -> entity.glowControlled.getAnimationFraction(partialTicks), true) {
+            @Override
+            protected RenderType getRenderType(EntityCorpseWarlock entity) {
+                return RenderType.entityTranslucentEmissive(this.location);
+            }
+        });
+
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(EntityCorpseWarlock corpse) {
+        return TEXTURE;
+    }
+}

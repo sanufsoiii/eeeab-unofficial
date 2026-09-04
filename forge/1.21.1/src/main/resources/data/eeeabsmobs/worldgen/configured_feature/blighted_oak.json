@@ -1,0 +1,51 @@
+{
+  "type": "minecraft:tree",
+  "config": {
+    "decorators": [],
+    "dirt_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:dirt"
+      }
+    },
+    "foliage_placer": {
+      "type": "eeeabsmobs:empty_leave",
+      "offset": 0,
+      "radius": 0
+    },
+    "foliage_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:air"
+      }
+    },
+    "force_dirt": false,
+    "ignore_vines": false,
+    "minimum_size": {
+      "type": "minecraft:two_layers_feature_size",
+      "limit": 0,
+      "lower_size": 0,
+      "upper_size": 0
+    },
+    "trunk_placer": {
+      "type": "eeeabsmobs:dead_tree",
+      "base_height": 6,
+      "base_top_branch_length": 2,
+      "height_rand_a": 3,
+      "height_rand_b": 2,
+      "max_top_branches": 4,
+      "mid_branch_max_length": 3,
+      "random_top_branch_length": 3,
+      "top_branch_chance": 0.8
+    },
+    "trunk_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "eeeabsmobs:blighted_oak_log",
+        "Properties": {
+          "axis": "y"
+        }
+      }
+    }
+  }
+}

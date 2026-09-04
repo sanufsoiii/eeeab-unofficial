@@ -1,0 +1,308 @@
+package com.eeeab.eeeabsmobs.server.init;
+
+import com.eeeab.eeeabsmobs.EEEABMobs;
+import com.eeeab.eeeabsmobs.server.entity.effect.*;
+import com.eeeab.eeeabsmobs.server.entity.effect.projectile.*;
+import com.eeeab.eeeabsmobs.server.entity.mob.EntityTester;
+import com.eeeab.eeeabsmobs.server.entity.mob.corpse.EntityCorpse;
+import com.eeeab.eeeabsmobs.server.entity.mob.corpse.EntityCorpseToPlayer;
+import com.eeeab.eeeabsmobs.server.entity.mob.corpse.EntityCorpseVillager;
+import com.eeeab.eeeabsmobs.server.entity.mob.corpse.EntityCorpseWarlock;
+import com.eeeab.eeeabsmobs.server.entity.mob.immortal.*;
+import com.eeeab.eeeabsmobs.server.entity.mob.relicron.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.core.registries.Registries;
+import net.neoforged.neoforge.registries.DeferredHolder;
+
+// @Mod.EventBusSubscriber (class-level auto-registration of @SubscribeEvent statics) was removed entirely;
+// register(IEventBus) - already called from EEEABMobs's constructor - now also wires up
+// setEntityAttributeCreationEvent by hand instead of relying on annotation scanning.
+public class EntityInit {
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, EEEABMobs.MOD_ID);
+
+// in no released jar -- unfinished work whose registration was committed but whose classes
+// were never published, which is why upstream master does not compile as-is. Removed here.
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityCorpse>> CORPSE =
+            ENTITIES.register("corpse",
+                    () -> EntityType.Builder.<EntityCorpse>of(EntityCorpse::new, MobCategory.MONSTER)
+                            .sized(0.6f, 1.95f).clientTrackingRange(8)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityCorpseVillager>> CORPSE_VILLAGER =
+            ENTITIES.register("corpse_villager",
+                    () -> EntityType.Builder.<EntityCorpseVillager>of(EntityCorpseVillager::new, MobCategory.MONSTER)
+                            .sized(0.6f, 1.95f).clientTrackingRange(8)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse_villager").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityCorpseWarlock>> CORPSE_WARLOCK =
+            ENTITIES.register("corpse_warlock",
+                    () -> EntityType.Builder.<EntityCorpseWarlock>of(EntityCorpseWarlock::new, MobCategory.MONSTER)
+                            .sized(0.7f, 2.2f).fireImmune().clientTrackingRange(8)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse_warlock").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityCorpseToPlayer>> CORPSE_TO_PLAYER =
+            ENTITIES.register("corpse_to_player",
+                    () -> EntityType.Builder.<EntityCorpseToPlayer>of(EntityCorpseToPlayer::new, MobCategory.CREATURE)
+                            .sized(0.6f, 1.95f).clientTrackingRange(8)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse_to_player").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalSkeleton>> IMMORTAL_SKELETON = registerImmortalSkeletonEntity(EntityImmortalSkeleton::new, "immortal_skeleton");
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalSkeletonArcher>> IMMORTAL_ARCHER = registerImmortalSkeletonEntity(EntityImmortalSkeletonArcher::new, "immortal_archer");
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalSkeletonKnight>> IMMORTAL_KNIGHT = registerImmortalSkeletonEntity(EntityImmortalSkeletonKnight::new, "immortal_knight");
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalSkeletonMage>> IMMORTAL_MAGE = registerImmortalSkeletonEntity(EntityImmortalSkeletonMage::new, "immortal_mage");
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalSkeletonWarrior>> IMMORTAL_WARRIOR = registerImmortalSkeletonEntity(EntityImmortalSkeletonWarrior::new, "immortal_warrior");
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalShaman>> IMMORTAL_SHAMAN =
+            ENTITIES.register("immortal_shaman",
+                    () -> EntityType.Builder.<EntityImmortalShaman>of(EntityImmortalShaman::new, MobCategory.MONSTER)
+                            .sized(0.6f, 2.6f).clientTrackingRange(8)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_shaman").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityMagicGolem>> MAGIC_GOLEM =
+            ENTITIES.register("immortal_golem",
+                    () -> EntityType.Builder.<EntityMagicGolem>of(EntityMagicGolem::new, MobCategory.MONSTER)
+                            .sized(0.6f, 1.2f).clientTrackingRange(6)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_golem").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalExecutioner>> IMMORTAL_EXECUTIONER =
+            ENTITIES.register("immortal_executioner",
+                    () -> EntityType.Builder.<EntityImmortalExecutioner>of(EntityImmortalExecutioner::new, MobCategory.MONSTER)
+                            .sized(0.8f, 2.45f).fireImmune().clientTrackingRange(8)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_executioner").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalBoss>> IMMORTAL_BOSS =
+            ENTITIES.register("immortal",
+                    () -> EntityType.Builder.<EntityImmortalBoss>of(EntityImmortalBoss::new, MobCategory.MONSTER)
+                            .sized(2.8f, 4.45f).fireImmune().clientTrackingRange(10)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityRelicObserver>> RELIC_OBSERVER =
+            ENTITIES.register("relic_observer",
+                    () -> EntityType.Builder.<EntityRelicObserver>of(EntityRelicObserver::new, MobCategory.MONSTER)
+                            .sized(1f, 1.8f).clientTrackingRange(6)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_observer").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityRelicRipper>> RELIC_RIPPER =
+            ENTITIES.register("relic_ripper",
+                    () -> EntityType.Builder.<EntityRelicRipper>of(EntityRelicRipper::new, MobCategory.MONSTER)
+                            .sized(1.45f, 2.4995f).clientTrackingRange(8)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_ripper").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityRelicEarthshaker>> RELIC_EARTHSHAKER =
+            ENTITIES.register("relic_earthshaker",
+                    () -> EntityType.Builder.<EntityRelicEarthshaker>of(EntityRelicEarthshaker::new, MobCategory.MONSTER)
+                            .sized(1.95f, 3.45f).clientTrackingRange(8)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_earthshaker").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityRelicAnnihilator>> RELIC_ANNIHILATOR =
+            ENTITIES.register("relic_annihilator",
+                    () -> EntityType.Builder.<EntityRelicAnnihilator>of(EntityRelicAnnihilator::new, MobCategory.MONSTER)
+                            .sized(1.3f, 3.45f).fireImmune().clientTrackingRange(8)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_annihilator").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityRealmWarden>> REALM_WARDEN =
+            ENTITIES.register("realm_warden",
+                    () -> EntityType.Builder.<EntityRealmWarden>of(EntityRealmWarden::new, MobCategory.MONSTER)
+                            .sized(2.45f, 4.45f).fireImmune().clientTrackingRange(10)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "realm_warden").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityNamelessGuardian>> NAMELESS_GUARDIAN =
+            ENTITIES.register("nameless_guardian",
+                    () -> EntityType.Builder.<EntityNamelessGuardian>of(EntityNamelessGuardian::new, MobCategory.MONSTER)
+                            .sized(2.245f, 3.74f).fireImmune().clientTrackingRange(10)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "nameless_guardian").toString()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityTester>> TESTER =
+            ENTITIES.register("tester",
+                    () -> EntityType.Builder.<EntityTester>of(EntityTester::new, MobCategory.CREATURE)
+                            .sized(0.6f, 1.95f).clientTrackingRange(10)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "tester").toString()));
+
+    //非生物实体
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityTelegraph>> TELEGRAPH =
+            ENTITIES.register("telegraph",
+                    () -> EntityType.Builder.<EntityTelegraph>of(EntityTelegraph::new, MobCategory.MISC).sized(1F, 1F)
+                            .clientTrackingRange(64).updateInterval(1)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "telegraph").toString()));
+
+    //爆炸
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityExplode>> EXPLODE =
+            ENTITIES.register("explode",
+                    () -> EntityType.Builder.<EntityExplode>of(EntityExplode::new, MobCategory.MISC).sized(0F, 0F)
+                            .setUpdateInterval(Integer.MAX_VALUE).build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "explode").toString()));
+
+    //过载爆炸
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityOverloadExplode>> OVERLOAD_EXPLODE =
+            ENTITIES.register("overload_explode",
+                    () -> EntityType.Builder.<EntityOverloadExplode>of(EntityOverloadExplode::new, MobCategory.MISC).sized(0f, 0f)
+                            .setUpdateInterval(Integer.MAX_VALUE).build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "overload_explode").toString()));
+
+    //遣雷战斧(投掷物)
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityThrownDoomboltAxe>> DOOMBOLT_AXE =
+            ENTITIES.register("doombolt_axe",
+                    () -> EntityType.Builder.<EntityThrownDoomboltAxe>of(EntityThrownDoomboltAxe::new, MobCategory.MISC).sized(0.5F, 0.5F)
+                            .clientTrackingRange(4).updateInterval(20)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "doombolt_axe").toString()));
+
+    //巫师炸弹
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityShamanBomb>> SHAMAN_BOMB =
+            ENTITIES.register("shaman_bomb",
+                    () -> EntityType.Builder.<EntityShamanBomb>of(EntityShamanBomb::new, MobCategory.MISC)
+                            .sized(1.0f, 1.0f).clientTrackingRange(4).updateInterval(10)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "shaman_bomb").toString()));
+
+    //相机摇晃
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityCameraShake>> CAMERA_SHAKE =
+            ENTITIES.register("camera_shake",
+                    () -> EntityType.Builder.<EntityCameraShake>of(EntityCameraShake::new, MobCategory.MISC).sized(1.0f, 1.0f)
+                            .setUpdateInterval(Integer.MAX_VALUE).build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "camera_shake").toString()));
+
+    //下落的方块
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityFallingBlock>> FALLING_BLOCK =
+            ENTITIES.register("falling_block",
+                    () -> EntityType.Builder.<EntityFallingBlock>of(EntityFallingBlock::new, MobCategory.MISC)
+                            .sized(0.99f, 0.99f)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "falling_block").toString()));
+
+    //守卫者激光
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityInfraredRay>> INFRARED_RAY = registerCommonBeamEntity(EntityInfraredRay::new, "infrared_ray");
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityGuardianLaser>> GUARDIAN_LASER = registerCommonBeamEntity(EntityGuardianLaser::new, "guardian_laser");
+
+    //守卫者之刃
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityGuardianBlade>> GUARDIAN_BLADE =
+            ENTITIES.register("guardian_blade",
+                    () -> EntityType.Builder.<EntityGuardianBlade>of(EntityGuardianBlade::new, MobCategory.MISC)
+                            .sized(0.3f, 3.5f).setUpdateInterval(1)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "guardian_blade").toString()));
+
+    //结构之眼
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityEyeOfStructure>> EYE_OF_STRUCTURE =
+            ENTITIES.register("eye_of_structure",
+                    () -> EntityType.Builder.<EntityEyeOfStructure>of(EntityEyeOfStructure::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(4)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "eye_of_structure").toString()));
+
+    //毒箭
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityPoisonArrow>> POISON_ARROW =
+            ENTITIES.register("poison_arrow",
+                    () -> EntityType.Builder.<EntityPoisonArrow>of(EntityPoisonArrow::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "poison_arrow").toString()));
+
+    //血球
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityBloodBall>> BLOOD_BALL =
+            ENTITIES.register("blood_ball",
+                    () -> EntityType.Builder.<EntityBloodBall>of(EntityBloodBall::new, MobCategory.MISC)
+                            .sized(1F, 1F).clientTrackingRange(4).updateInterval(10)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "blood_ball").toString()));
+
+    //腥红裂缝
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityCrimsonCrack>> CRIMSON_CRACK =
+            ENTITIES.register("crimson_crack",
+                    () -> EntityType.Builder.<EntityCrimsonCrack>of(EntityCrimsonCrack::new, MobCategory.MISC)
+                            .sized(0.1f, 0.1f)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "crimson_crack").toString()));
+
+    //腥红射线
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityCrimsonRay>> CRIMSON_RAY = registerCommonBeamEntity(EntityCrimsonRay::new, "crimson_ray");
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityCrimsonRay.PreAttack>> CRIMSON_RAY_PRE =
+            ENTITIES.register("crimson_ray_pre",
+                    () -> EntityType.Builder.<EntityCrimsonRay.PreAttack>of(EntityCrimsonRay.PreAttack::new, MobCategory.MISC)
+                            .sized(0.1f, 0.1f)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "crimson_ray_pre").toString()));
+
+    //脉冲榴弹
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityPulsedGrenade>> PULSED_GRENADE =
+            ENTITIES.register("pulsed_grenade",
+                    () -> EntityType.Builder.<EntityPulsedGrenade>of(EntityPulsedGrenade::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "pulsed_grenade").toString()));
+
+    //电磁脉冲
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityElectromagnetic>> ELECTROMAGNETIC =
+            ENTITIES.register("electromagnetic",
+                    () -> EntityType.Builder.<EntityElectromagnetic>of(EntityElectromagnetic::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(1)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "electromagnetic").toString()));
+
+    //歼击者导弹
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityAnnihilatorMissile>> ANNIHILATOR_MISSILE =
+            ENTITIES.register("annihilator_missile",
+                    () -> EntityType.Builder.<EntityAnnihilatorMissile>of(EntityAnnihilatorMissile::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(1)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "annihilator_missile").toString()));
+
+    //电涌
+    public static final DeferredHolder<EntityType<?>, EntityType<EntitySurge>> SURGE =
+            ENTITIES.register("surge",
+                    () -> EntityType.Builder.<EntitySurge>of(EntitySurge::new, MobCategory.MISC)
+                            .sized(0.5F, 4F).setUpdateInterval(Integer.MAX_VALUE)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "surge").toString()));
+
+    //异界传送门
+    //public static final DeferredHolder<EntityType<?>, EntityType<EntityAlienPortal>> ALIEN_PORTAL =
+    //        ENTITIES.register("alien_portal",
+    //                () -> EntityType.Builder.<EntityAlienPortal>of(EntityAlienPortal::new, MobCategory.MISC)
+    //                        .sized(0.1F, 0.1F)/*.setUpdateInterval(1)*/
+    //                        .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "alien_portal").toString()));
+
+    //不朽法阵
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalMagicCircle>> MAGIC_CIRCLE =
+            ENTITIES.register("immortal_magic_circle",
+                    () -> EntityType.Builder.<EntityImmortalMagicCircle>of(EntityImmortalMagicCircle::new, MobCategory.MISC)
+                            .sized(0.1F, 0.1F).setUpdateInterval(2)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_magic_circle").toString()));
+
+    //不朽手里剑
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalShuriken>> IMMORTAL_SHURIKEN =
+            ENTITIES.register("immortal_shuriken",
+                    () -> EntityType.Builder.<EntityImmortalShuriken>of(EntityImmortalShuriken::new, MobCategory.MISC)
+                            .sized(0.7125F, 0.5F).clientTrackingRange(8).updateInterval(1)
+                            .build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_shuriken").toString()));
+
+    //不朽激光
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityImmortalLaser>> IMMORTAL_LASER = registerCommonBeamEntity(EntityImmortalLaser::new, "immortal_laser");
+
+    public static void register(IEventBus bus) {
+        ENTITIES.register(bus);
+        bus.addListener(EntityInit::setEntityAttributeCreationEvent);
+    }
+
+    private static <T extends EntityAbsBeam> DeferredHolder<EntityType<?>, EntityType<T>> registerCommonBeamEntity(EntityType.EntityFactory<T> entityFactory, String name) {
+        return ENTITIES.register(name, () -> EntityType.Builder.of(entityFactory, MobCategory.MISC).sized(0.1F, 0.1F).setUpdateInterval(1).build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name).toString()));
+    }
+
+    private static <T extends EntityAbsImmortalSkeleton> DeferredHolder<EntityType<?>, EntityType<T>> registerImmortalSkeletonEntity(EntityType.EntityFactory<T> entityFactory, String key) {
+        return ENTITIES.register(key, () -> EntityType.Builder.of(entityFactory, MobCategory.MONSTER).sized(0.6f, 2.2f).clientTrackingRange(8).build(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, key).toString()));
+    }
+
+    public static void setEntityAttributeCreationEvent(EntityAttributeCreationEvent event) {
+        event.put(EntityInit.TESTER.get(), EntityTester.setAttributes().build());
+        event.put(EntityInit.CORPSE.get(), EntityCorpse.setAttributes().build());
+        event.put(EntityInit.CORPSE_VILLAGER.get(), EntityCorpse.setAttributes().build());
+        event.put(EntityInit.CORPSE_WARLOCK.get(), EntityCorpseWarlock.setAttributes().build());
+        event.put(EntityInit.CORPSE_TO_PLAYER.get(), EntityCorpseToPlayer.setAttributes().build());
+        event.put(EntityInit.RELIC_OBSERVER.get(), EntityRelicObserver.setAttributes().build());
+        event.put(EntityInit.RELIC_EARTHSHAKER.get(), EntityRelicEarthshaker.setAttributes().build());
+        event.put(EntityInit.RELIC_RIPPER.get(), EntityRelicRipper.setAttributes().build());
+        event.put(EntityInit.RELIC_ANNIHILATOR.get(), EntityRelicAnnihilator.setAttributes().build());
+        event.put(EntityInit.REALM_WARDEN.get(), EntityRealmWarden.setAttributes().build());
+        event.put(EntityInit.NAMELESS_GUARDIAN.get(), EntityNamelessGuardian.setAttributes().build());
+        event.put(EntityInit.IMMORTAL_SKELETON.get(), EntityAbsImmortalSkeleton.setAttributes(5F, 4F, 0F, 0.01F));
+        event.put(EntityInit.IMMORTAL_MAGE.get(), EntityAbsImmortalSkeleton.setAttributes(5F, 0F, 2F, 0.03F));
+        event.put(EntityInit.IMMORTAL_ARCHER.get(), EntityAbsImmortalSkeleton.setAttributes(10F, 4F, 4F, 0.025F));
+        event.put(EntityInit.IMMORTAL_WARRIOR.get(), EntityAbsImmortalSkeleton.setAttributes(15F, 5F, 6F, 0.02F));
+        event.put(EntityInit.IMMORTAL_KNIGHT.get(), EntityAbsImmortalSkeleton.setAttributes(25F, 6F, 8F, 0F));
+        event.put(EntityInit.IMMORTAL_SHAMAN.get(), EntityImmortalShaman.setAttributes().build());
+        event.put(EntityInit.MAGIC_GOLEM.get(), EntityMagicGolem.setAttributes().build());
+        event.put(EntityInit.IMMORTAL_EXECUTIONER.get(), EntityImmortalExecutioner.setAttributes().build());
+        event.put(EntityInit.IMMORTAL_BOSS.get(), EntityImmortalBoss.setAttributes().build());
+    }
+}

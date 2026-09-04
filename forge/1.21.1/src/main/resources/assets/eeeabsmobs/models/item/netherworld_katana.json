@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "eeeabsmobs:item/netherworld_katana_icon"
+  }
+}

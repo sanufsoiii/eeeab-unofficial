@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "eeeabsmobs:boundary_brick"
+    },
+    "I": {
+      "item": "minecraft:iron_nugget"
+    },
+    "S": {
+      "item": "minecraft:sea_lantern"
+    }
+  },
+  "pattern": [
+    "IBI",
+    "BSB",
+    "IBI"
+  ],
+  "result": {
+    "id": "eeeabsmobs:boundary_lamp"
+  },
+  "show_notification": true
+}

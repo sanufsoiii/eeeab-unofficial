@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "eeeabsmobs:block/cut_ghost_steel_slab"
+    },
+    "type=double": {
+      "model": "eeeabsmobs:block/cut_ghost_steel"
+    },
+    "type=top": {
+      "model": "eeeabsmobs:block/cut_ghost_steel_slab_top"
+    }
+  }
+}

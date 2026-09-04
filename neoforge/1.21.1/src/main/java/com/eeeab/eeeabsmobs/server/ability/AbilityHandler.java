@@ -1,0 +1,68 @@
+package com.eeeab.eeeabsmobs.server.ability;
+
+import com.eeeab.eeeabsmobs.EEEABMobs;
+import com.eeeab.eeeabsmobs.server.ability.abilities.*;
+import com.eeeab.eeeabsmobs.server.capability.AbilityCapability;
+import com.eeeab.eeeabsmobs.server.handler.CapabilityHandler;
+import com.eeeab.eeeabsmobs.server.message.PlayerUseAbilityMessage;
+import com.eeeab.eeeabsmobs.server.message.UseAbilityMessage;
+import com.eeeab.eeeabsmobs.server.util.TranslateUtils;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.apache.commons.lang3.ArrayUtils;
+
+public enum AbilityHandler {
+    INSTANCE;
+    public static final AbilityType<Player, ChainswordComboAbility> CHAINSWORD_COMBO_ABILITY = new AbilityType<>(ChainswordComboAbility::new, "chainsword_combo_ability", true);
+    public static final AbilityType<Player, SoulSummonNecklaceAbility> SOUL_SUMMON_NECKLACE_ABILITY = new AbilityType<>(SoulSummonNecklaceAbility::new, "soul_summon_necklace_ability", true);
+    public static final AbilityType<Player, GuardianLaserAbility> GUARDIAN_LASER_ABILITY = new AbilityType<>(GuardianLaserAbility::new, "guardian_laser_ability");
+    public static final AbilityType<Player, SkyfallHammerAbility> SKYFALL_HAMMER_ABILITY = new AbilityType<>(SkyfallHammerAbility::new, "skyfall_hammer_ability");
+    public static final AbilityType<Player, ? extends Ability<?>>[] PLAYER_ABILITY_TYPES = new AbilityType[]{
+            CHAINSWORD_COMBO_ABILITY,
+            SOUL_SUMMON_NECKLACE_ABILITY,
+            GUARDIAN_LASER_ABILITY,
+            SKYFALL_HAMMER_ABILITY
+    };
+
+    public AbilityCapability.IAbilityCapability getAbilityCapability(LivingEntity entity) {
+        return CapabilityHandler.getCapability(entity, CapabilityHandler.ABILITY_CAPABILITY);
+    }
+
+    public Ability<?> getAbility(Player player, AbilityType<?, ?> abilityType) {
+        AbilityCapability.IAbilityCapability capability = getAbilityCapability(player);
+        if (capability != null) {
+            return capability.getAbilitiesMap().get(abilityType);
+        }
+        return null;
+    }
+
+    public <T extends LivingEntity> void sendAbilityMessage(T entity, AbilityType<?, ?> abilityType) {
+        if (entity.level().isClientSide) {
+            return;
+        }
+        AbilityCapability.IAbilityCapability abilityCapability = getAbilityCapability(entity);
+        if (abilityCapability != null) {
+            Ability<?> instance = abilityCapability.getAbilitiesMap().get(abilityType);
+            if (instance == null) return;
+            if (instance.isCooling() && entity instanceof Player player) {
+                player.displayClientMessage(TranslateUtils.simpleText(TranslateUtils.OTHER_PREFIX, "cooling", null), true);
+            }
+            if (instance.canUse()) {
+                abilityCapability.onActive(entity, abilityType);
+                PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new UseAbilityMessage(entity, ArrayUtils.indexOf(abilityCapability.getAbilityTypeByEntity(entity), abilityType)));
+            }
+        }
+    }
+
+    public <T extends Player> void sendPlayerAbilityMessage(T entity, AbilityType<?, ?> ability) {
+        if (!(entity.level().isClientSide && entity instanceof LocalPlayer)) {
+            return;
+        }
+        AbilityCapability.IAbilityCapability abilityCapability = getAbilityCapability(entity);
+        if (abilityCapability != null) {
+            PacketDistributor.sendToServer(new PlayerUseAbilityMessage(ArrayUtils.indexOf(abilityCapability.getAbilityTypeByEntity(entity), ability)));
+        }
+    }
+}
