@@ -15,10 +15,10 @@ minecraft {
 	mappings channel: mapping_channel, version: mapping_version
 
 	runs {
-		// Стандартная форма из шаблона Forge: общие настройки через configureEach, а блок mods
-		// объявляется там же. Форма с mods внутри каждого запуска приводила к тому, что Forge считал
-		// build/resources/main отдельным файлом мода ("has mods that were not found") -- манифест там
-		// есть, а классов нет, потому что они лежат в build/classes.
+		// Standard shape from the Forge template: shared settings via configureEach, with the mods
+		// block declared there as well. Putting mods inside each run made Forge treat
+		// build/resources/main as a separate mod file ("has mods that were not found") -- the
+		// manifest is there but the classes are not, since they live in build/classes.
 		configureEach {
 			workingDirectory project.file('run')
 			property 'forge.logging.console.level', 'info'
@@ -34,13 +34,14 @@ minecraft {
 }
 
 
-// ForgeGradle отдаёт классы и ресурсы двумя каталогами, и FML считает каталог ресурсов отдельным
-// модом: манифест в нём есть, классов нет -- "has mods that were not found", загрузка прерывается.
-// Складываем ресурсы туда же, где классы, тогда каталог один и раздваиваться нечему.
+// ForgeGradle serves classes and resources as two directories, and FML counts the resources
+// directory as a separate mod: manifest present, classes absent -- "has mods that were not
+// found", loading aborts. Collect resources where the classes are, so there is a single
+// directory and nothing to split.
 sourceSets.main.output.resourcesDir = sourceSets.main.java.destinationDirectory
 
-// Датаген исключён по той же причине, что и в ветке NeoForge: это инструмент сборки, его вывод уже
-// лежит в src/main/resources, и в jar он не попадает.
+// Datagen excluded for the same reason as the NeoForge branch: it is a build tool, its output
+// already sits in src/main/resources, and it never lands in the jar.
 sourceSets {
 	main {
 		java {

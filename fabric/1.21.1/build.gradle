@@ -7,10 +7,11 @@ version = mod_version
 group = mod_group
 base { archivesName = mod_id }
 
-// Ключевое решение этой ветки: официальные маппинги Mojang вместо Yarn. Версия игры та же, что у
-// сборок NeoForge и Forge, поэтому при тех же именах вся ванильная половина мода — 163 сущности,
-// рендереры, модели, предметы — переносится вообще без правок. С Yarn пришлось бы переименовывать
-// каждое обращение к игре, то есть переписывать почти весь мод ради нулевой выгоды.
+// Key decision of this branch: official Mojang mappings instead of Yarn. The game version is
+// the same as the NeoForge and Forge builds, so with the same names the entire vanilla-facing
+// half of the mod -- 163 entities, renderers, models, items -- carries over with no edits at
+// all. With Yarn, every call into the game would have to be renamed, i.e. nearly the whole mod
+// rewritten for zero gain.
 loom {
 	mods {
 		"${mod_id}" {
@@ -19,8 +20,8 @@ loom {
 	}
 }
 
-// Датаген исключён по той же причине, что и в остальных ветках: инструмент сборки, в jar не идёт,
-// а его вывод уже лежит в src/main/resources.
+// Datagen excluded for the same reason as the other branches: it is a build tool, never lands
+// in the jar, and its output already sits in src/main/resources.
 sourceSets {
 	main {
 		java {

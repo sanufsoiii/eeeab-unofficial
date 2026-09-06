@@ -1,150 +1,159 @@
 # EEEAB's Mobs: Forge 1.20.1 → NeoForge 1.21.1
 
-Оригинал: https://github.com/EEEAB/EEEABsMobs, ветка master, LGPL-3.0 на код и ресурсы вместе.
-420 java-файлов, 48 тысяч строк, 163 сущности, 54 рендерера, 49 моделей, 287 текстур, 181 звук.
+Original: https://github.com/EEEAB/EEEABsMobs, master branch, LGPL-3.0 covering code and
+assets together. 420 java files, 48k lines, 163 entities, 54 renderers, 49 models,
+287 textures, 181 sounds.
 
-Работу вели четыре агента на Sonnet 5 в изолированных ветках: платформа, сущности, клиент,
-данные. Плюс механические проходы и разбор запусков вручную.
+## Why nobody took this mod on
 
-## Почему за этот мод никто не брался
+The assumed blocker was the Citadel dependency. **It doesn't exist.** The block in
+`mods.toml` is commented out wholesale, there are zero imports in 420 files, zero in the
+gradle files, and the mod has its own animation engine (`com.eeeab.animate`). Citadel on
+Modrinth is a leftover from an old version.
 
-Считалось, что мешает зависимость от Citadel. **Её нет.** Блок в `mods.toml` закомментирован
-целиком, импортов ноль в 420 файлах, в gradle-файлах ноль, движок анимации у мода свой
-(`com.eeeab.animate`). На Modrinth Citadel виден как хвост от старой версии.
+The real reason seems to be different: **the author's published sources do not compile.**
+- a mob `fallen_envoy` is registered whose classes exist in no branch and no release;
+- the particle type `RADIAL_OPACITY_RING` is used but never registered;
+- a renderer calls a nonexistent method on the entity;
+- the config handler is registered twice (Forge tolerated it, NeoForge crashes).
 
-Настоящая причина, похоже, другая: **опубликованные исходники автора не собираются.**
-- регистрируется моб `fallen_envoy`, классов которого нет ни в одной ветке и ни в одном релизе;
-- тип частиц `RADIAL_OPACITY_RING` используется, но нигде не регистрируется;
-- рендерер вызывает у сущности несуществующий метод;
-- обработчик конфигурации зарегистрирован дважды (Forge терпел, NeoForge падает).
+## Mechanics: 2827 → 0
 
-## Механика: 2827 → 0
+Compile errors: 2827 → 1517 (package renames) → 1024 (entities) → 916 (client)
+→ 224 (platform) → 123 (datagen exclusion) → 0.
 
-Ошибки компиляции: 2827 → 1517 (переименование пакетов) → 1024 (сущности) → 916 (клиент)
-→ 224 (платформа) → 123 (исключение датагена) → 0.
-
-Все соответствия имён проверялись поиском класса в настоящих артефактах NeoForge, а не по
-памяти: `SubscribeEvent` → `net.neoforged.bus.api`, `Dist` → `net.neoforged.api.distmarker`,
-аннотации `Mod`/`EventBusSubscriber` → `net.neoforged.fml.common` (в `loader-4.0.44.jar`),
+Every name mapping was verified by finding the class in real NeoForge artifacts, not from
+memory: `SubscribeEvent` → `net.neoforged.bus.api`, `Dist` → `net.neoforged.api.distmarker`,
+`Mod`/`EventBusSubscriber` annotations → `net.neoforged.fml.common` (in `loader-4.0.44.jar`),
 `ForgeConfigSpec` → `ModConfigSpec`, `MinecraftForge` → `NeoForge`.
 
-Конструктор `ResourceLocation` стал приватным: два аргумента → `fromNamespaceAndPath`,
-**один аргумент → `parse`**. Первый проход я сделал без этого различия и получил 19 ошибок.
+The `ResourceLocation` constructor became private: two arguments → `fromNamespaceAndPath`,
+**one argument → `parse`**. The first pass missed this distinction and produced 19 errors.
 
-## Датаген: решение и его цена
+## Datagen: the decision and its price
 
-101 ошибка из 224 приходилась на генератор данных. Он не попадает в jar и лишь создаёт файлы,
-которые уже лежат в ресурсах, поэтому исключён из компиляции.
+101 of the 224 errors came from the data generator. It never lands in the jar and only
+creates files that already sit in resources, so it was excluded from compilation.
 
-**Но его результат в репозитории отсутствует.** Сравнение с выпущенным jar автора:
-- данные: в jar 295 файлов, в исходниках 42 — **не хватало 254**;
-- ресурсы: в jar 949, у нас 535 — **не хватало 419** (162 модели блоков, 129 моделей предметов,
-  84 состояния блоков, 6 текстур частиц, полоса здоровья босса, значок эффекта);
-- переводы: 26 ключей на язык (яйца призыва, подсказки, строки настроек).
+**But its output is absent from the repository.** Comparison against the author's released
+jar:
+- data: 295 files in the jar vs 42 in sources — **254 missing**;
+- assets: 949 in the jar vs 535 here — **419 missing** (162 block models, 129 item models,
+  84 blockstates, 6 particle textures, the boss health bar, the effect icon);
+- translations: 26 keys per language (spawn eggs, tooltips, settings strings).
 
-Без этого: почти нет рецептов, блоки не роняют предметы, **все блоки — «отсутствующая модель»**,
-структуры не генерируются вовсе.
+Without this: almost no recipes, blocks drop nothing, **every block is "missing model"**,
+structures never generate.
 
-**Вывод: если датаген отключён, сверять с релизным jar надо всё дерево целиком, а не тот
-раздел, где заметил проблему.** Я нашёл данные, починил, и только потом догадался проверить
-ресурсы — там дыра оказалась даже больше.
+**Lesson: if datagen is disabled, compare the ENTIRE tree against the release jar, not just
+the section where a problem was noticed.** The data was found and fixed first; resources
+were checked only later — and the hole there turned out even bigger.
 
-## Восемь поломок, невидимых компилятору
+## Eight breakages invisible to the compiler
 
-Каждая найдена запуском при полностью зелёной сборке.
+Each found by running the game with a fully green build.
 
-1. **Клиентский прокси на сервере.** `ClientProxy` помечен `@OnlyIn(Dist.CLIENT)`, поэтому его
-   имя не должно попадать в байткод главного класса вообще. Ни тернарный оператор, ни отдельный
-   метод не помогают — разрешение конструктора всё равно грузит класс. У Forge был `DistExecutor`
-   именно ради ленивого связывания; в NeoForge его нет, пришлось делать отражением.
-2. **Событие зельеварения на чужой шине** — не помечено как модовое, значит игровая шина.
-3. **Двойная регистрация обработчика конфигурации** — и, следом, NeoForge считает ошибкой ещё и
-   регистрацию класса без единого обработчика.
-4. **Условия достижений** регистрировались из статической инициализации на завершении загрузки,
-   когда реестры уже заморожены. Переведено на отложенный реестр.
-5. **Диапазон в генерации мира** был завёрнут в лишний объект `value`. Имена полей при этом не
-   менялись — сверка по именам такое не ловит, ловит только загрузка.
-6. **Дополнительные модели** требуют особого вида идентификатора (`standalone`), и он ищет файл
-   от корня моделей, а не в подпапке предметов.
-7. **Три пакета анимации не зарегистрированы.** Платформенный агент оставил TODO для того, кто
-   портирует движок анимации; тот агент их уже переписал. Незарегистрированный пакет — не ошибка
-   компиляции, поэтому дожил до игры: первый же босс ронял сервер.
-8. **Текстура брони.** Оригинал задавал путь через хук Forge, которого нет; теперь путь строит
-   материал брони, и префикс `textures/models/armor/` зашит в коде игры.
+1. **Client proxy on the server.** `ClientProxy` is marked `@OnlyIn(Dist.CLIENT)`, so its
+   name must not appear in the main class's bytecode at all. Neither a ternary nor a
+   separate method helps — constructor resolution loads the class anyway. Forge had
+   `DistExecutor` precisely for lazy linking; NeoForge doesn't, so reflection was needed.
+2. **Brewing event on the wrong bus** — not marked as a mod event, so it belongs to the
+   game bus.
+3. **Double registration of the config handler** — and on top of that, NeoForge also
+   considers registering a class with zero handlers an error.
+4. **Advancement conditions** were registered from static init at load completion, when
+   registries are already frozen. Moved to the deferred register.
+5. **Range in worldgen** was wrapped in a redundant `value` object. Field names didn't
+   change — a name-based diff can't catch this; only loading can.
+6. **Additional models** require a special identifier kind (`standalone`), resolved from
+   the model root, not from the item subfolder.
+7. **Three animation packages unregistered.** A TODO was left for the animation-engine
+   pass, which had already rewritten them. An unregistered package is not a compile
+   error, so it survived into the game: the very first boss crashed the server.
+8. **Armor texture.** The original set the path through a Forge hook that doesn't exist;
+   now the armor material builds the path, and the `textures/models/armor/` prefix is
+   hardcoded in the game.
 
-## Проверено
+## Verified
 
-Сервер в среде разработки: ноль ошибок. Клиент: предупреждений по моду 3527 → 0.
-**Чистый сервер NeoForge 21.1.249 вне среды разработки: `Done (3.251s)`, ноль ошибок.**
-Игровая проверка пользователем:
-- 100 разных мобов и 100 боссов одновременно в бою — **просадки кадров нет**;
-- все подземелья генерируются и работают, всё оружие работает;
-- запуск с **Sodium + Iris и шейдерпаком Complementary** плюс JEI — ноль падений, ноль ошибок
-  мода. Это важно отдельно: свои слои отрисовки боссов (свечение, следы, лучи, трещины пустоты)
-  переписывались вслепую по байткоду, а шейдеры подменяют конвейер и ломают такое первым делом.
+Dev-environment server: zero errors. Client: mod warnings 3527 → 0.
+**Clean NeoForge 21.1.249 server outside the dev environment: `Done (3.251s)`, zero errors.**
+In-game verification by the user:
+- 100 different mobs and 100 bosses fighting at once — **no frame drops**;
+- all dungeons generate and work, all weapons work;
+- launch with **Sodium + Iris and the Complementary shader pack** plus JEI — zero crashes,
+  zero mod errors. This matters separately: the custom boss render layers (glow, trails,
+  beams, void cracks) were rewritten blind from bytecode, and shaders swap the pipeline and
+  break exactly that first.
 
-Примечание: Oculus под NeoForge 1.21.1 не существует, его роль занял Iris, у которого появились
-сборки под этот загрузчик.
+Note: Oculus does not exist for NeoForge 1.21.1; Iris took over its role with builds for
+this loader.
 
-Диапазон версий сужен до `[1.21.1,1.21.2)`: на щитах мы уже обожглись на том, что широкий
-диапазон пускает мод на версии, где он падает вместо честного отказа.
+Version range narrowed to `[1.21.1,1.21.2)`: the shields port already taught us that a wide
+range lets the mod onto versions where it crashes instead of failing honestly.
 
-## Не сделано осознанно
+## Deliberately not done
 
-- Генератор данных не портирован (101 ошибка), файлы взяты из релиза.
-- Теги для чужих модов (Alex's Caves, Cataclysm, Ice and Fire) не проверены — этих модов нет в
-  сборке, сверить не с чем.
-- 19 блоков не переведены и у автора; английские названия дописаны нами сверх оригинала.
+- Data generator not ported (101 errors); files taken from the release.
+- Tags for third-party mods (Alex's Caves, Cataclysm, Ice and Fire) unverified — those mods
+  aren't in the pack, nothing to check against.
+- 19 blocks are untranslated upstream as well; English names were added on top of the
+  original.
 
-## Ветка Fabric 1.21.1
+## Fabric 1.21.1 branch
 
-Третья цель на той же версии игры и **самая тяжёлая**: Fabric дальше всего от исходного Forge.
-Ошибки: 1833 → 1193 → 1094 → 981 → 652 → 532 → 371 → 137 → 0.
+The third target on the same game version and **the hardest one**: Fabric is furthest from
+the source Forge. Errors: 1833 → 1193 → 1094 → 981 → 652 → 532 → 371 → 137 → 0.
 
-### Решение, сэкономившее основную часть работы
+### The decision that saved most of the work
 
-Взяты **официальные маппинги Mojang вместо Yarn**. Версия игры та же, что у веток NeoForge и Forge,
-поэтому при тех же именах вся ванильная половина мода — 163 сущности, рендереры, модели, предметы —
-компилируется без единой правки. С Yarn пришлось бы переименовывать каждое обращение к игре, то есть
-переписывать почти весь мод ради нулевой выгоды.
+**Official Mojang mappings instead of Yarn.** The game version is the same as the NeoForge
+and Forge branches, so with the same names the entire vanilla-facing half of the mod —
+163 entities, renderers, models, items — compiles without a single edit. With Yarn, every
+call into the game would have to be renamed, i.e. nearly the whole mod rewritten for zero
+gain.
 
-### Что пришлось изобретать, а не переводить
+### What had to be invented, not translated
 
-- **Шины событий нет вообще.** Где у Fabric есть обратный вызов — использован он; где нет —
-  написан миксин. Мод и так поставляет свой файл миксинов.
-- **Конфигурации нет.** 758 строк форджевого описания заменены своим чтением JSON, с сохранением
-  прежней формы обращения, чтобы не переписывать сотни мест.
-- **Реестры.** Написана прослойка `FabricDeferredRegister`, сохраняющая привычную форму вызова.
-  Важно, что она одна на весь порт: если бы каждый агент сделал свою, слияние превратилось бы в кашу.
-- **Состояния сущностей.** Здесь я ошибся в задании — написал, что в Fabric такого нет, и велел
-  делать миксином. Агент **проверил по jar, нашёл официальный модуль вложений данных и возразил**.
-  Получилось надёжнее. Это ровно то поведение, которого от агентов и добиваются.
-- **Модификаторы биомов** — форджевое понятие; форджевые файлы Fabric игнорирует, поэтому генерация
-  структур пересобрана через биомное API Fabric.
+- **There is no event bus at all.** Where Fabric has a callback, the callback is used;
+  where it doesn't, a mixin was written. The mod already ships its own mixin file.
+- **No config system.** 758 lines of Forge declarations replaced with custom JSON reading,
+  keeping the same call shape so hundreds of call sites stay untouched.
+- **Registries.** A `FabricDeferredRegister` shim preserves the familiar call shape.
+  Crucially, there is exactly one for the whole port: if every pass had made its own, the
+  merge would have turned into a mess.
+- **Entity attachments.** The initial assumption was that Fabric had no equivalent and a
+  mixin was prescribed; verification against the jar found the official data attachment
+  module instead — and objected. The result is more reliable.
+- **Biome modifiers** are a Forge concept; Fabric ignores the Forge files, so structure
+  generation was rebuilt through Fabric's biome API.
 
-### Поломки, невидимые компилятору
+### Breakages invisible to the compiler
 
-1. **Порядок инициализации в конфигурации:** статический блок вызывал загрузку раньше, чем было
-   объявлено поле разборщика JSON. Тот же класс ошибки, что и с метательным топором на NeoForge.
-2. **Клиентские классы на сервере.** Fabric строго разделяет стороны и отказывается загружать класс,
-   упоминающий клиентские типы. Все шесть пакетов «сервер → клиент» держали обработчик внутри себя —
-   сервер падал на первой же строке регистрации. Обработчики вынесены во вложенные классы.
-3. **Отрисовщики сущностей не регистрировались.** `RegisterHandler` был полностью переписан под
-   Fabric, но его никто не вызывал: один проход оставил пометку «не подключаю, чтобы не гадать»,
-   другой позже дописал файл и не знал, что надо вернуться. Игра не знала, чем рисовать мобов —
-   падение при открытии второй страницы творческой вкладки и при появлении любого моба.
-4. **Броня рисовалась пустой.** На NeoForge мод подменял только модель, а видимость частей по слотам
-   задавала ваниль. Взяв отрисовку целиком, порт спрятал все части и ни одной не вернул. Снаружи
-   выглядит как пропавшая текстура.
+1. **Init order in the config:** a static block triggered loading before the JSON parser
+   field was declared. The same error class as the throwing axe on NeoForge.
+2. **Client classes on the server.** Fabric strictly separates sides and refuses to load a
+   class referencing client types. All six "server → client" packages kept their handler
+   inside themselves — the server died on the very first registration line. Handlers were
+   moved into nested classes.
+3. **Entity renderers never registered.** `RegisterHandler` was fully rewritten for Fabric,
+   but nobody called it: one pass left a note "not wiring to avoid guessing", a later one
+   finished the file without knowing it had to come back. The game didn't know what to draw
+   mobs with — crash on opening the second creative tab page and on any mob spawning.
+4. **Armor rendered empty.** On NeoForge the mod substituted only the model, and vanilla
+   drove part visibility per slot. Taking over the whole render, the port hid every part
+   and returned none. From the outside it looks like a missing texture.
 
-**Шесть раз за проект** стык между проходами дал код, который собирается, чисто стартует и ничего не
-делает. Ни компилятор, ни запуск сервера, ни запуск клиента этого не ловят.
+**Six times in this project** the seam between passes produced code that compiles, starts
+cleanly, and does nothing. Neither the compiler, nor a server launch, nor a client launch
+catches that.
 
-### Ложная тревога, о которой стоит помнить
+### The false alarm worth remembering
 
-Жалобы на блёклые текстуры, мелкие частицы и слабую молнию оказались сравнением **с шейдерами и
-без**: предыдущий прогон шёл с Sodium, Iris и шейдерпаком, а Fabric-клиент запускался чистым. Код
-частиц и слоёв отрисовки был сверен построчно с рабочей веткой — он не менялся.
+Complaints about washed-out textures, tiny particles and a weak lightning bolt turned out
+to be a comparison **of shaders versus no shaders**: the previous run used Sodium, Iris and
+a shader pack, while the Fabric client launched clean. The particle and render-layer code
+was diffed line by line against the working branch — it hadn't changed.
 
-**Вывод:** прежде чем искать причину визуального расхождения в коде, надо убедиться, что сравниваются
-одинаковые условия.
+**Lesson:** before looking for the cause of a visual discrepancy in code, make sure the
+conditions being compared are identical.
