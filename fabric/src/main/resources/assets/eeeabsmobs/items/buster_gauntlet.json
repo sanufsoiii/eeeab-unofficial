@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "eeeabsmobs:item/buster_gauntlet",
+    "model": {
+      "type": "eeeabsmobs:buster_gauntlet"
+    }
+  }
+}

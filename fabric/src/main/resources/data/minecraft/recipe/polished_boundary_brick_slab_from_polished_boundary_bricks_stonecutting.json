@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "eeeabsmobs:polished_boundary_bricks",
+  "result": {
+    "id": "eeeabsmobs:polished_boundary_brick_slab",
+    "count": 2
+  }
+}

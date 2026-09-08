@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "eeeabsmobs:ghost_steel_ingot",
+  "base": "minecraft:netherite_helmet",
+  "result": {
+    "id": "eeeabsmobs:ghost_warrior_helmet"
+  },
+  "template": "eeeabsmobs:ghost_warrior_upgrade_smithing_template"
+}

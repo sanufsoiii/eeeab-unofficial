@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "group": "ancient_boundary_stone",
+  "ingredient": "eeeabsmobs:ancient_boundary_stone",
+  "result": {
+    "id": "eeeabsmobs:boundary_brick"
+  }
+}

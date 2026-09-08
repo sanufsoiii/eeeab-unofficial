@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "eeeabsmobs:block/voidshard",
+    "side": "eeeabsmobs:block/voidshard",
+    "top": "eeeabsmobs:block/voidshard"
+  }
+}

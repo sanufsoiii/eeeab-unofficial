@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "netherite_ingot",
+  "ingredients": [
+    "eeeabsmobs:immortal_debris",
+    "eeeabsmobs:immortal_debris",
+    "eeeabsmobs:immortal_debris",
+    "eeeabsmobs:immortal_debris",
+    "minecraft:iron_ingot",
+    "minecraft:iron_ingot",
+    "minecraft:iron_ingot",
+    "minecraft:iron_ingot"
+  ],
+  "result": {
+    "id": "eeeabsmobs:immortal_ingot"
+  }
+}

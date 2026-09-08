@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "eeeabsmobs:immortal_ingot",
+    "N": "minecraft:netherite_upgrade_smithing_template",
+    "X": "minecraft:diamond"
+  },
+  "pattern": [
+    "X#X",
+    "#N#",
+    "X#X"
+  ],
+  "result": {
+    "id": "eeeabsmobs:ghost_warrior_upgrade_smithing_template"
+  },
+  "show_notification": true
+}

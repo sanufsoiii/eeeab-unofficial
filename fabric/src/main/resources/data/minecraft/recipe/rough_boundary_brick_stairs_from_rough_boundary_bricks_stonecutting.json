@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "eeeabsmobs:rough_boundary_bricks",
+  "result": {
+    "id": "eeeabsmobs:rough_boundary_brick_stairs"
+  }
+}

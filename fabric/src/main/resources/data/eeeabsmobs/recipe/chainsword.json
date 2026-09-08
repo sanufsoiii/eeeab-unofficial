@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "eeeabsmobs:ancient_drive_crystal",
+    "B": "eeeabsmobs:boundary_brick",
+    "C": "minecraft:iron_chain",
+    "G": "eeeabsmobs:chain_gear",
+    "N": "minecraft:netherite_sword"
+  },
+  "pattern": [
+    " BA",
+    "BGC",
+    "NC "
+  ],
+  "result": {
+    "id": "eeeabsmobs:chainsword"
+  },
+  "show_notification": true
+}

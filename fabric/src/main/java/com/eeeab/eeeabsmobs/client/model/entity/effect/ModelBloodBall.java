@@ -1,0 +1,30 @@
+package com.eeeab.eeeabsmobs.client.model.entity.effect;
+
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.util.Unit;
+
+public class ModelBloodBall extends Model<Unit> {
+    public final ModelPart ball_1;
+    public final ModelPart ball_2;
+    public final ModelPart ball_3;
+
+    public ModelBloodBall(ModelPart root) {
+        super(root, RenderTypes::entitySolid);
+        this.ball_1 = root.getChild("ball_1");
+        this.ball_2 = root.getChild("ball_2");
+        this.ball_3 = root.getChild("ball_3");
+    }
+
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+        partdefinition.addOrReplaceChild("ball_1", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)), PartPose.ZERO);
+        partdefinition.addOrReplaceChild("ball_2", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)), PartPose.ZERO);
+        partdefinition.addOrReplaceChild("ball_3", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)), PartPose.ZERO);
+        return LayerDefinition.create(meshdefinition, 32, 32);
+    }
+}

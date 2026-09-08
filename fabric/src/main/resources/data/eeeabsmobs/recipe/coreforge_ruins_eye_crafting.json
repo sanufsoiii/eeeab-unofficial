@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#@#",
+    "@I@",
+    "#@#"
+  ],
+  "key": {
+    "#": "minecraft:deepslate_bricks",
+    "@": "minecraft:lightning_rod",
+    "I": "minecraft:ender_eye"
+  },
+  "result": {
+    "count": 1,
+    "id": "eeeabsmobs:coreforge_ruins_eye"
+  }
+}

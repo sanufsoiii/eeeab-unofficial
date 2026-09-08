@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "eeeabsmobs:chain_gear",
+  "base": "minecraft:netherite_sword",
+  "result": {
+    "id": "eeeabsmobs:chainsword"
+  },
+  "template": "eeeabsmobs:relicron_upgrade_smithing_template"
+}

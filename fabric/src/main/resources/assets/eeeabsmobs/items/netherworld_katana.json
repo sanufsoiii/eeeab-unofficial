@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "eeeabsmobs:item/netherworld_katana",
+    "model": {
+      "type": "eeeabsmobs:netherworld_katana"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": "eeeabsmobs:polished_boundary_bricks"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "eeeabsmobs:polished_boundary_brick_wall"
+  },
+  "show_notification": true
+}

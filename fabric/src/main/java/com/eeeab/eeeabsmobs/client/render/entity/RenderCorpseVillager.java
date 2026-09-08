@@ -1,0 +1,35 @@
+package com.eeeab.eeeabsmobs.client.render.entity;
+
+import com.eeeab.eeeabsmobs.EEEABMobs;
+import com.eeeab.eeeabsmobs.client.model.entity.ModelCorpse;
+import com.eeeab.eeeabsmobs.client.model.util.ModModelLayer;
+import com.eeeab.eeeabsmobs.client.render.layer.LayerGlow;
+import com.eeeab.eeeabsmobs.server.entity.mob.corpse.EntityCorpse;
+import com.eeeab.eeeabsmobs.server.entity.mob.corpse.EntityCorpseVillager;
+import com.eeeab.eeeabsmobs.client.render.layer.LayerOuter;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import com.eeeab.animate.client.render.EMMobRenderer;
+import com.eeeab.animate.client.render.EMRenderState;
+import net.minecraft.resources.Identifier;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+@Environment(EnvType.CLIENT)
+public class RenderCorpseVillager extends EMMobRenderer<EntityCorpseVillager, ModelCorpse<EntityCorpseVillager>> {
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_villager.png");
+    private static final Identifier GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_villager_eyes.png");
+    private static final Identifier FRENZY_GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_villager_frenzy_eyes.png");
+    private static final Identifier LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_villager_plains.png");
+
+    public RenderCorpseVillager(EntityRendererProvider.Context context) {
+        super(context, new ModelCorpse<>(context.bakeLayer(ModModelLayer.CORPSE_VILLAGER)), 0.3F);
+        this.addLayer(new LayerGlow<>(this, FRENZY_GLOW_LAYER, 1F, EntityCorpse::isFrenzy));
+        this.addLayer(new LayerGlow<>(this, GLOW_LAYER, 0.8F));
+        this.addLayer(new LayerOuter<>(this, LAYER));
+    }
+
+    @Override
+    public Identifier getTextureLocation(EMRenderState corpse) {
+        return TEXTURE;
+    }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "eeeabsmobs:guardian_cube",
+  "base": "minecraft:netherite_axe",
+  "result": {
+    "id": "eeeabsmobs:doombolt_battleaxe"
+  },
+  "template": "eeeabsmobs:relicron_upgrade_smithing_template"
+}

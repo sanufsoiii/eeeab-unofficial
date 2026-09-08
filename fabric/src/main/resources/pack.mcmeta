@@ -1,0 +1,14 @@
+{
+  "pack": {
+    "description": {
+      "text": "eeeabsmobs resources"
+    },
+    "pack_format": 75,
+    "supported_formats": {
+      "min_inclusive": 17,
+      "max_inclusive": 94
+    },
+    "min_format": 17,
+    "max_format": 94
+  }
+}

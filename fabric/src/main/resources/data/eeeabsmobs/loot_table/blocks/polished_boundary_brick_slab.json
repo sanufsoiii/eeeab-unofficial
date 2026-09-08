@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "eeeabsmobs:polished_boundary_brick_slab"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "eeeabsmobs:blocks/polished_boundary_brick_slab"
+}

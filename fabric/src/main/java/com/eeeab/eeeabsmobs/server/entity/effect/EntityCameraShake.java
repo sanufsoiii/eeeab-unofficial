@@ -1,0 +1,133 @@
+package com.eeeab.eeeabsmobs.server.entity.effect;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+
+import com.eeeab.eeeabsmobs.server.init.EntityInit;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+//参考自: https://github.com/BobMowzie/MowziesMobs/blob/master/src/main/java/com/bobmowzie/mowziesmobs/server/entity/effects/EntityCameraShake.java
+public class EntityCameraShake extends Entity implements IEntity {
+    @Override
+    public boolean hurtServer(net.minecraft.server.level.ServerLevel level, net.minecraft.world.damagesource.DamageSource source, float amount) {
+        return false;
+    }
+
+    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(EntityCameraShake.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> MAGNITUDE = SynchedEntityData.defineId(EntityCameraShake.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(EntityCameraShake.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> FADE_DURATION = SynchedEntityData.defineId(EntityCameraShake.class, EntityDataSerializers.INT);
+
+    public EntityCameraShake(EntityType<?> type, Level world) {
+        super(type, world);
+    }
+
+    public EntityCameraShake(Level world, Vec3 position, float radius, float magnitude, int duration, int fadeDuration) {
+        super(EntityInit.CAMERA_SHAKE.get(), world);
+        setRadius(radius);
+        setMagnitude(magnitude);
+        setDuration(duration);
+        setFadeDuration(fadeDuration);
+        setPos(position.x(), position.y(), position.z());
+    }
+
+    @Environment(EnvType.CLIENT)
+    public float getShakeAmount(Player player, float delta) {
+        float ticksDelta = tickCount + delta;
+        float timeFrac = 1.0f - (ticksDelta - getDuration()) / (getFadeDuration() + 1.0f);
+        float baseAmount = ticksDelta < getDuration() ? getMagnitude() : timeFrac * timeFrac * getMagnitude();
+        Vec3 playerPos = player.getEyePosition(delta);
+        float distFrac = (float) (1.0f - Mth.clamp(position().distanceTo(playerPos) / getRadius(), 0, 1));
+        return baseAmount * distFrac * distFrac;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (tickCount > getDuration() + getFadeDuration()) discard();
+    }
+
+    @Override
+    public boolean displayFireAnimation() {
+        return false;
+    }
+
+    @Override
+    public boolean ignoreExplosion(net.minecraft.world.level.Explosion explosion) {
+        return true;
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(RADIUS, 10.0f);
+        builder.define(MAGNITUDE, 1.0f);
+        builder.define(DURATION, 0);
+        builder.define(FADE_DURATION, 5);
+    }
+
+    public float getRadius() {
+        return getEntityData().get(RADIUS);
+    }
+
+    public void setRadius(float radius) {
+        getEntityData().set(RADIUS, radius);
+    }
+
+    public float getMagnitude() {
+        return getEntityData().get(MAGNITUDE);
+    }
+
+    public void setMagnitude(float magnitude) {
+        getEntityData().set(MAGNITUDE, magnitude);
+    }
+
+    public int getDuration() {
+        return getEntityData().get(DURATION);
+    }
+
+    public void setDuration(int duration) {
+        getEntityData().set(DURATION, duration);
+    }
+
+    public int getFadeDuration() {
+        return getEntityData().get(FADE_DURATION);
+    }
+
+    public void setFadeDuration(int fadeDuration) {
+        getEntityData().set(FADE_DURATION, fadeDuration);
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput compound) {
+        setRadius(compound.getFloatOr("radius", 0F));
+        setMagnitude(compound.getFloatOr("magnitude", 0F));
+        setDuration(compound.getIntOr("duration", 0));
+        setFadeDuration(compound.getIntOr("fade_duration", 0));
+        tickCount = compound.getIntOr("ticks_existed", 0);
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput compound) {
+        compound.putFloat("radius", getRadius());
+        compound.putFloat("magnitude", getMagnitude());
+        compound.putInt("duration", getDuration());
+        compound.putInt("fade_duration", getFadeDuration());
+        compound.putInt("ticks_existed", tickCount);
+    }
+
+    public static void cameraShake(Level world, Vec3 position, float radius, float magnitude, int duration, int fadeDuration) {
+        if (!world.isClientSide()) {
+            EntityCameraShake cameraShake = new EntityCameraShake(world, position, radius, magnitude, duration, fadeDuration);
+            world.addFreshEntity(cameraShake);
+        }
+    }
+}

@@ -1,0 +1,42 @@
+{
+  "gui_light": "front",
+  "textures": {
+    "particle": "item/iron_ingot"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [90, 0, 0],
+      "translation": [0, -2.5, 12]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [90, 0, 0],
+      "translation": [0, -2.5, 12]
+    },
+    "firstperson_righthand": {
+      "rotation": [70, 0, 0],
+      "translation": [6, -2, 9]
+    },
+    "firstperson_lefthand": {
+      "rotation": [70, 0, 0],
+      "translation": [6, -2, 9]
+    },
+    "ground": {
+      "rotation": [0, 0, 90],
+      "translation": [-8, 0, 4]
+    },
+    "gui": {
+      "rotation": [90, -40, 120],
+      "translation": [-9, 0, 0],
+      "scale": [0.65, 0.65, 0.65]
+    },
+    "head": {
+      "rotation": [90, 0, 0],
+      "translation": [0, 0, 12]
+    },
+    "fixed": {
+      "rotation": [90, -40, 90],
+      "translation": [-9, 0, 0],
+      "scale": [0.65, 0.65, 0.65]
+    }
+  }
+}

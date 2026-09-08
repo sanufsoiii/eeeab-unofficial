@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "eeeabsmobs:block/dark_erosion_rock_bricks"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "eeeabsmobs:item/guardian_axe",
+    "model": {
+      "type": "eeeabsmobs:guardian_axe"
+    }
+  }
+}
