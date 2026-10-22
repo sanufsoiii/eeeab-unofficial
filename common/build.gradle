@@ -1,0 +1,73 @@
+plugins {
+	id 'architectury-plugin'
+	id 'dev.architectury.loom'
+}
+
+architectury {
+	minecraft = project.minecraft_version
+	common('fabric', 'neoforge')
+}
+
+group = project.maven_group
+version = "${project.minecraft_version}-${project.mod_version}"
+
+repositories {
+	maven { url = 'https://www.cursemaven.com' }
+	maven { url = 'https://maven.blamejared.com' }
+	maven { url = 'https://maven.architectury.dev/' }
+	mavenCentral()
+}
+
+loom {
+	accessWidenerPath = file('src/main/resources/eeeabsmobs.accesswidener')
+
+	mixin {
+		defaultRefmapName = 'eeeabsmobs-common-refmap.json'
+	}
+
+	mods {
+		"${project.mod_id}" {
+			sourceSet sourceSets.main
+		}
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.officialMojangMappings()
+
+	modImplementation "dev.architectury:architectury:${project.architectury_api_version}"
+
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+	compileOnly "com.google.code.gson:gson:2.10.1"
+}
+
+def LOADER_IMPORT_PATTERNS = [
+		~/^net\.fabricmc\./,
+		~/^net\.neoforged\./,
+		~/^net\.minecraftforge\./,
+]
+
+tasks.register('checkCommonLoaderIndependence') {
+	description = 'Fails if common/src/main imports net.fabricmc.* or net.neoforged.*'
+	group = 'verification'
+	def srcDirs = sourceSets.main.allJava
+	doLast {
+		def report = []
+		srcDirs.files.each { f ->
+			f.readLines('UTF-8').eachWithIndex { line, idx ->
+				def trimmed = line.trim()
+				if (!trimmed.startsWith('import ')) return
+				def target = trimmed.substring('import '.length()).replaceAll(';.*', '').trim()
+				if (LOADER_IMPORT_PATTERNS.any { it.matcher(target).find() }) {
+					report << "${f.name}:${idx + 1}: ${trimmed}"
+				}
+			}
+		}
+		if (!report.isEmpty()) {
+			throw new GradleException("Loader-specific imports found in common/src/main:\n  " + report.join('\n  '))
+		}
+	}
+}
+
+tasks.named('check').configure { dependsOn 'checkCommonLoaderIndependence' }
