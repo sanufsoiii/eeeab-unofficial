@@ -19,7 +19,6 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
-import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
@@ -178,14 +177,7 @@ public class FabricEEEABPlatform implements EEEABPlatform {
 
     @Override
     public void registerWorldRender() {
-        WorldRenderEvents.AFTER_ENTITIES.register(context -> {
-            PoseStack poseStack = context.matrices();
-            poseStack.pushPose();
-            Vec3 camera = context.worldState().cameraRenderState.pos;
-            poseStack.translate(-camera.x, -camera.y, -camera.z);
-            ClientEventHandler.renderWorld(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false), poseStack, Minecraft.getInstance().renderBuffers().bufferSource());
-            poseStack.popPose();
-        });
+        // WorldRenderEvents was omitted from Fabric API 0.134.1+1.21.9 during Mojang's FrameGraph migration
     }
 
     @Override
