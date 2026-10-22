@@ -58,7 +58,7 @@ public abstract class ParticleRotation {
 
     public static class FaceCameraVertical extends ParticleRotation {
         public Quaternionf getRotation(Camera camera, Vec3 particlePos) {
-            Vec3 cameraPos = camera.position();
+            Vec3 cameraPos = camera.getPosition();
             Vec3 dir = particlePos.subtract(cameraPos).normalize();
             Vec3 dirHor = new Vec3(dir.x, 0, dir.z).normalize();
             return new Quaternionf().rotateY((float) Math.atan2(dirHor.x, dirHor.z) + (float) Math.PI);

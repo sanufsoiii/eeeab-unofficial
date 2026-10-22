@@ -11,7 +11,7 @@ import com.eeeab.eeeabsmobs.server.util.TranslateUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -23,7 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.ClipContext;
@@ -125,10 +125,7 @@ public class ItemDoomboltAxe extends Item implements ConfigurableItem, SlidingDo
 
     @Override
     public ItemUseAnimation getUseAnimation(ItemStack stack) {
-        // 1.21.11: the throw/charge arm pose (ArmPose.THROW_TRIDENT) is driven by ItemUseAnimation.TRIDENT.
-        // SPEAR has no case in AvatarRenderer.getArmPose, so it produced no pose — the old UseAnim.SPEAR maps
-        // to TRIDENT here (this is exactly what vanilla TridentItem returns).
-        return ItemUseAnimation.TRIDENT;
+        return ItemUseAnimation.SPEAR;
     }
 
     @Override
@@ -149,7 +146,7 @@ public class ItemDoomboltAxe extends Item implements ConfigurableItem, SlidingDo
         return ItemAttributeModifiers.builder()
                 .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, ModConfigHandler.COMMON.items.doomboltAxe.attackDamageValue - 1D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, ModConfigHandler.COMMON.items.doomboltAxe.attackSpeedValue - 4D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "doombolt_axe_entity_reach"), 1D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "doombolt_axe_entity_reach"), 1D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .build();
     }
 

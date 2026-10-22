@@ -3,7 +3,7 @@ package com.eeeab.eeeabsmobs.server.advancement;
 import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.server.init.FabricDeferredRegister;
 import net.minecraft.advancements.CriterionTrigger;
-import net.minecraft.advancements.criterion.KilledTrigger;
+import net.minecraft.advancements.critereon.KilledTrigger;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 /**

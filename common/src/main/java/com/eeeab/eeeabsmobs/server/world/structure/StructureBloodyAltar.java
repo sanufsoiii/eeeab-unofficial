@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -34,8 +34,8 @@ import java.util.Optional;
 
 public class StructureBloodyAltar extends Structure {
     public static final MapCodec<StructureBloodyAltar> CODEC = simpleCodec(StructureBloodyAltar::new);
-    private static final Identifier BLOODY_ALTAR = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "bloody_altar");
-    private static final Map<Identifier, BlockPos> OFFSET = new ImmutableMap.Builder<Identifier, BlockPos>()
+    private static final ResourceLocation BLOODY_ALTAR = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "bloody_altar");
+    private static final Map<ResourceLocation, BlockPos> OFFSET = new ImmutableMap.Builder<ResourceLocation, BlockPos>()
             .put(BLOODY_ALTAR, new BlockPos(0, 1, 0))
             .build();
 
@@ -116,7 +116,7 @@ public class StructureBloodyAltar extends Structure {
     }
 
     public static class Piece extends TemplateStructurePiece {
-        public Piece(StructureTemplateManager manager, Identifier location, Rotation rotation, BlockPos pos) {
+        public Piece(StructureTemplateManager manager, ResourceLocation location, Rotation rotation, BlockPos pos) {
             super(StructuresInit.BA.get(), 0, manager, location, location.toString(), makeSettings(rotation), makePosition(location, pos));
         }
 
@@ -128,7 +128,7 @@ public class StructureBloodyAltar extends Structure {
             this(context.structureTemplateManager(), tag);
         }
 
-        private static BlockPos makePosition(Identifier location, BlockPos blockPos) {
+        private static BlockPos makePosition(ResourceLocation location, BlockPos blockPos) {
             return blockPos.offset(StructureBloodyAltar.OFFSET.get(location));
         }
 

@@ -6,7 +6,7 @@ import com.eeeab.eeeabsmobs.server.ability.AbilityHandler;
 import com.eeeab.eeeabsmobs.server.ability.AbilityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -14,7 +14,7 @@ import java.util.*;
 
 //能力处理器
 public class AbilityCapability {
-    public static Identifier ID = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "ability_processor_cap");
+    public static ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "ability_processor_cap");
 
     public interface IAbilityCapability extends NbtCapability {
         void onActive(LivingEntity entity, AbilityType<?, ?> type);

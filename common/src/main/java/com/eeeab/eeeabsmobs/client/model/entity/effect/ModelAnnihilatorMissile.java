@@ -4,15 +4,15 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Unit;
+import net.minecraft.client.renderer.RenderType;
 
 public class ModelAnnihilatorMissile extends Model<Unit> {
     public final ModelPart root;
     public final ModelPart missile;
 
     public ModelAnnihilatorMissile(ModelPart root) {
-        super(root.getChild("root"), RenderTypes::entitySolid);
+        super(root.getChild("root"), RenderType::entitySolid);
         this.root = root.getChild("root");
         this.missile = this.root.getChild("missile");
     }

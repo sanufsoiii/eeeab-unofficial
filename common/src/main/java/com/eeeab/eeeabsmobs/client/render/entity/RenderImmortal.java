@@ -11,22 +11,21 @@ import com.eeeab.eeeabsmobs.client.render.layer.LayerOuter;
 import com.eeeab.eeeabsmobs.server.entity.mob.immortal.EntityImmortalBoss;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 public class RenderImmortal extends EMMobRenderer<EntityImmortalBoss, ModelImmortal> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal.png");
-    private static final Identifier GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_eyes.png");
-    private static final Identifier CORE_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_core.png");
-    private static final Identifier NETHERWORLD_KATANA = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal.png");
+    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_eyes.png");
+    private static final ResourceLocation CORE_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_core.png");
+    private static final ResourceLocation NETHERWORLD_KATANA = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png");
     private static final String[] RIGHT_FIST = new String[]{"upper", "body", "rightArm", "rightArmUnder", "rightFist"};
     private static final String[] LEFT_FIST = new String[]{"upper", "body", "leftArm", "leftArmUnder", "leftFist"};
 
@@ -36,7 +35,7 @@ public class RenderImmortal extends EMMobRenderer<EntityImmortalBoss, ModelImmor
                 (entity, partialTicks) -> entity.glowControlled.getAnimationFraction(partialTicks)) {
             @Override
             protected RenderType getRenderType(EntityImmortalBoss entity) {
-                return RenderTypes.entityTranslucentEmissive(this.location);
+                return RenderType.entityTranslucentEmissive(this.location);
             }
         });
         this.addLayer(new LayerOuter<EntityImmortalBoss, ModelImmortal>(this, CORE_LAYER, true, e -> !e.isInvisible()) {
@@ -134,7 +133,7 @@ public class RenderImmortal extends EMMobRenderer<EntityImmortalBoss, ModelImmor
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState immortal) {
+    public ResourceLocation getTextureLocation(EMRenderState immortal) {
         return TEXTURE;
     }
 

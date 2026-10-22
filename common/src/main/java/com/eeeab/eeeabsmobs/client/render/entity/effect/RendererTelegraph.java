@@ -6,15 +6,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 public class RendererTelegraph extends EntityRenderer<EntityTelegraph, EMRenderState> {
-    private static final Identifier WHITE_TEXTURE = Identifier.parse("minecraft:textures/block/white_concrete.png");
+    private static final ResourceLocation WHITE_TEXTURE = ResourceLocation.parse("minecraft:textures/block/white_concrete.png");
     private static final float GROUND_LEVEL = 0.05F;
     private static final float OUTER_BOTTOM_ALPHA = 0.4F;
     private static final float INNER_BOTTOM_ALPHA = 0.3F;
@@ -50,7 +49,7 @@ public class RendererTelegraph extends EntityRenderer<EntityTelegraph, EMRenderS
         EntityTelegraph entity = (EntityTelegraph) renderState.entity;
         float partialTick = renderState.partialTick;
         if (entity == null || entity.controlled == null) return;
-        RenderType renderType = RenderTypes.entityTranslucentEmissive(WHITE_TEXTURE);
+        RenderType renderType = RenderType.entityTranslucentEmissive(WHITE_TEXTURE);
         int packedLight = renderState.lightCoords;
         collector.submitCustomGeometry(poseStack, renderType, (pose, consumer) ->
             renderGeometry(pose, consumer, packedLight, entity, partialTick));

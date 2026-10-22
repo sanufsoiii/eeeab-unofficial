@@ -9,17 +9,16 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 public class RenderImmortalLaser extends EntityRenderer<EntityImmortalLaser, RenderImmortalLaser.ImmortalLaserRenderState> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_laser.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_laser.png");
     private static final float QUAD_RADIUS = 1F;
     private static final float BEAM_RADIUS = 0.6F;
 
@@ -57,7 +56,7 @@ public class RenderImmortalLaser extends EntityRenderer<EntityImmortalLaser, Ren
     @Override
     public void submit(ImmortalLaserRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
         if (!state.shouldRender) return;
-        RenderType renderType = RenderTypes.entityTranslucentEmissive(TEXTURE);
+        RenderType renderType = RenderType.entityTranslucentEmissive(TEXTURE);
         collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
             com.mojang.blaze3d.vertex.PoseStack ps = com.eeeab.eeeabsmobs.client.render.ModRenderType.seededStack(pose);
             renderStart(state, ps, builder, state.lightCoords);
@@ -103,7 +102,7 @@ public class RenderImmortalLaser extends EntityRenderer<EntityImmortalLaser, Ren
         matrixStackIn.mulPose(Axis.ZP.rotationDegrees(state.yaw - 90F));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(-state.pitch));
 
-        float cameraXRot = this.entityRenderDispatcher.camera.xRot();
+        float cameraXRot = this.entityRenderDispatcher.camera.getXRot();
 
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(cameraXRot + 90F));

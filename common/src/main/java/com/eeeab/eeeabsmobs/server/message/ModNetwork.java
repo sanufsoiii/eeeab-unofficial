@@ -8,7 +8,7 @@ import com.eeeab.eeeabsmobs.platform.PlatformServices;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
@@ -22,7 +22,7 @@ public final class ModNetwork {
 
     private record Registration<T extends CustomPacketPayload>(
             CustomPacketPayload.Type<T> type,
-            Identifier wireId,
+            ResourceLocation wireId,
             StreamCodec<?, T> codec,
             boolean clientbound
     ) {}
@@ -35,7 +35,7 @@ public final class ModNetwork {
             StreamCodec<?, T> codec,
             boolean clientbound,
             BiConsumer<T, NetworkManager.PacketContext> handler) {
-        Identifier wireId = type.id();
+        ResourceLocation wireId = type.id();
         REGISTRATIONS.put(payloadClass, new Registration<>(type, wireId, codec, clientbound));
         PlatformServices.get().getNetwork().register(payloadClass, type, wireId, codec, clientbound, handler);
     }

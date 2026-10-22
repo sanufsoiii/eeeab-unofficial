@@ -1,11 +1,11 @@
 package com.eeeab.eeeabsmobs.server.capability;
 
 import com.eeeab.eeeabsmobs.EEEABMobs;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.animal.golem.IronGolem;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class ThreatMemoryCapability {
-    public static final Identifier ID = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "threat_memory_cap");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "threat_memory_cap");
 
     public interface IThreatMemoryCapability {
         void recordDamage(LivingEntity self, LivingEntity attacker, float amount);

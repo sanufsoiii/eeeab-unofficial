@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -31,11 +31,11 @@ import java.util.Optional;
 
 public class StructureCoreforgeRuins extends Structure {
     public static final MapCodec<StructureCoreforgeRuins> CODEC = simpleCodec(StructureCoreforgeRuins::new);
-    private static final Identifier ANCIENT_TOMB_1 = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins1");
-    private static final Identifier ANCIENT_TOMB_2 = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins2");
-    private static final Identifier ANCIENT_TOMB_3 = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins3");
-    private static final Identifier ANCIENT_TOMB_4 = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins4");
-    private static final Map<Identifier, BlockPos> OFFSET = new ImmutableMap.Builder<Identifier, BlockPos>()
+    private static final ResourceLocation ANCIENT_TOMB_1 = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins1");
+    private static final ResourceLocation ANCIENT_TOMB_2 = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins2");
+    private static final ResourceLocation ANCIENT_TOMB_3 = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins3");
+    private static final ResourceLocation ANCIENT_TOMB_4 = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins4");
+    private static final Map<ResourceLocation, BlockPos> OFFSET = new ImmutableMap.Builder<ResourceLocation, BlockPos>()
             .put(ANCIENT_TOMB_1, new BlockPos(0, 1, 0))
             .put(ANCIENT_TOMB_2, new BlockPos(0, 1, 0))
             .put(ANCIENT_TOMB_3, new BlockPos(0, 1, 0))
@@ -92,7 +92,7 @@ public class StructureCoreforgeRuins extends Structure {
     }
 
     public static class Piece extends TemplateStructurePiece {
-        public Piece(StructureTemplateManager manager, Identifier location, Rotation rotation, BlockPos blockPos) {
+        public Piece(StructureTemplateManager manager, ResourceLocation location, Rotation rotation, BlockPos blockPos) {
             super(StructuresInit.GUL.get(), 0, manager, location, location.toString(), makeSettings(rotation), makePosition(location, blockPos));
         }
 
@@ -111,7 +111,7 @@ public class StructureCoreforgeRuins extends Structure {
             return (new StructurePlaceSettings()).setRotation(rotation).setMirror(Mirror.NONE).addProcessor(blockignoreprocessor).addProcessor(new ProtectedBlockProcessor(BlockTags.FEATURES_CANNOT_REPLACE)).setLiquidSettings(net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings.IGNORE_WATERLOGGING);
         }
 
-        private static BlockPos makePosition(Identifier location, BlockPos blockPos) {
+        private static BlockPos makePosition(ResourceLocation location, BlockPos blockPos) {
             return blockPos.offset(StructureCoreforgeRuins.OFFSET.get(location));
         }
 

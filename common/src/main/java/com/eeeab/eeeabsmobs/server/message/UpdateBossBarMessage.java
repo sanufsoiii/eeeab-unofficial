@@ -8,21 +8,21 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public record UpdateBossBarMessage(UUID bossID, @Nullable Identifier registryName,
+public record UpdateBossBarMessage(UUID bossID, @Nullable ResourceLocation registryName,
                                     boolean remove) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<UpdateBossBarMessage> TYPE =
-            new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "update_boss_bar"));
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "update_boss_bar"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, UpdateBossBarMessage> STREAM_CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC, UpdateBossBarMessage::bossID,
-            ByteBufCodecs.optional(Identifier.STREAM_CODEC), msg -> Optional.ofNullable(msg.registryName()),
+            ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), msg -> Optional.ofNullable(msg.registryName()),
             ByteBufCodecs.BOOL, UpdateBossBarMessage::remove,
             (bossID, registryName, remove) -> new UpdateBossBarMessage(bossID, registryName.orElse(null), remove)
     );

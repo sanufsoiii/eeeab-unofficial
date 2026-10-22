@@ -1,11 +1,11 @@
 package com.eeeab.eeeabsmobs.client.gui;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public class BossBarConfig {
-    private final Identifier baseTexture;
-    private final Identifier overlayTexture;
+    private final ResourceLocation baseTexture;
+    private final ResourceLocation overlayTexture;
     private final boolean hasOverlay;
     private final int baseHeight;
     private final int baseTextureHeight;
@@ -17,7 +17,7 @@ public class BossBarConfig {
     private final int verticalIncrement;
     private final ChatFormatting textColor;
 
-    public BossBarConfig(Identifier baseTexture, Identifier overlayTexture, int baseHeight, int baseTextureHeight, int baseOffsetY, int overlayOffsetX, int overlayOffsetY, int overlayWidth, int overlayHeight, int verticalIncrement, ChatFormatting textColor) {
+    public BossBarConfig(ResourceLocation baseTexture, ResourceLocation overlayTexture, int baseHeight, int baseTextureHeight, int baseOffsetY, int overlayOffsetX, int overlayOffsetY, int overlayWidth, int overlayHeight, int verticalIncrement, ChatFormatting textColor) {
         this.baseTexture = baseTexture;
         this.overlayTexture = overlayTexture;
         this.hasOverlay = overlayTexture != null;
@@ -32,11 +32,11 @@ public class BossBarConfig {
         this.textColor = textColor;
     }
 
-    public Identifier getBaseTexture() {
+    public ResourceLocation getBaseTexture() {
         return baseTexture;
     }
 
-    public Identifier getOverlayTexture() {
+    public ResourceLocation getOverlayTexture() {
         return overlayTexture;
     }
 

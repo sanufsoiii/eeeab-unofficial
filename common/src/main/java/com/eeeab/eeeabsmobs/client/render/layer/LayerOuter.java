@@ -4,14 +4,14 @@ import com.eeeab.animate.client.render.EMRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.renderer.RenderType;
 /**
  * 生物模型外图层
  *
@@ -19,19 +19,19 @@ import net.minecraft.world.entity.LivingEntity;
  * @param <M> 实体模型
  */
 public class LayerOuter<T extends LivingEntity, M extends EntityModel<? super EMRenderState>> extends RenderLayer<EMRenderState, M> {
-    protected final Identifier resourceLocation;
+    protected final ResourceLocation resourceLocation;
     protected final OuterPredicate<T> predicate;
     protected final boolean overlayTexture;
 
-    public LayerOuter(RenderLayerParent<EMRenderState, M> parent, Identifier resourceLocation) {
+    public LayerOuter(RenderLayerParent<EMRenderState, M> parent, ResourceLocation resourceLocation) {
         this(parent, resourceLocation, true, t -> true);
     }
 
-    public LayerOuter(RenderLayerParent<EMRenderState, M> parent, Identifier resourceLocation, boolean overlayTexture) {
+    public LayerOuter(RenderLayerParent<EMRenderState, M> parent, ResourceLocation resourceLocation, boolean overlayTexture) {
         this(parent, resourceLocation, overlayTexture, t -> true);
     }
 
-    public LayerOuter(RenderLayerParent<EMRenderState, M> parent, Identifier resourceLocation, boolean overlayTexture, OuterPredicate<T> predicate) {
+    public LayerOuter(RenderLayerParent<EMRenderState, M> parent, ResourceLocation resourceLocation, boolean overlayTexture, OuterPredicate<T> predicate) {
         super(parent);
         this.resourceLocation = resourceLocation;
         this.overlayTexture = overlayTexture;
@@ -62,8 +62,8 @@ public class LayerOuter<T extends LivingEntity, M extends EntityModel<? super EM
      * Render type for the outer layer. Default is translucent (matches the original mod). Subclasses may
      * override — e.g. a lit, depth-writing cutout — to stop bright inner parts bleeding through the body.
      */
-    protected net.minecraft.client.renderer.rendertype.RenderType getRenderType() {
-        return RenderTypes.entityTranslucent(resourceLocation);
+    protected net.minecraft.client.renderer.RenderType getRenderType() {
+        return RenderType.entityTranslucent(resourceLocation);
     }
 
     /**

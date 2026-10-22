@@ -3,12 +3,12 @@ package com.eeeab.eeeabsmobs.server.capability;
 import com.eeeab.eeeabsmobs.EEEABMobs;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class StunCapability {
-    public static Identifier ID = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "stun_processor_cap");
+    public static ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "stun_processor_cap");
 
     public interface IStunCapability extends GeneralCapability, NbtCapability {
     }

@@ -9,12 +9,12 @@ import com.eeeab.eeeabsmobs.client.render.layer.LayerOuter;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 public class RenderCorpse extends EMMobRenderer<EntityCorpse, ModelCorpse<EntityCorpse>> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse.png");
-    private static final Identifier GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_eyes.png");
-    private static final Identifier FRENZY_GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_frenzy_eyes.png");
-    private static final Identifier LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_plains.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse.png");
+    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_eyes.png");
+    private static final ResourceLocation FRENZY_GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_frenzy_eyes.png");
+    private static final ResourceLocation LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_plains.png");
 
     public RenderCorpse(EntityRendererProvider.Context context) {
         super(context, new ModelCorpse<>(context.bakeLayer(ModModelLayer.CORPSE)), 0.3F);
@@ -24,7 +24,7 @@ public class RenderCorpse extends EMMobRenderer<EntityCorpse, ModelCorpse<Entity
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState corpse) {
+    public ResourceLocation getTextureLocation(EMRenderState corpse) {
         return TEXTURE;
     }
 }

@@ -6,10 +6,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.renderer.RenderType;
 public class ModItemStackRender {
     private static boolean init;
     private static boolean THE_NETHERWORLD_KATANA_modelBaked;
@@ -18,9 +18,9 @@ public class ModItemStackRender {
     private static com.eeeab.eeeabsmobs.client.model.item.ModelBusterGauntlet BUSTER_GAUNTLET;
     private static com.eeeab.eeeabsmobs.client.model.item.ModelGuardianBattleaxe THE_GUARDIAN_BATTLEAXE;
     private static com.eeeab.eeeabsmobs.client.model.item.ModelTheNetherworldKatana THE_NETHERWORLD_KATANA;
-    private static final Identifier BUSTER_GAUNTLET_TEX = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/item/buster_gauntlet.png");
-    private static final Identifier THE_GUARDIAN_BATTLEAXE_TEX = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian.png");
-    private static final Identifier THE_NETHERWORLD_KATANA_TEX = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png");
+    private static final ResourceLocation BUSTER_GAUNTLET_TEX = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/item/buster_gauntlet.png");
+    private static final ResourceLocation THE_GUARDIAN_BATTLEAXE_TEX = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian.png");
+    private static final ResourceLocation THE_NETHERWORLD_KATANA_TEX = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png");
 
     public ModItemStackRender() {
     }
@@ -51,14 +51,14 @@ public class ModItemStackRender {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.5F, 0.5F);
             matrixStackIn.scale(0.5F, -0.5F, -0.5F);
-            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferIn, RenderTypes.armorCutoutNoCull(THE_NETHERWORLD_KATANA_TEX), true, itemStackIn.hasFoil());
+            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(THE_NETHERWORLD_KATANA_TEX), true, itemStackIn.hasFoil());
             THE_NETHERWORLD_KATANA.renderToBuffer(matrixStackIn, vertexConsumer, combinedLightIn, combinedOverlayIn, -1);
             matrixStackIn.popPose();
         } else if (itemStackIn.is(com.eeeab.eeeabsmobs.server.init.ItemInit.GUARDIAN_AXE.get())) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.5F, 0.5F);
             matrixStackIn.scale(0.5F, -0.5F, -0.5F);
-            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferIn, RenderTypes.armorCutoutNoCull(THE_GUARDIAN_BATTLEAXE_TEX), true, itemStackIn.hasFoil());
+            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(THE_GUARDIAN_BATTLEAXE_TEX), true, itemStackIn.hasFoil());
             THE_GUARDIAN_BATTLEAXE.renderToBuffer(matrixStackIn, vertexConsumer, combinedLightIn, combinedOverlayIn, -1);
             matrixStackIn.popPose();
         } else if (itemStackIn.is(com.eeeab.eeeabsmobs.server.init.ItemInit.BUSTER_GAUNTLET.get())) {
@@ -67,7 +67,7 @@ public class ModItemStackRender {
             matrixStackIn.translate(0.5F, 1F, 0.5F);
             matrixStackIn.scale(-1F, -1F, 1F);
             BUSTER_GAUNTLET.setupAnim(itemStackIn, ageInTicks);
-            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferIn, RenderTypes.armorCutoutNoCull(BUSTER_GAUNTLET_TEX), true, itemStackIn.hasFoil());
+            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(BUSTER_GAUNTLET_TEX), true, itemStackIn.hasFoil());
             BUSTER_GAUNTLET.renderToBuffer(matrixStackIn, vertexConsumer, combinedLightIn, combinedOverlayIn, -1);
             matrixStackIn.popPose();
         }

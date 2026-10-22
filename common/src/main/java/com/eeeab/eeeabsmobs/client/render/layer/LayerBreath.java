@@ -5,14 +5,14 @@ import com.eeeab.eeeabsmobs.server.entity.mob.GlowEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.renderer.RenderType;
 /**
  * 生物呼吸发光图层
  *
@@ -23,15 +23,15 @@ import net.minecraft.world.entity.LivingEntity;
 public class LayerBreath<T extends LivingEntity & GlowEntity, M extends EntityModel<? super EMRenderState>> extends LayerGlow<T, M> {
     private final float speed;
 
-    public LayerBreath(RenderLayerParent<EMRenderState, M> renderLayerParent, Identifier location, float brightness, float speed) {
+    public LayerBreath(RenderLayerParent<EMRenderState, M> renderLayerParent, ResourceLocation location, float brightness, float speed) {
         this(renderLayerParent, location, brightness, GlowEntity::isGlow, speed);
     }
 
-    public LayerBreath(RenderLayerParent<EMRenderState, M> renderLayerParent, Identifier location, float brightness, ConditionPredicate<T> predicate, float speed) {
+    public LayerBreath(RenderLayerParent<EMRenderState, M> renderLayerParent, ResourceLocation location, float brightness, ConditionPredicate<T> predicate, float speed) {
         this(renderLayerParent, location, predicate, (entity, partialTicks) -> brightness, speed);
     }
 
-    public LayerBreath(RenderLayerParent<EMRenderState, M> renderLayerParent, Identifier location, ConditionPredicate<T> predicate, GlowAmountSupplier<T> supplier, float speed) {
+    public LayerBreath(RenderLayerParent<EMRenderState, M> renderLayerParent, ResourceLocation location, ConditionPredicate<T> predicate, GlowAmountSupplier<T> supplier, float speed) {
         super(renderLayerParent, location, predicate, supplier);
         this.speed = speed;
     }
@@ -43,7 +43,7 @@ public class LayerBreath<T extends LivingEntity & GlowEntity, M extends EntityMo
         if (entity != null && predicate.test(entity)) {
             float alpha = Mth.clamp((Mth.cos(state.ageInTicks * speed) * 2.0F) - 1.0F, 0, supplier.get(entity, state.partialTick));
             int color = ARGB.color(255, ARGB.as8BitChannel(alpha), ARGB.as8BitChannel(alpha), ARGB.as8BitChannel(alpha));
-            collector.submitModel(this.getParentModel(), state, stack, RenderTypes.eyes(this.location), packedLightIn, OverlayTexture.NO_OVERLAY, color, null, 0, null);
+            collector.submitModel(this.getParentModel(), state, stack, RenderType.eyes(this.location), packedLightIn, OverlayTexture.NO_OVERLAY, color, null, 0, null);
         }
     }
 }

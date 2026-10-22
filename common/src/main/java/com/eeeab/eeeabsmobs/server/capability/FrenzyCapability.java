@@ -5,7 +5,7 @@ import com.eeeab.eeeabsmobs.server.init.EffectInit;
 import com.eeeab.eeeabsmobs.server.init.ItemInit;
 import com.eeeab.eeeabsmobs.server.integration.curios.ICuriosApi;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 
 public class FrenzyCapability {
-    public static final Identifier ID = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "frenzy_cap");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "frenzy_cap");
 
     public interface IFrenzyCapability extends GeneralCapability, NbtCapability {
     }

@@ -4,15 +4,15 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Unit;
+import net.minecraft.client.renderer.RenderType;
 
 public class ModelImmortalShuriken extends Model<Unit> {
     public final ModelPart root;
     public final ModelPart bladeGroup;
 
     public ModelImmortalShuriken(ModelPart root) {
-        super(root.getChild("root"), RenderTypes::entitySolid);
+        super(root.getChild("root"), RenderType::entitySolid);
         this.root = root.getChild("root");
         this.bladeGroup = this.root.getChild("bladeGroup");
     }

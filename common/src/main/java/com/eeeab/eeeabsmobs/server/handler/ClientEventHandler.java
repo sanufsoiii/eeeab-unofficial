@@ -12,10 +12,10 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public class ClientEventHandler {
-    private static final Identifier FRENZY_OUTLINE_LOCATION = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/misc/frenzy_outline.png");
+    private static final ResourceLocation FRENZY_OUTLINE_LOCATION = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/misc/frenzy_outline.png");
 
     public static void register() {
         ClientGuiEvent.RENDER_HUD.register((guiGraphics, deltaTracker) -> {

@@ -13,7 +13,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import org.apache.commons.lang3.ArrayUtils;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.regex.Pattern;
 
 public class AnimationControllerScreen extends AbstractContainerScreen<AnimationControllerMenu> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/animation_controller.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/animation_controller.png");
     private static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+");
     private final Entity animationEntity;
     private final Component chatComponent;

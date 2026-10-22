@@ -13,7 +13,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import com.eeeab.eeeabsmobs.server.message.ModNetwork;
@@ -23,13 +23,13 @@ public class CombatHintHudCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
         dispatcher.register(
                 Commands.literal("popup")
-                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .requires(source -> source.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .then(Commands.argument("entityType", ResourceArgument.resource(buildContext, Registries.ENTITY_TYPE))
                                 .suggests((SuggestionProvider<CommandSourceStack>) (SuggestionProvider<?>) SuggestionProviders.SUMMONABLE_ENTITIES)
                                 .executes(context -> {
                                     ServerPlayer player = context.getSource().getPlayerOrException();
                                     Holder.Reference<EntityType<?>> entityTypeHolder = ResourceArgument.getSummonableEntityType(context, "entityType");
-                                    Identifier entityType = entityTypeHolder.key().identifier();
+                                    ResourceLocation entityType = entityTypeHolder.key().location();
                                     sendHint(player, entityType, 0);
                                     context.getSource().sendSuccess(() -> Component.literal("success"), false);
                                     return 1;
@@ -38,7 +38,7 @@ public class CombatHintHudCommand {
                                         .executes(context -> {
                                             ServerPlayer player = context.getSource().getPlayerOrException();
                                             Holder.Reference<EntityType<?>> entityTypeHolder = ResourceArgument.getSummonableEntityType(context, "entityType");
-                                            Identifier entityType = entityTypeHolder.key().identifier();
+                                            ResourceLocation entityType = entityTypeHolder.key().location();
                                             int level = IntegerArgumentType.getInteger(context, "level");
                                             sendHint(player, entityType, level);
                                             context.getSource().sendSuccess(() -> Component.literal("success"), false);
@@ -49,7 +49,7 @@ public class CombatHintHudCommand {
         );
     }
 
-    private static void sendHint(ServerPlayer player, Identifier location, int level) {
+    private static void sendHint(ServerPlayer player, ResourceLocation location, int level) {
         ModNetwork.sendToPlayer(player, new PopupNotificationMessage(location, level));
     }
 }

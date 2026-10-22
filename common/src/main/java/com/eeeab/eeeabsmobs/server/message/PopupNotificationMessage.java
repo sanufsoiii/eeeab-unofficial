@@ -6,14 +6,14 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
-public record PopupNotificationMessage(Identifier id, int level) implements CustomPacketPayload {
+public record PopupNotificationMessage(ResourceLocation id, int level) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<PopupNotificationMessage> TYPE =
-            new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "popup_notification"));
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "popup_notification"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PopupNotificationMessage> STREAM_CODEC = StreamCodec.composite(
-            Identifier.STREAM_CODEC, PopupNotificationMessage::id,
+            ResourceLocation.STREAM_CODEC, PopupNotificationMessage::id,
             ByteBufCodecs.VAR_INT, PopupNotificationMessage::level,
             PopupNotificationMessage::new
     );

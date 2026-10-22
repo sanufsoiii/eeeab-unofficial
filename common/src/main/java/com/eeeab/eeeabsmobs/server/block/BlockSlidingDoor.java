@@ -8,7 +8,7 @@ import com.eeeab.eeeabsmobs.server.util.TranslateUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
@@ -295,7 +295,7 @@ public class BlockSlidingDoor extends BaseEntityBlock {
 
     private static void doSendPopupToPlayer(Level world, Player player, int level) {
         if (world.isClientSide() && !player.isCreative() && !player.isSpectator()) {
-            Identifier id = BlockInit.SLIDING_DOOR.getId();
+            ResourceLocation id = BlockInit.SLIDING_DOOR.getId();
             player.displayClientMessage(TranslateUtils.simpleText(TranslateUtils.BLOCK_PREFIX, id.getPath() + "_level" + level, ChatFormatting.WHITE), true);
         }
     }

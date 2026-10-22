@@ -10,9 +10,9 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 public class RenderAlienPortal extends FlatTextureRenderer<EntityAlienPortal, RenderAlienPortal.AlienPortalRenderState> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/alien_portal.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/alien_portal.png");
     private static final float TEXTURE_WIDTH = 320;
     private static final float TEXTURE_HEIGHT = 64;
     private static final float SIZE = 1.9F;

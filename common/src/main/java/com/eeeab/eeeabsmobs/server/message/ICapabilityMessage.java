@@ -7,14 +7,14 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 public record ICapabilityMessage(int entityID, int capIndex, boolean flag) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<ICapabilityMessage> TYPE =
-            new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "capability_state"));
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "capability_state"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ICapabilityMessage> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, ICapabilityMessage::entityID,

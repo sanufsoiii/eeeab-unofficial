@@ -7,19 +7,18 @@ import com.eeeab.eeeabsmobs.client.render.layer.LayerGlow;
 import com.eeeab.eeeabsmobs.server.entity.mob.relicron.EntityNamelessGuardian;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 public class RenderNamelessGuardian extends EMMobRenderer<EntityNamelessGuardian, ModelNamelessGuardian> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian.png");
-    private static final Identifier SHOOT_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian_shoot.png");
-    private static final Identifier GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian_glow.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian.png");
+    private static final ResourceLocation SHOOT_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian_shoot.png");
+    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian_glow.png");
 
     public RenderNamelessGuardian(EntityRendererProvider.Context context) {
         super(context, new ModelNamelessGuardian(context.bakeLayer(ModModelLayer.NAMELESS_GUARDIAN)), 1.5F);
@@ -29,7 +28,7 @@ public class RenderNamelessGuardian extends EMMobRenderer<EntityNamelessGuardian
                 EntityNamelessGuardian entity = (EntityNamelessGuardian) state.entity;
                 float coefficient = entity.getExplodeCoefficient(state.partialTick);
                 if (coefficient > 0) {
-                    collector.submitModel(this.getParentModel(), state, stack, RenderTypes.entityTranslucentEmissive(TEXTURE), packedLightIn, OverlayTexture.pack(OverlayTexture.u(Mth.clamp(coefficient, 0F, 1F)), OverlayTexture.v(false)), net.minecraft.util.ARGB.color(net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient)), null, 0, null);
+                    collector.submitModel(this.getParentModel(), state, stack, RenderType.entityTranslucentEmissive(TEXTURE), packedLightIn, OverlayTexture.pack(OverlayTexture.u(Mth.clamp(coefficient, 0F, 1F)), OverlayTexture.v(false)), net.minecraft.util.ARGB.color(net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient)), null, 0, null);
                 }
             }
         });
@@ -63,7 +62,7 @@ public class RenderNamelessGuardian extends EMMobRenderer<EntityNamelessGuardian
 
 
     @Override
-    public Identifier getTextureLocation(EMRenderState entity) {
+    public ResourceLocation getTextureLocation(EMRenderState entity) {
         return TEXTURE;
     }
 }

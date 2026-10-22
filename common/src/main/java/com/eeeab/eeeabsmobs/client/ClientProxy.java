@@ -19,7 +19,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
@@ -29,7 +29,7 @@ import java.util.UUID;
 
 public class ClientProxy extends ServerProxy {
     public static final Int2ObjectMap<AbstractTickableSoundInstance> ENTITY_SOUND_INSTANCE_MAP = new Int2ObjectOpenHashMap<>();
-    public static final Map<UUID, Identifier> BOSS_BAR_REGISTRY_NAMES = new HashMap<>();
+    public static final Map<UUID, ResourceLocation> BOSS_BAR_REGISTRY_NAMES = new HashMap<>();
     public static final LightningManager LIGHTNING_RENDER = new LightningManager();
 
     public static void init() {

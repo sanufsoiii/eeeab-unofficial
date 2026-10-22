@@ -7,7 +7,7 @@ import com.eeeab.eeeabsmobs.server.handler.ModConfigHandler;
 import com.eeeab.eeeabsmobs.server.init.SoundInit;
 import com.eeeab.eeeabsmobs.server.util.TranslateUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -42,7 +42,7 @@ public class ItemBusterGauntlet extends Item implements ConfigurableItem {
 
     private static ItemAttributeModifiers buildOffHandModifiers() {
         return ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_SPEED, new AttributeModifier(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "buster_gauntlet_offhand_attack_speed"), 0.1D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.OFFHAND)
+                .add(Attributes.ATTACK_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "buster_gauntlet_offhand_attack_speed"), 0.1D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.OFFHAND)
                 .build();
     }
 

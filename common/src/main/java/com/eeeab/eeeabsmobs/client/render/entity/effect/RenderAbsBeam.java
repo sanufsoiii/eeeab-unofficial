@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -34,7 +34,7 @@ public abstract class RenderAbsBeam<T extends EntityAbsBeam, S extends EntityRen
         return false;
     }
 
-    public abstract Identifier getTextureLocation(T entity);
+    public abstract ResourceLocation getTextureLocation(T entity);
 
     @Override
     public S createRenderState() {
@@ -135,7 +135,7 @@ public abstract class RenderAbsBeam<T extends EntityAbsBeam, S extends EntityRen
         matrixStackIn.mulPose(Axis.ZP.rotationDegrees(yaw - 90F));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(-pitch));
 
-        float cameraXRot = this.entityRenderDispatcher.camera.xRot();
+        float cameraXRot = this.entityRenderDispatcher.camera.getXRot();
 
         //绘制一根射线
         matrixStackIn.pushPose();
@@ -205,6 +205,6 @@ public abstract class RenderAbsBeam<T extends EntityAbsBeam, S extends EntityRen
         public int frame;
         public boolean accumulating;
         public Direction blockSide;
-        public Identifier texture;
+        public ResourceLocation texture;
     }
 }

@@ -28,7 +28,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -61,7 +61,7 @@ public class FabricEEEABPlatform implements EEEABPlatform {
     private static final AttachmentType<ThreatMemoryCapability.IThreatMemoryCapability> THREAT_MEMORY_CAPABILITY =
             AttachmentRegistry.<ThreatMemoryCapability.IThreatMemoryCapability>builder()
                     .initializer(ThreatMemoryCapability.IThreatMemoryCapabilityImpl::new)
-                    .buildAndRegister(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "threat_memory"));
+                    .buildAndRegister(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "threat_memory"));
 
     private static final AttachmentType<?>[] ATTACHMENTS = new AttachmentType<?>[]{
             STUN_CAPABILITY,
@@ -82,7 +82,7 @@ public class FabricEEEABPlatform implements EEEABPlatform {
         return AttachmentRegistry.<T>builder()
                 .initializer(initializer)
                 .persistent(codec)
-                .buildAndRegister(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, name));
+                .buildAndRegister(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name));
     }
 
     private static AttachmentType<AbilityCapability.IAbilityCapability> registerAbilityAttachment() {
@@ -94,7 +94,7 @@ public class FabricEEEABPlatform implements EEEABPlatform {
         return AttachmentRegistry.<AbilityCapability.IAbilityCapability>builder()
                 .initializer(AbilityCapability.AbilityCapabilityImp::new)
                 .persistent(codec)
-                .buildAndRegister(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "ability"));
+                .buildAndRegister(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "ability"));
     }
 
     @SuppressWarnings("unchecked")
@@ -191,7 +191,7 @@ public class FabricEEEABPlatform implements EEEABPlatform {
     @Override
     public void registerClientReloadListener() {
         ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(
-                Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "boss_bar_textures"), new BossBarTexReloadListener());
+                ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "boss_bar_textures"), new BossBarTexReloadListener());
     }
 
     @Override

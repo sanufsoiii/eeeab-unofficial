@@ -5,7 +5,7 @@ import com.eeeab.animate.server.animation.AnimationNotification;
 import com.eeeab.animate.server.event.AnimationEvent;
 import com.eeeab.eeeabsmobs.server.entity.EEEABMobLibrary;
 import com.eeeab.eeeabsmobs.server.handler.ModConfigHandler;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
@@ -37,7 +37,7 @@ public final class CombatTriggerEvent {
     //    if (!ModConfigHandler.COMMON.others.enableCombatPrompts.get()) return;
     //    if (event.getLevel().isClientSide() || event.loadedFromDisk()) return;
     //    if (event.getEntity() instanceof LivingEntity entity) {
-    //        Identifier entityId = EntityType.getKey(entity.getType());
+    //        ResourceLocation entityId = EntityType.getKey(entity.getType());
     //        if (CombatTriggerHandler.canTriggerEntityType(entityId)) {
     //            List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(
     //                    ServerPlayer.class,
@@ -56,7 +56,7 @@ public final class CombatTriggerEvent {
         EEEABMobLibrary entity = event.getEntity();
         if (entity.level().isClientSide()) return;
         if (!(event.getAnimation() instanceof AnimationNotification)) return;
-        Identifier entityId = EntityType.getKey(entity.getType());
+        ResourceLocation entityId = EntityType.getKey(entity.getType());
         if (CombatTriggerHandler.canTriggerEntityType(entityId)) {
             double range = entity.getAttributeValue(Attributes.FOLLOW_RANGE);
             List<ServerPlayer> nearbyPlayers = entity.level().getEntitiesOfClass(

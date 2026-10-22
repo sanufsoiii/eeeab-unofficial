@@ -1,7 +1,7 @@
 package com.eeeab.eeeabsmobs.server.init;
 
 import com.eeeab.eeeabsmobs.EEEABMobs;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.core.registries.BuiltInRegistries;
 
@@ -169,6 +169,6 @@ public class SoundInit {
     }
 
     public static FabricDeferredRegister.Entry<SoundEvent> create(String name) {
-        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, name)));
+        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name)));
     }
 }

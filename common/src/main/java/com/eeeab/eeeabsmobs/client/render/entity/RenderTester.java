@@ -9,10 +9,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 public class RenderTester extends EMMobRenderer<EntityTester, ModelTester> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/tester.png");
-    private static final Identifier LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/tester_plains.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/tester.png");
+    private static final ResourceLocation LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/tester_plains.png");
 
     public RenderTester(EntityRendererProvider.Context context) {
         super(context, new ModelTester(context.bakeLayer(ModModelLayer.TESTER)), 0.3F);
@@ -20,7 +20,7 @@ public class RenderTester extends EMMobRenderer<EntityTester, ModelTester> {
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState entity) {
+    public ResourceLocation getTextureLocation(EMRenderState entity) {
         return TEXTURE;
     }
 

@@ -4,12 +4,11 @@ import com.eeeab.animate.client.render.EMRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import com.eeeab.eeeabsmobs.server.entity.IVariantHolder;
 
@@ -23,9 +22,9 @@ import java.util.Map;
  * @param <M> 实体模型
  */
 public class LayerVariantHolder<V, T extends Entity & IVariantHolder<V>, M extends EntityModel<? super EMRenderState>> extends RenderLayer<EMRenderState, M> {
-    private final Map<V, Identifier> locationMap;
+    private final Map<V, ResourceLocation> locationMap;
 
-    public LayerVariantHolder(RenderLayerParent<EMRenderState, M> renderer, Map<V, Identifier> locationMap) {
+    public LayerVariantHolder(RenderLayerParent<EMRenderState, M> renderer, Map<V, ResourceLocation> locationMap) {
         super(renderer);
         this.locationMap = locationMap;
     }
@@ -35,7 +34,7 @@ public class LayerVariantHolder<V, T extends Entity & IVariantHolder<V>, M exten
     public void submit(PoseStack stack, SubmitNodeCollector collector, int packedLightIn, EMRenderState state, float yRot, float xRot) {
         T entity = (T) state.entity;
         if (entity != null && !entity.isInvisible()) {
-            Identifier resourcelocation = locationMap.get(entity.getVariant());
+            ResourceLocation resourcelocation = locationMap.get(entity.getVariant());
             if (resourcelocation == null) {
                 return;
             }
@@ -43,7 +42,7 @@ public class LayerVariantHolder<V, T extends Entity & IVariantHolder<V>, M exten
         }
     }
 
-    protected RenderType getRenderType(Identifier location) {
-        return RenderTypes.entityTranslucent(location);
+    protected RenderType getRenderType(ResourceLocation location) {
+        return RenderType.entityTranslucent(location);
     }
 }

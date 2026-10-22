@@ -6,7 +6,7 @@ import com.eeeab.eeeabsmobs.client.gui.BossBarHandler;
 import com.eeeab.eeeabsmobs.client.gui.BossBarRegistry;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.BossHealthOverlay;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.BossEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +27,7 @@ public abstract class BossHealthOverlayMixin {
 
     @Inject(method = "drawBar(Lnet/minecraft/client/gui/GuiGraphics;IILnet/minecraft/world/BossEvent;)V", at = @At("HEAD"), cancellable = true)
     private void eeeabmobs$drawBar(GuiGraphics guiGraphics, int x, int y, BossEvent bossEvent, CallbackInfo ci) {
-        Identifier entityId = ClientProxy.BOSS_BAR_REGISTRY_NAMES.get(bossEvent.getId());
+        ResourceLocation entityId = ClientProxy.BOSS_BAR_REGISTRY_NAMES.get(bossEvent.getId());
         if (entityId != null) {
             BossBarConfig config = BossBarRegistry.getBarForEntity(entityId);
             BossBarHandler.renderBossBar(guiGraphics, x, y, bossEvent, config);

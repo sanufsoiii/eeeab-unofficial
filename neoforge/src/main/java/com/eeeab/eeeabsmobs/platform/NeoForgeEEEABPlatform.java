@@ -13,7 +13,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -200,7 +200,7 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
     public void registerClientReloadListener() {
         if (MOD_BUS != null) {
             MOD_BUS.addListener((AddClientReloadListenersEvent event) ->
-                    event.addListener(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "boss_bar_textures"), new BossBarTexReloadListener())
+                    event.addListener(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "boss_bar_textures"), new BossBarTexReloadListener())
             );
         }
     }

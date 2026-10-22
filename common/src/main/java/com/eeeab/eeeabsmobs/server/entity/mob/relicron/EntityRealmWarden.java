@@ -93,7 +93,7 @@ import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import java.util.function.IntFunction;
 
 public class EntityRealmWarden extends AbstractRelicron implements CrackinessEntity<EntityRealmWarden> {
@@ -142,7 +142,7 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
     private static final EntityDataAccessor<Integer> DATA_LEAP_HOLD = SynchedEntityData.defineId(EntityRealmWarden.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_SEC_PHASE = SynchedEntityData.defineId(EntityRealmWarden.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> DATA_REST_POS = SynchedEntityData.defineId(EntityRealmWarden.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
-    private static final Identifier SEC_PHASE_ATTACK_ID = Identifier.fromNamespaceAndPath("eeeabsmobs", "realm_warden_second_phase_attack");
+    private static final ResourceLocation SEC_PHASE_ATTACK_ID = ResourceLocation.fromNamespaceAndPath("eeeabsmobs", "realm_warden_second_phase_attack");
     private static final Vector4f[] COLORS = new Vector4f[]{new Vector4f(1F, 0.88F, 0.48F, 1F), new Vector4f(0.52F, 0.94F, 1F, 1F)};
     private static final float[][] BLOCK_OFFSETS = {{-0.5F, -0.5F}, {-0.5F, 0.5F}, {0.5F, 0.5F}, {0.5F, -0.5F}};
     private static final float[][] SHORT_BLOCK_OFFSETS = {{-0.5F, 0.5F}};

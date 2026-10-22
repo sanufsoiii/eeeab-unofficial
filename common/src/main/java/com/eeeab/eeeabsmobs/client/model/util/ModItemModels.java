@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 /**
@@ -38,7 +38,7 @@ public class ModItemModels {
         String item = BuiltInRegistries.ITEM.getKey(itemStack.getItem()).getPath();
         boolean useHandModel = transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
                 || transformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || transformType == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
-        Identifier modelId = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, useHandModel ? "item/" + item + "_in_hand" : item);
+        ResourceLocation modelId = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, useHandModel ? "item/" + item + "_in_hand" : item);
 
         ItemModel itemModel = Minecraft.getInstance().getModelManager().getItemModel(modelId);
         ItemStackRenderState state = new ItemStackRenderState();

@@ -2,7 +2,7 @@ package com.eeeab.eeeabsmobs.server.item.util;
 
 import com.eeeab.eeeabsmobs.EEEABMobs;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
@@ -26,10 +26,10 @@ public class ModArmorMaterial {
     public static final int GHOST_WARRIOR_DURABILITY_MULTIPLIER = 180;
 
     public static final ResourceKey<EquipmentAsset> GHOST_WARRIOR_ASSET =
-            ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "ghost_warrior"));
+            ResourceKey.create(EquipmentAssets.ROOT_ID, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "ghost_warrior"));
 
     private static final TagKey<Item> GHOST_STEEL_REPAIR =
-            TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "repairs_ghost_steel"));
+            TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "repairs_ghost_steel"));
 
     //net.minecraft.Util已移除，Util.make替换为直接构造EnumMap
     private static EnumMap<ArmorType, Integer> buildDefenseMap() {

@@ -14,18 +14,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import java.util.stream.Collectors;
 public class RenderRelicAnnihilator extends EMMobRenderer<EntityRelicAnnihilator, ModelRelicAnnihilator> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator.png");
-    private static final Identifier EYE_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_eye.png");
-    private static final Identifier GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_glow.png");
-    private static final Identifier FLAME_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_exhaust.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator.png");
+    private static final ResourceLocation EYE_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_eye.png");
+    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_glow.png");
+    private static final ResourceLocation FLAME_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_exhaust.png");
     private static final String[] MUZZLE = new String[]{"upper", "leftArm", "leftHand", "muzzle"};
     private final EntityAfterImageHelper<EntityRelicAnnihilator> afterImageHelper;
 
@@ -50,7 +50,7 @@ public class RenderRelicAnnihilator extends EMMobRenderer<EntityRelicAnnihilator
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState corpse) {
+    public ResourceLocation getTextureLocation(EMRenderState corpse) {
         return TEXTURE;
     }
 

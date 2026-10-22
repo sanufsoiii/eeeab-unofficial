@@ -10,7 +10,7 @@ import com.eeeab.eeeabsmobs.server.entity.mob.corpse.EntityCorpseVillager;
 import com.eeeab.eeeabsmobs.server.entity.mob.corpse.EntityCorpseWarlock;
 import com.eeeab.eeeabsmobs.server.entity.mob.immortal.*;
 import com.eeeab.eeeabsmobs.server.entity.mob.relicron.*;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import dev.architectury.registry.level.entity.EntityAttributeRegistry;
@@ -30,25 +30,25 @@ public class EntityInit {
             ENTITIES.register("corpse",
                     () -> EntityType.Builder.<EntityCorpse>of(EntityCorpse::new, MobCategory.MONSTER)
                             .sized(0.6f, 1.95f).clientTrackingRange(8)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityCorpseVillager>> CORPSE_VILLAGER =
             ENTITIES.register("corpse_villager",
                     () -> EntityType.Builder.<EntityCorpseVillager>of(EntityCorpseVillager::new, MobCategory.MONSTER)
                             .sized(0.6f, 1.95f).clientTrackingRange(8)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse_villager"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse_villager"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityCorpseWarlock>> CORPSE_WARLOCK =
             ENTITIES.register("corpse_warlock",
                     () -> EntityType.Builder.<EntityCorpseWarlock>of(EntityCorpseWarlock::new, MobCategory.MONSTER)
                             .sized(0.7f, 2.2f).fireImmune().clientTrackingRange(8)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse_warlock"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse_warlock"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityCorpseToPlayer>> CORPSE_TO_PLAYER =
             ENTITIES.register("corpse_to_player",
                     () -> EntityType.Builder.<EntityCorpseToPlayer>of(EntityCorpseToPlayer::new, MobCategory.CREATURE)
                             .sized(0.6f, 1.95f).clientTrackingRange(8)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse_to_player"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "corpse_to_player"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityImmortalSkeleton>> IMMORTAL_SKELETON = registerImmortalSkeletonEntity(EntityImmortalSkeleton::new, "immortal_skeleton");
     public static final FabricDeferredRegister.Entry<EntityType<EntityImmortalSkeletonArcher>> IMMORTAL_ARCHER = registerImmortalSkeletonEntity(EntityImmortalSkeletonArcher::new, "immortal_archer");
@@ -60,113 +60,113 @@ public class EntityInit {
             ENTITIES.register("immortal_shaman",
                     () -> EntityType.Builder.<EntityImmortalShaman>of(EntityImmortalShaman::new, MobCategory.MONSTER)
                             .sized(0.6f, 2.6f).clientTrackingRange(8)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_shaman"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_shaman"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityMagicGolem>> MAGIC_GOLEM =
             ENTITIES.register("immortal_golem",
                     () -> EntityType.Builder.<EntityMagicGolem>of(EntityMagicGolem::new, MobCategory.MONSTER)
                             .sized(0.6f, 1.2f).clientTrackingRange(6)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_golem"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_golem"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityImmortalExecutioner>> IMMORTAL_EXECUTIONER =
             ENTITIES.register("immortal_executioner",
                     () -> EntityType.Builder.<EntityImmortalExecutioner>of(EntityImmortalExecutioner::new, MobCategory.MONSTER)
                             .sized(0.8f, 2.45f).fireImmune().clientTrackingRange(8)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_executioner"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_executioner"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityImmortalBoss>> IMMORTAL_BOSS =
             ENTITIES.register("immortal",
                     () -> EntityType.Builder.<EntityImmortalBoss>of(EntityImmortalBoss::new, MobCategory.MONSTER)
                             .sized(2.8f, 4.45f).fireImmune().clientTrackingRange(10)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityRelicObserver>> RELIC_OBSERVER =
             ENTITIES.register("relic_observer",
                     () -> EntityType.Builder.<EntityRelicObserver>of(EntityRelicObserver::new, MobCategory.MONSTER)
                             .sized(1f, 1.8f).clientTrackingRange(6)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_observer"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_observer"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityRelicRipper>> RELIC_RIPPER =
             ENTITIES.register("relic_ripper",
                     () -> EntityType.Builder.<EntityRelicRipper>of(EntityRelicRipper::new, MobCategory.MONSTER)
                             .sized(1.45f, 2.4995f).clientTrackingRange(8)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_ripper"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_ripper"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityRelicEarthshaker>> RELIC_EARTHSHAKER =
             ENTITIES.register("relic_earthshaker",
                     () -> EntityType.Builder.<EntityRelicEarthshaker>of(EntityRelicEarthshaker::new, MobCategory.MONSTER)
                             .sized(1.95f, 3.45f).clientTrackingRange(8)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_earthshaker"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_earthshaker"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityRelicAnnihilator>> RELIC_ANNIHILATOR =
             ENTITIES.register("relic_annihilator",
                     () -> EntityType.Builder.<EntityRelicAnnihilator>of(EntityRelicAnnihilator::new, MobCategory.MONSTER)
                             .sized(1.3f, 3.45f).fireImmune().clientTrackingRange(8)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_annihilator"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "relic_annihilator"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityRealmWarden>> REALM_WARDEN =
             ENTITIES.register("realm_warden",
                     () -> EntityType.Builder.<EntityRealmWarden>of(EntityRealmWarden::new, MobCategory.MONSTER)
                             .sized(2.45f, 4.45f).fireImmune().clientTrackingRange(10)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "realm_warden"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "realm_warden"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityNamelessGuardian>> NAMELESS_GUARDIAN =
             ENTITIES.register("nameless_guardian",
                     () -> EntityType.Builder.<EntityNamelessGuardian>of(EntityNamelessGuardian::new, MobCategory.MONSTER)
                             .sized(2.245f, 3.74f).fireImmune().clientTrackingRange(10)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "nameless_guardian"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "nameless_guardian"))));
 
     public static final FabricDeferredRegister.Entry<EntityType<EntityTester>> TESTER =
             ENTITIES.register("tester",
                     () -> EntityType.Builder.<EntityTester>of(EntityTester::new, MobCategory.CREATURE)
                             .sized(0.6f, 1.95f).clientTrackingRange(10)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "tester"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "tester"))));
 
     //非生物实体
     public static final FabricDeferredRegister.Entry<EntityType<EntityTelegraph>> TELEGRAPH =
             ENTITIES.register("telegraph",
                     () -> EntityType.Builder.<EntityTelegraph>of(EntityTelegraph::new, MobCategory.MISC).sized(1F, 1F)
                             .clientTrackingRange(64).updateInterval(1)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "telegraph"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "telegraph"))));
 
     //爆炸
     public static final FabricDeferredRegister.Entry<EntityType<EntityExplode>> EXPLODE =
             ENTITIES.register("explode",
                     () -> EntityType.Builder.<EntityExplode>of(EntityExplode::new, MobCategory.MISC).sized(0F, 0F)
-                            .updateInterval(Integer.MAX_VALUE).build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "explode"))));
+                            .updateInterval(Integer.MAX_VALUE).build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "explode"))));
 
     //过载爆炸
     public static final FabricDeferredRegister.Entry<EntityType<EntityOverloadExplode>> OVERLOAD_EXPLODE =
             ENTITIES.register("overload_explode",
                     () -> EntityType.Builder.<EntityOverloadExplode>of(EntityOverloadExplode::new, MobCategory.MISC).sized(0f, 0f)
-                            .updateInterval(Integer.MAX_VALUE).build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "overload_explode"))));
+                            .updateInterval(Integer.MAX_VALUE).build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "overload_explode"))));
 
     //遣雷战斧(投掷物)
     public static final FabricDeferredRegister.Entry<EntityType<EntityThrownDoomboltAxe>> DOOMBOLT_AXE =
             ENTITIES.register("doombolt_axe",
                     () -> EntityType.Builder.<EntityThrownDoomboltAxe>of(EntityThrownDoomboltAxe::new, MobCategory.MISC).sized(0.5F, 0.5F)
                             .clientTrackingRange(4).updateInterval(20)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "doombolt_axe"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "doombolt_axe"))));
 
     //巫师炸弹
     public static final FabricDeferredRegister.Entry<EntityType<EntityShamanBomb>> SHAMAN_BOMB =
             ENTITIES.register("shaman_bomb",
                     () -> EntityType.Builder.<EntityShamanBomb>of(EntityShamanBomb::new, MobCategory.MISC)
                             .sized(1.0f, 1.0f).clientTrackingRange(4).updateInterval(10)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "shaman_bomb"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "shaman_bomb"))));
 
     //相机摇晃
     public static final FabricDeferredRegister.Entry<EntityType<EntityCameraShake>> CAMERA_SHAKE =
             ENTITIES.register("camera_shake",
                     () -> EntityType.Builder.<EntityCameraShake>of(EntityCameraShake::new, MobCategory.MISC).sized(1.0f, 1.0f)
-                            .updateInterval(Integer.MAX_VALUE).build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "camera_shake"))));
+                            .updateInterval(Integer.MAX_VALUE).build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "camera_shake"))));
 
     //下落的方块
     public static final FabricDeferredRegister.Entry<EntityType<EntityFallingBlock>> FALLING_BLOCK =
             ENTITIES.register("falling_block",
                     () -> EntityType.Builder.<EntityFallingBlock>of(EntityFallingBlock::new, MobCategory.MISC)
                             .sized(0.99f, 0.99f)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "falling_block"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "falling_block"))));
 
     //守卫者激光
     public static final FabricDeferredRegister.Entry<EntityType<EntityInfraredRay>> INFRARED_RAY = registerCommonBeamEntity(EntityInfraredRay::new, "infrared_ray");
@@ -177,35 +177,35 @@ public class EntityInit {
             ENTITIES.register("guardian_blade",
                     () -> EntityType.Builder.<EntityGuardianBlade>of(EntityGuardianBlade::new, MobCategory.MISC)
                             .sized(0.3f, 3.5f).updateInterval(1)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "guardian_blade"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "guardian_blade"))));
 
     //结构之眼
     public static final FabricDeferredRegister.Entry<EntityType<EntityEyeOfStructure>> EYE_OF_STRUCTURE =
             ENTITIES.register("eye_of_structure",
                     () -> EntityType.Builder.<EntityEyeOfStructure>of(EntityEyeOfStructure::new, MobCategory.MISC)
                             .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(4)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "eye_of_structure"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "eye_of_structure"))));
 
     //毒箭
     public static final FabricDeferredRegister.Entry<EntityType<EntityPoisonArrow>> POISON_ARROW =
             ENTITIES.register("poison_arrow",
                     () -> EntityType.Builder.<EntityPoisonArrow>of(EntityPoisonArrow::new, MobCategory.MISC)
                             .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "poison_arrow"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "poison_arrow"))));
 
     //血球
     public static final FabricDeferredRegister.Entry<EntityType<EntityBloodBall>> BLOOD_BALL =
             ENTITIES.register("blood_ball",
                     () -> EntityType.Builder.<EntityBloodBall>of(EntityBloodBall::new, MobCategory.MISC)
                             .sized(1F, 1F).clientTrackingRange(4).updateInterval(10)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "blood_ball"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "blood_ball"))));
 
     //腥红裂缝
     public static final FabricDeferredRegister.Entry<EntityType<EntityCrimsonCrack>> CRIMSON_CRACK =
             ENTITIES.register("crimson_crack",
                     () -> EntityType.Builder.<EntityCrimsonCrack>of(EntityCrimsonCrack::new, MobCategory.MISC)
                             .sized(0.1f, 0.1f)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "crimson_crack"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "crimson_crack"))));
 
     //腥红射线
     public static final FabricDeferredRegister.Entry<EntityType<EntityCrimsonRay>> CRIMSON_RAY = registerCommonBeamEntity(EntityCrimsonRay::new, "crimson_ray");
@@ -213,56 +213,56 @@ public class EntityInit {
             ENTITIES.register("crimson_ray_pre",
                     () -> EntityType.Builder.<EntityCrimsonRay.PreAttack>of(EntityCrimsonRay.PreAttack::new, MobCategory.MISC)
                             .sized(0.1f, 0.1f)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "crimson_ray_pre"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "crimson_ray_pre"))));
 
     //脉冲榴弹
     public static final FabricDeferredRegister.Entry<EntityType<EntityPulsedGrenade>> PULSED_GRENADE =
             ENTITIES.register("pulsed_grenade",
                     () -> EntityType.Builder.<EntityPulsedGrenade>of(EntityPulsedGrenade::new, MobCategory.MISC)
                             .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "pulsed_grenade"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "pulsed_grenade"))));
 
     //电磁脉冲
     public static final FabricDeferredRegister.Entry<EntityType<EntityElectromagnetic>> ELECTROMAGNETIC =
             ENTITIES.register("electromagnetic",
                     () -> EntityType.Builder.<EntityElectromagnetic>of(EntityElectromagnetic::new, MobCategory.MISC)
                             .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(1)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "electromagnetic"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "electromagnetic"))));
 
     //歼击者导弹
     public static final FabricDeferredRegister.Entry<EntityType<EntityAnnihilatorMissile>> ANNIHILATOR_MISSILE =
             ENTITIES.register("annihilator_missile",
                     () -> EntityType.Builder.<EntityAnnihilatorMissile>of(EntityAnnihilatorMissile::new, MobCategory.MISC)
                             .sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(1)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "annihilator_missile"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "annihilator_missile"))));
 
     //电涌
     public static final FabricDeferredRegister.Entry<EntityType<EntitySurge>> SURGE =
             ENTITIES.register("surge",
                     () -> EntityType.Builder.<EntitySurge>of(EntitySurge::new, MobCategory.MISC)
                             .sized(0.5F, 4F).updateInterval(Integer.MAX_VALUE)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "surge"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "surge"))));
 
     //异界传送门
     //public static final FabricDeferredRegister.Entry<EntityType<EntityAlienPortal>> ALIEN_PORTAL =
     //        ENTITIES.register("alien_portal",
     //                () -> EntityType.Builder.<EntityAlienPortal>of(EntityAlienPortal::new, MobCategory.MISC)
     //                        .sized(0.1F, 0.1F)/*.updateInterval(1)*/
-    //                        .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "alien_portal"))));
+    //                        .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "alien_portal"))));
 
     //不朽法阵
     public static final FabricDeferredRegister.Entry<EntityType<EntityImmortalMagicCircle>> MAGIC_CIRCLE =
             ENTITIES.register("immortal_magic_circle",
                     () -> EntityType.Builder.<EntityImmortalMagicCircle>of(EntityImmortalMagicCircle::new, MobCategory.MISC)
                             .sized(0.1F, 0.1F).updateInterval(2)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_magic_circle"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_magic_circle"))));
 
     //不朽手里剑
     public static final FabricDeferredRegister.Entry<EntityType<EntityImmortalShuriken>> IMMORTAL_SHURIKEN =
             ENTITIES.register("immortal_shuriken",
                     () -> EntityType.Builder.<EntityImmortalShuriken>of(EntityImmortalShuriken::new, MobCategory.MISC)
                             .sized(0.7125F, 0.5F).clientTrackingRange(8).updateInterval(1)
-                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_shuriken"))));
+                            .build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "immortal_shuriken"))));
 
     //不朽激光
     public static final FabricDeferredRegister.Entry<EntityType<EntityImmortalLaser>> IMMORTAL_LASER = registerCommonBeamEntity(EntityImmortalLaser::new, "immortal_laser");
@@ -273,11 +273,11 @@ public class EntityInit {
     }
 
     private static <T extends EntityAbsBeam> FabricDeferredRegister.Entry<EntityType<T>> registerCommonBeamEntity(EntityType.EntityFactory<T> entityFactory, String name) {
-        return ENTITIES.register(name, () -> EntityType.Builder.of(entityFactory, MobCategory.MISC).sized(0.1F, 0.1F).updateInterval(1).build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, name))));
+        return ENTITIES.register(name, () -> EntityType.Builder.of(entityFactory, MobCategory.MISC).sized(0.1F, 0.1F).updateInterval(1).build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name))));
     }
 
     private static <T extends EntityAbsImmortalSkeleton> FabricDeferredRegister.Entry<EntityType<T>> registerImmortalSkeletonEntity(EntityType.EntityFactory<T> entityFactory, String key) {
-        return ENTITIES.register(key, () -> EntityType.Builder.of(entityFactory, MobCategory.MONSTER).sized(0.6f, 2.2f).clientTrackingRange(8).build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, key))));
+        return ENTITIES.register(key, () -> EntityType.Builder.of(entityFactory, MobCategory.MONSTER).sized(0.6f, 2.2f).clientTrackingRange(8).build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, key))));
     }
 
     // Fabric has no EntityAttributeCreationEvent (a mod-bus NeoForge event); FabricDefaultAttributeRegistry.register

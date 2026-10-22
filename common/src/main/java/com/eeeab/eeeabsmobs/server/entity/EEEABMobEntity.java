@@ -12,7 +12,7 @@ import com.eeeab.eeeabsmobs.server.init.EffectInit;
 import com.eeeab.eeeabsmobs.server.util.ModTagKey;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -43,8 +43,8 @@ import java.util.function.Consumer;
  * <b>EEEABMobEntity</b><br/>
  */
 public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
-    private static final Identifier HEALTH_MODIFIER_ID = Identifier.fromNamespaceAndPath("eeeabsmobs", "reset_health_by_config");
-    private static final Identifier ATTACK_MODIFIER_ID = Identifier.fromNamespaceAndPath("eeeabsmobs", "reset_attack_by_config");
+    private static final ResourceLocation HEALTH_MODIFIER_ID = ResourceLocation.fromNamespaceAndPath("eeeabsmobs", "reset_health_by_config");
+    private static final ResourceLocation ATTACK_MODIFIER_ID = ResourceLocation.fromNamespaceAndPath("eeeabsmobs", "reset_attack_by_config");
     private static final byte MAKE_POOF_ID = 60;
     private static final byte PLAY_BOSS_MUSIC_ID = 77;
     private static final byte STOP_BOSS_MUSIC_ID = 78;

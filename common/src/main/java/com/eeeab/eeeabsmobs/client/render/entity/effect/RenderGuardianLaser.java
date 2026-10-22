@@ -11,17 +11,16 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 public class RenderGuardianLaser extends EntityRenderer<EntityGuardianLaser, RenderGuardianLaser.GuardianLaserRenderState> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/guardian_laser.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/guardian_laser.png");
     private static final float TEXTURE_WIDTH = 256;
     private static final float TEXTURE_HEIGHT = 32;
 
@@ -70,7 +69,7 @@ public class RenderGuardianLaser extends EntityRenderer<EntityGuardianLaser, Ren
     @Override
     public void submit(GuardianLaserRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
         if (!state.shouldRender) return;
-        RenderType renderType = RenderTypes.entityTranslucentEmissive(TEXTURE);
+        RenderType renderType = RenderType.entityTranslucentEmissive(TEXTURE);
         collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
             com.mojang.blaze3d.vertex.PoseStack ps = com.eeeab.eeeabsmobs.client.render.ModRenderType.seededStack(pose);
             renderStart(state, ps, builder, state.lightCoords);
@@ -123,7 +122,7 @@ public class RenderGuardianLaser extends EntityRenderer<EntityGuardianLaser, Ren
         matrixStackIn.mulPose(Axis.ZP.rotationDegrees(state.yaw - 90F));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(-state.pitch));
 
-        float cameraXRot = this.entityRenderDispatcher.camera.xRot();
+        float cameraXRot = this.entityRenderDispatcher.camera.getXRot();
 
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(cameraXRot + 90F));

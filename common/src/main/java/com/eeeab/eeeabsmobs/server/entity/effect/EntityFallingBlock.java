@@ -27,7 +27,7 @@ public class EntityFallingBlock extends Entity implements IEntity {
     private static final EntityDataAccessor<Float> ANIM_V_Y = SynchedEntityData.defineId(EntityFallingBlock.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(EntityFallingBlock.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<BlockState> BLOCK_STATE = SynchedEntityData.defineId(EntityFallingBlock.class, EntityDataSerializers.BLOCK_STATE);
-    private static final EntityDataAccessor<Quaternionfc> QUATERNION = SynchedEntityData.defineId(EntityFallingBlock.class, EntityDataSerializers.QUATERNION);
+    private static final EntityDataAccessor<Quaternionf> QUATERNION = SynchedEntityData.defineId(EntityFallingBlock.class, EntityDataSerializers.QUATERNION);
     public static float DROP_FACTORS = 0.1f;
     public static int MAX_ACTIVE = 600;
     public float animY = 0;

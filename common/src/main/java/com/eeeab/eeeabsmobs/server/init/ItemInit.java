@@ -19,7 +19,7 @@ public class ItemInit {
     public static final FabricDeferredRegister<Item> ITEMS = FabricDeferredRegister.create(BuiltInRegistries.ITEM, EEEABMobs.MOD_ID);
 
     private static <V extends Item> FabricDeferredRegister.Entry<V> reg(String name, java.util.function.Function<Item.Properties, V> factory) {
-        net.minecraft.resources.ResourceKey<Item> key = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, name));
+        net.minecraft.resources.ResourceKey<Item> key = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name));
         return ITEMS.register(name, () -> factory.apply(new Item.Properties().setId(key)));
     }
 

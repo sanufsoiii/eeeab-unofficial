@@ -5,13 +5,13 @@ import com.eeeab.eeeabsmobs.server.entity.mob.CrackinessEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import java.util.Map;
+import net.minecraft.client.renderer.RenderType;
 
 /**
  * 生物开裂纹理图层
@@ -21,9 +21,9 @@ import java.util.Map;
  * @see CrackinessEntity
  */
 public class LayerCrackiness<T extends LivingEntity & CrackinessEntity<T>, M extends EntityModel<? super EMRenderState>> extends RenderLayer<EMRenderState, M> {
-    private final Map<CrackinessEntity.CrackinessType, Identifier> locationMap;
+    private final Map<CrackinessEntity.CrackinessType, ResourceLocation> locationMap;
 
-    public LayerCrackiness(RenderLayerParent<EMRenderState, M> renderer, Map<CrackinessEntity.CrackinessType, Identifier> locationMap) {
+    public LayerCrackiness(RenderLayerParent<EMRenderState, M> renderer, Map<CrackinessEntity.CrackinessType, ResourceLocation> locationMap) {
         super(renderer);
         this.locationMap = locationMap;
     }
@@ -35,12 +35,12 @@ public class LayerCrackiness<T extends LivingEntity & CrackinessEntity<T>, M ext
         if (entity != null && !entity.isInvisible()) {
             CrackinessEntity.CrackinessType crackiness = entity.getCrackiness(entity);
             if (crackiness != CrackinessEntity.CrackinessType.NONE) {
-                Identifier resourcelocation = locationMap.get(crackiness);
+                ResourceLocation resourcelocation = locationMap.get(crackiness);
                 if (resourcelocation == null) {
                     System.out.println("The '" + crackiness + "' phase resource location is missing");
                     return;
                 }
-                collector.submitModel(this.getParentModel(), state, stack, RenderTypes.entityTranslucent(resourcelocation), packedLightIn, LivingEntityRenderer.getOverlayCoords(state, 0.0F), 0xFFFFFFFF, null, 0, null);
+                collector.submitModel(this.getParentModel(), state, stack, RenderType.entityTranslucent(resourcelocation), packedLightIn, LivingEntityRenderer.getOverlayCoords(state, 0.0F), 0xFFFFFFFF, null, 0, null);
             }
         }
     }

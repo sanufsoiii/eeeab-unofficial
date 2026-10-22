@@ -4,12 +4,12 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Unit;
+import net.minecraft.client.renderer.RenderType;
 
 public class ModelGuardianBlade extends Model<Unit> {
     public ModelGuardianBlade(ModelPart root) {
-        super(root.getChild("root"), RenderTypes::entitySolid);
+        super(root.getChild("root"), RenderType::entitySolid);
     }
 
     public static LayerDefinition createBodyLayer() {

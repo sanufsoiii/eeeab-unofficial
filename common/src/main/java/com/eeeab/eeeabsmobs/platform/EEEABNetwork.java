@@ -4,7 +4,7 @@ import dev.architectury.networking.NetworkManager;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
@@ -15,22 +15,22 @@ public interface EEEABNetwork {
     <T extends CustomPacketPayload> void register(
             Class<T> payloadClass,
             CustomPacketPayload.Type<T> type,
-            Identifier wireId,
+            ResourceLocation wireId,
             StreamCodec<?, T> codec,
             boolean clientbound,
             BiConsumer<T, NetworkManager.PacketContext> handler);
 
     <T extends CustomPacketPayload> void sendToServer(
-            T payload, Identifier wireId, StreamCodec<?, T> codec);
+            T payload, ResourceLocation wireId, StreamCodec<?, T> codec);
 
     <T extends CustomPacketPayload> void sendToPlayer(
-            ServerPlayer player, T payload, Identifier wireId, StreamCodec<?, T> codec);
+            ServerPlayer player, T payload, ResourceLocation wireId, StreamCodec<?, T> codec);
 
     <T extends CustomPacketPayload> void sendToPlayers(
-            Iterable<ServerPlayer> players, T payload, Identifier wireId, StreamCodec<?, T> codec);
+            Iterable<ServerPlayer> players, T payload, ResourceLocation wireId, StreamCodec<?, T> codec);
 
     <T extends CustomPacketPayload> void sendToTracking(
-            Entity entity, T payload, Identifier wireId, StreamCodec<?, T> codec, boolean includeSelf);
+            Entity entity, T payload, ResourceLocation wireId, StreamCodec<?, T> codec, boolean includeSelf);
 
     static RegistryFriendlyByteBuf encode(StreamCodec<?, ?> codec, CustomPacketPayload payload) {
         io.netty.buffer.ByteBuf raw = io.netty.buffer.Unpooled.buffer();

@@ -9,10 +9,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.renderer.RenderType;
 
 /**
  * Was IClientItemExtensions#getHumanoidArmorModel (NeoForge, model-swap only, texture picked separately by
@@ -90,6 +90,6 @@ public class ModArmorStackRenderProperties implements ArmorRenderer {
         }
         // ArmorRenderer.renderPart was removed; submit the model directly through the ordered
         // collector the same way vanilla's HumanoidArmorLayer submits its armor models.
-        queue.submitModel(model, renderState, poseStack, RenderTypes.armorCutoutNoCull(texture), light, OverlayTexture.NO_OVERLAY, -1, null, 0, null);
+        queue.submitModel(model, renderState, poseStack, RenderType.armorCutoutNoCull(texture), light, OverlayTexture.NO_OVERLAY, -1, null, 0, null);
     }
 }

@@ -252,14 +252,14 @@ public class BlockInit {
     }
 
     private static <T extends Block> FabricDeferredRegister.Entry<T> registryBlock(String name, java.util.function.Function<net.minecraft.resources.ResourceKey<Block>, T> block, boolean isEntity, Item.Properties properties) {
-        net.minecraft.resources.ResourceKey<Block> key = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, net.minecraft.resources.Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, name));
+        net.minecraft.resources.ResourceKey<Block> key = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name));
         FabricDeferredRegister.Entry<T> register = BLOCKS.register(name, () -> block.apply(key));
         registerBlockItem(name, register, properties, isEntity);
         return register;
     }
 
     private static <T extends Block> void registerBlockItem(String name, FabricDeferredRegister.Entry<T> block, Item.Properties properties, boolean isEntityBlock) {
-        net.minecraft.resources.ResourceKey<net.minecraft.world.item.Item> itemKey = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, name));
+        net.minecraft.resources.ResourceKey<net.minecraft.world.item.Item> itemKey = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name));
         // 1.21.11: BlockItem no longer overrides getDescriptionId(); the key is baked from Item.Properties and
         // defaults to item.<ns>.<name>. Block items must opt into the block.* prefix to match the lang file.
         properties.setId(itemKey).useBlockDescriptionPrefix();

@@ -2,7 +2,7 @@ package com.eeeab.eeeabsmobs.server.potion;
 
 import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.server.init.AttributeInit;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 public class ErodeEffect extends ModEffect {
     public ErodeEffect() {
         super(MobEffectCategory.HARMFUL, 1648179, false);
-        this.addAttributeModifier(AttributeInit.CRIT_CHANCE.holder(), Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "erode_crit_chance"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        this.addAttributeModifier(AttributeInit.CRIT_CHANCE.holder(), ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "erode_crit_chance"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
     //@Override

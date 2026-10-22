@@ -4,7 +4,7 @@ import com.eeeab.eeeabsmobs.EEEABMobs;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
@@ -30,7 +30,7 @@ public class ModTagKey {
     public static final TagKey<EntityType<?>> IMMORTAL_IGNORE_HUNT_TARGETS = registerTagKey(Registries.ENTITY_TYPE, "immortal_ignore_hunt_targets");
 
     private static <T> TagKey<T> registerTagKey(ResourceKey<Registry<T>> registry, String key) {
-        return TagKey.create(registry, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, key));
+        return TagKey.create(registry, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, key));
     }
 
     //Other Mod
@@ -45,6 +45,6 @@ public class ModTagKey {
     public static final TagKey<MobEffect> EFFECTIVE_FOR_BOSSES = registerOtherModTagKey(Registries.MOB_EFFECT, CATACLYSM, "effective_for_bosses");
 
     private static <T> TagKey<T> registerOtherModTagKey(ResourceKey<Registry<T>> registry, String modId, String key) {
-        return TagKey.create(registry, Identifier.fromNamespaceAndPath(modId, key));
+        return TagKey.create(registry, ResourceLocation.fromNamespaceAndPath(modId, key));
     }
 }

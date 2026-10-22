@@ -11,15 +11,15 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import java.util.Map;
 public class RenderRelicObserver extends EMMobRenderer<EntityRelicObserver, ModelRelicObserver> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer.png");
-    private static final Identifier GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_eyes.png");
-    private static final Map<CrackinessEntity.CrackinessType, Identifier> RESOURCE_LOCATION_MAP = ImmutableMap.of(
-            CrackinessEntity.CrackinessType.HIGH, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_high.png"),
-            CrackinessEntity.CrackinessType.MEDIUM, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_medium.png"),
-            CrackinessEntity.CrackinessType.LOW, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_low.png")
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer.png");
+    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_eyes.png");
+    private static final Map<CrackinessEntity.CrackinessType, ResourceLocation> RESOURCE_LOCATION_MAP = ImmutableMap.of(
+            CrackinessEntity.CrackinessType.HIGH, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_high.png"),
+            CrackinessEntity.CrackinessType.MEDIUM, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_medium.png"),
+            CrackinessEntity.CrackinessType.LOW, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_low.png")
     );
 
     public RenderRelicObserver(EntityRendererProvider.Context context) {
@@ -34,7 +34,7 @@ public class RenderRelicObserver extends EMMobRenderer<EntityRelicObserver, Mode
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState corpse) {
+    public ResourceLocation getTextureLocation(EMRenderState corpse) {
         return TEXTURE;
     }
 }

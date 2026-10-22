@@ -13,18 +13,18 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.Nullable;
+import javax.annotation.Nullable;
+import net.minecraft.client.renderer.RenderType;
 
 public class RenderSlidingDoor implements BlockEntityRenderer<EntitySlidingDoorBlock, SlidingDoorRenderState> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/block/sliding_door.png");
-    private static final Identifier UNLOCK_TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/block/sliding_door_unlock.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/block/sliding_door.png");
+    private static final ResourceLocation UNLOCK_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/block/sliding_door_unlock.png");
     private final SlidingDoorModel model;
 
     public RenderSlidingDoor(BlockEntityRendererProvider.Context context) {
@@ -58,7 +58,7 @@ public class RenderSlidingDoor implements BlockEntityRenderer<EntitySlidingDoorB
             poseStack.mulPose(facing.getRotation());
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
             model.animate(state.ageInTicks, state.openingAnimationState, state.closingAnimationState);
-            buffer.submitModelPart(model.root(), poseStack, RenderTypes.entityCutoutNoCull(locked ? TEXTURE : UNLOCK_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, null, false, false, -1, null, 0);
+            buffer.submitModelPart(model.root(), poseStack, RenderType.entityCutoutNoCull(locked ? TEXTURE : UNLOCK_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, null, false, false, -1, null, 0);
             poseStack.popPose();
         }
     }

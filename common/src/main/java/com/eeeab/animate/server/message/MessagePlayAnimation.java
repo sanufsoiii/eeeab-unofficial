@@ -6,14 +6,14 @@ import com.eeeab.eeeabsmobs.EEEABMobs;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 public record MessagePlayAnimation(int entityID, int animationsIndex) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<MessagePlayAnimation> TYPE =
-            new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "play_animation"));
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "play_animation"));
 
     public static final StreamCodec<net.minecraft.network.FriendlyByteBuf, MessagePlayAnimation> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, MessagePlayAnimation::entityID,

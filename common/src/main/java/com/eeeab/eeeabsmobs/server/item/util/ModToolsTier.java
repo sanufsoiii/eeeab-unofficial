@@ -2,7 +2,7 @@ package com.eeeab.eeeabsmobs.server.item.util;
 
 
 import com.eeeab.eeeabsmobs.EEEABMobs;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
@@ -23,7 +23,7 @@ public final class ModToolsTier {
     }
 
     private static TagKey<Item> repairTag(String name) {
-        return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "repairs_" + name));
+        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "repairs_" + name));
     }
 
     public static final ToolMaterial RELICRON_TIER = new ToolMaterial(

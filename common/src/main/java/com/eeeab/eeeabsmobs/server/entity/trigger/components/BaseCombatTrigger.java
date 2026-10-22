@@ -3,16 +3,16 @@ package com.eeeab.eeeabsmobs.server.entity.trigger.components;
 import com.eeeab.eeeabsmobs.server.entity.trigger.CombatTrigger;
 import com.eeeab.eeeabsmobs.server.message.ModNetwork;
 import com.eeeab.eeeabsmobs.server.message.PopupNotificationMessage;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 public abstract class BaseCombatTrigger implements CombatTrigger {
-    protected final Identifier entityId;
+    protected final ResourceLocation entityId;
     protected final boolean oncePerEncounter;
-    protected Identifier triggerId;
+    protected ResourceLocation triggerId;
     protected int level;
 
-    public BaseCombatTrigger(Identifier triggerId, Identifier entityId, int level, boolean oncePerEncounter) {
+    public BaseCombatTrigger(ResourceLocation triggerId, ResourceLocation entityId, int level, boolean oncePerEncounter) {
         this.triggerId = triggerId;
         this.entityId = entityId;
         this.level = level;
@@ -26,12 +26,12 @@ public abstract class BaseCombatTrigger implements CombatTrigger {
     }
 
     @Override
-    public Identifier getTriggerKey() {
+    public ResourceLocation getTriggerKey() {
         return triggerId;
     }
 
     @Override
-    public Identifier getEntityKey() {
+    public ResourceLocation getEntityKey() {
         return entityId;
     }
 
@@ -40,7 +40,7 @@ public abstract class BaseCombatTrigger implements CombatTrigger {
         return oncePerEncounter;
     }
 
-    public void setTriggerKey(Identifier triggerId) {
+    public void setTriggerKey(ResourceLocation triggerId) {
         this.triggerId = triggerId;
     }
 

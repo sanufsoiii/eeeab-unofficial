@@ -5,7 +5,7 @@ import com.eeeab.eeeabsmobs.client.model.util.ModModelLayer;
 import com.eeeab.eeeabsmobs.client.render.special.BusterGauntletSpecialRenderer;
 import com.eeeab.eeeabsmobs.client.render.special.StaticModelSpecialRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderers;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,15 +22,15 @@ public class SpecialModelRenderersMixin {
     private static void eeeabsmobs$registerSpecialRenderers(CallbackInfo ci) {
         var idMapper = SpecialModelRenderersAccessor.eeeabmobs$getIdMapper();
         idMapper.put(
-                Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "buster_gauntlet"),
+                ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "buster_gauntlet"),
                 BusterGauntletSpecialRenderer.Unbaked.MAP_CODEC);
         idMapper.put(
-                Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "guardian_axe"),
+                ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "guardian_axe"),
                 new StaticModelSpecialRenderer.Unbaked(ModModelLayer.THE_GUARDIAN_BATTLEAXE,
-                        Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian.png")).codec());
+                        ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian.png")).codec());
         idMapper.put(
-                Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "netherworld_katana"),
+                ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "netherworld_katana"),
                 new StaticModelSpecialRenderer.Unbaked(ModModelLayer.THE_NETHERWORLD_KATANA,
-                        Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png")).codec());
+                        ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png")).codec());
     }
 }

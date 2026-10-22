@@ -12,10 +12,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 public class RenderRelicRipper extends EMMobRenderer<EntityRelicRipper, ModelRelicRipper> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_ripper.png");
-    private static final Identifier GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_ripper_glow.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_ripper.png");
+    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_ripper_glow.png");
     private static final String[] SAW = new String[]{"upper", "rightArm", "rightArmJoint", "rightHand", "sawJoint", "saw"};
 
     public RenderRelicRipper(EntityRendererProvider.Context context) {
@@ -35,7 +35,7 @@ public class RenderRelicRipper extends EMMobRenderer<EntityRelicRipper, ModelRel
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState corpse) {
+    public ResourceLocation getTextureLocation(EMRenderState corpse) {
         return TEXTURE;
     }
 

@@ -9,18 +9,17 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 public class RenderCrimsonRay extends EntityRenderer<EntityCrimsonRay, RenderCrimsonRay.CrimsonRayRenderState> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/crimson_ray.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/crimson_ray.png");
     private static final float TEXTURE_WIDTH = 256;
     private static final float TEXTURE_HEIGHT = 32;
     private static final float START_RADIUS = 1.2f;
@@ -61,7 +60,7 @@ public class RenderCrimsonRay extends EntityRenderer<EntityCrimsonRay, RenderCri
     @Override
     public void submit(CrimsonRayRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
         if (!state.shouldRender) return;
-        RenderType renderType = RenderTypes.entityTranslucentEmissive(TEXTURE);
+        RenderType renderType = RenderType.entityTranslucentEmissive(TEXTURE);
         collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
             com.mojang.blaze3d.vertex.PoseStack ps = com.eeeab.eeeabsmobs.client.render.ModRenderType.seededStack(pose);
             renderStart(state, ps, builder, state.lightCoords);
@@ -128,7 +127,7 @@ public class RenderCrimsonRay extends EntityRenderer<EntityCrimsonRay, RenderCri
         matrixStackIn.mulPose(Axis.ZP.rotationDegrees(state.yaw - 90F));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(-state.pitch));
 
-        float cameraXRot = this.entityRenderDispatcher.camera.xRot();
+        float cameraXRot = this.entityRenderDispatcher.camera.getXRot();
 
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(cameraXRot + 90F));
@@ -198,7 +197,7 @@ public class RenderCrimsonRay extends EntityRenderer<EntityCrimsonRay, RenderCri
     }
 
     public static class RenderPreAttack extends EntityRenderer<EntityCrimsonRay.PreAttack, RenderPreAttack.PreAttackRenderState> {
-        private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/crimson_ray_pre.png");
+        private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/crimson_ray_pre.png");
         private static final float TEXTURE_WIDTH = 256;
         private static final float TEXTURE_HEIGHT = 32;
         private static final float SIZE = 1.2F;
@@ -221,7 +220,7 @@ public class RenderCrimsonRay extends EntityRenderer<EntityCrimsonRay, RenderCri
 
         @Override
         public void submit(PreAttackRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
-            RenderType renderType = RenderTypes.entityTranslucentEmissive(TEXTURE);
+            RenderType renderType = RenderType.entityTranslucentEmissive(TEXTURE);
             collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
                 com.mojang.blaze3d.vertex.PoseStack ps = com.eeeab.eeeabsmobs.client.render.ModRenderType.seededStack(pose);
                 ps.pushPose();

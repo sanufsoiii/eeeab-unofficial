@@ -5,10 +5,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.Entity;
@@ -86,7 +85,7 @@ public class EntityAfterImageHelper<T extends Entity> {
         }
     }
 
-    public void renderAfterImages(T entity, PoseStack poseStack, MultiBufferSource buffer, int packedLight, float partialTicks, long currentTick, Function<T, Identifier> textureProvider) {
+    public void renderAfterImages(T entity, PoseStack poseStack, MultiBufferSource buffer, int packedLight, float partialTicks, long currentTick, Function<T, ResourceLocation> textureProvider) {
         float currentTimeWithPartial = currentTick + partialTicks;
         afterImages.removeIf(img -> currentTimeWithPartial - img.creationTick > duration);
         if (afterImages.isEmpty()) return;
@@ -107,8 +106,8 @@ public class EntityAfterImageHelper<T extends Entity> {
             poseStack.scale(-1, -1, 1);
             poseStack.translate(0, -1.501F, 0);
 
-            Identifier texture = textureProvider.apply(entity);
-            RenderType renderType = RenderTypes.entityTranslucent(texture);
+            ResourceLocation texture = textureProvider.apply(entity);
+            RenderType renderType = RenderType.entityTranslucent(texture);
             VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
             rootPart.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, ARGB.color(ARGB.as8BitChannel(alpha), 255, 255, 255));
             poseStack.popPose();

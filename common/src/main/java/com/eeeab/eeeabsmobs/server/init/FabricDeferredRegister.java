@@ -2,7 +2,7 @@ package com.eeeab.eeeabsmobs.server.init;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 /**
  * Fabric has no DeferredRegister/DeferredHolder (that's a NeoForge/Forge-only lazy-registration API backed by
  * a mod-bus RegisterEvent). On Fabric, registration is direct: {@link Registry#register(Registry,
- * Identifier, Object)}, called eagerly, no event bus involved (verified with javap against the Loom-mapped
+ * ResourceLocation, Object)}, called eagerly, no event bus involved (verified with javap against the Loom-mapped
  * 1.21.1 jar - net.minecraft.core.Registry has three register(...) overloads, none of them event-driven).
  * <p>
  * This class is a small compatibility shim, not a guessed API: it exists so every {@code XInit.FOO} field across
@@ -41,7 +41,7 @@ public final class FabricDeferredRegister<T> {
      * {@link Entry#get()} yields the same instance forever after - the only thing existing call sites rely on.
      */
     public <V extends T> Entry<V> register(String name, Supplier<V> supplier) {
-        Identifier id = Identifier.fromNamespaceAndPath(modId, name);
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(modId, name);
         V value = supplier.get();
         Registry.register(registry, id, value);
         Holder<T> holder = registry.wrapAsHolder(value);
@@ -60,9 +60,9 @@ public final class FabricDeferredRegister<T> {
     public static final class Entry<T> implements Supplier<T> {
         private final T value;
         private final Holder<?> holder;
-        private final Identifier id;
+        private final ResourceLocation id;
 
-        private Entry(T value, Holder<?> holder, Identifier id) {
+        private Entry(T value, Holder<?> holder, ResourceLocation id) {
             this.value = value;
             this.holder = holder;
             this.id = id;
@@ -83,7 +83,7 @@ public final class FabricDeferredRegister<T> {
          * in {@link #register(String, Supplier)}; handed back here instead of round-tripping through
          * Registry.getKey(value) so it also works before the registry's own lookup tables are fully settled.
          */
-        public Identifier getId() {
+        public ResourceLocation getId() {
             return id;
         }
     }

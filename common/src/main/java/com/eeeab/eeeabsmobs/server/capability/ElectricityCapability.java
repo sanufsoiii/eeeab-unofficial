@@ -3,11 +3,11 @@ package com.eeeab.eeeabsmobs.server.capability;
 import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.server.init.ParticleInit;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
 public class ElectricityCapability {
-    public static final Identifier ID = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "electricity_cap");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "electricity_cap");
 
     public interface IElectricityCapability extends GeneralCapability, NbtCapability {
     }

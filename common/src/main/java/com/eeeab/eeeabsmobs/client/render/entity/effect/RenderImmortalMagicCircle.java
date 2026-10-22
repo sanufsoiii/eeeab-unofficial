@@ -9,15 +9,15 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 public class RenderImmortalMagicCircle extends FlatTextureRenderer<EntityImmortalMagicCircle, EMRenderState> {
-    private static final Identifier NONE_TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/none.png");
-    private static final Identifier SPEED_TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/speed.png");
-    private static final Identifier POWER_TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/power.png");
-    private static final Identifier HARMFUL_TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/harmful.png");
-    private static final Identifier BENEFICIAL_TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/beneficial.png");
+    private static final ResourceLocation NONE_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/none.png");
+    private static final ResourceLocation SPEED_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/speed.png");
+    private static final ResourceLocation POWER_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/power.png");
+    private static final ResourceLocation HARMFUL_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/harmful.png");
+    private static final ResourceLocation BENEFICIAL_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/beneficial.png");
 
     public RenderImmortalMagicCircle(EntityRendererProvider.Context context) {
         super(context);
@@ -36,7 +36,7 @@ public class RenderImmortalMagicCircle extends FlatTextureRenderer<EntityImmorta
         state.partialTick = partialTick;
     }
 
-    private Identifier getTexture(EntityImmortalMagicCircle entity) {
+    private ResourceLocation getTexture(EntityImmortalMagicCircle entity) {
         return switch (entity.getMagicCircleType()) {
             case SPEED -> SPEED_TEXTURE;
             case POWER -> POWER_TEXTURE;

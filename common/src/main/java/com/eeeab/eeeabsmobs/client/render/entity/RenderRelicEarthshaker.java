@@ -11,17 +11,16 @@ import com.eeeab.eeeabsmobs.server.entity.mob.GlowEntity;
 import com.eeeab.eeeabsmobs.server.entity.mob.relicron.EntityRelicEarthshaker;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 public class RenderRelicEarthshaker extends EMMobRenderer<EntityRelicEarthshaker, ModelRelicEarthshaker> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_earthshaker.png");
-    private static final Identifier GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_earthshaker_glow.png");
-    private static final Identifier HOT_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_earthshaker_hot.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_earthshaker.png");
+    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_earthshaker_glow.png");
+    private static final ResourceLocation HOT_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_earthshaker_hot.png");
     private static final String[] RIGHT_FINGER = new String[]{"upper", "body", "rightArm", "rightHand", "finger1"};
     private static final String[] LEFT_FINGER = new String[]{"upper", "body", "leftArm", "leftHand", "finger4"};
 
@@ -39,7 +38,7 @@ public class RenderRelicEarthshaker extends EMMobRenderer<EntityRelicEarthshaker
                 (entity, partialTicks) -> entity.hotControlled.getAnimationFraction(partialTicks)) {
             @Override
             protected RenderType getRenderType(EntityRelicEarthshaker entity) {
-                return RenderTypes.entityTranslucentEmissive(this.location);
+                return RenderType.entityTranslucentEmissive(this.location);
             }
         });
     }
@@ -50,7 +49,7 @@ public class RenderRelicEarthshaker extends EMMobRenderer<EntityRelicEarthshaker
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState sentinelHeavy) {
+    public ResourceLocation getTextureLocation(EMRenderState sentinelHeavy) {
         return TEXTURE;
     }
 

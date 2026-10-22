@@ -11,20 +11,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class TipNotificationHandler {
     private static ModConfigHandler.TipNotification.DisplayMode currentMode = ModConfigHandler.TipNotification.DisplayMode.FADE_IN_OUT;
     private static ControlledAnimation alphaAControlled;
-    private static Identifier icons;
+    private static ResourceLocation icons;
     private static Component current;
     private static boolean isShowing = false;
     private static int level = 0;
     private static int targetY = 30;
 
     public static void init() {
-        icons = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/msg_levels.png");
+        icons = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/msg_levels.png");
         alphaAControlled = new ControlledAnimation(ModConfigHandler.CLIENT.tipNotification.displayDuration.get());
     }
 
@@ -97,7 +97,7 @@ public class TipNotificationHandler {
         }
     }
 
-    public static void init(Identifier location, int level) {
+    public static void init(ResourceLocation location, int level) {
         if (!ModConfigHandler.CLIENT.tipNotification.enabled.get()) return;
         TipNotificationHandler.level = Mth.clamp(level, 0, 2);
         current = TranslateUtils.simpleText(location.getNamespace(), "popup.", location.getPath(), getTextStyle(), TranslateUtils.TIP_SUFFIX);

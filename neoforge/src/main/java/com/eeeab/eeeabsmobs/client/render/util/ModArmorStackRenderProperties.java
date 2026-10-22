@@ -7,7 +7,7 @@ import com.eeeab.eeeabsmobs.server.item.ItemGhostWarriorArmor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.Nullable;
@@ -43,7 +43,7 @@ public class ModArmorStackRenderProperties implements IClientItemExtensions {
     }
 
     @Override
-    public @Nullable Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier _default) {
+    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, ResourceLocation _default) {
         if (stack.is(ItemInit.GHOST_WARRIOR_LEGGINGS.get()) || type == EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS) {
             return ItemGhostWarriorArmor.LEGS_LOCATION;
         } else if (stack.is(ItemInit.GHOST_WARRIOR_HELMET.get()) ||

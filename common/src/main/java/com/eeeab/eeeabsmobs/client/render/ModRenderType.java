@@ -1,9 +1,8 @@
 package com.eeeab.eeeabsmobs.client.render;
 
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 /**
  * 1.21.9 removed {@code RenderStateShard}/{@code RenderType.CompositeState} and the immediate-mode shader
  * constants this class used to hand-build its glow render types with. Custom render types are now assembled
@@ -29,34 +28,34 @@ public final class ModRenderType {
         return ps;
     }
 
-    public static RenderType getGlowingEffect(Identifier location) {
-        return RenderTypes.entityTranslucentEmissive(location);
+    public static RenderType getGlowingEffect(ResourceLocation location) {
+        return RenderType.entityTranslucentEmissive(location);
     }
 
-    public static RenderType getGlowingTranslucentEffect(Identifier location) {
-        return RenderTypes.entityTranslucentEmissive(location);
-    }
-
-    @Deprecated
-    public static RenderType getStrongGlowingEffect(Identifier location) {
-        return RenderTypes.entityTranslucentEmissive(location);
+    public static RenderType getGlowingTranslucentEffect(ResourceLocation location) {
+        return RenderType.entityTranslucentEmissive(location);
     }
 
     @Deprecated
-    public static RenderType getGlowingCutOutEffect(Identifier location) {
-        return RenderTypes.entityTranslucentEmissive(location);
+    public static RenderType getStrongGlowingEffect(ResourceLocation location) {
+        return RenderType.entityTranslucentEmissive(location);
     }
 
-    public static RenderType getGlowingCutOutEffect(Identifier location, boolean backFaceCulling) {
-        return RenderTypes.entityTranslucentEmissive(location);
+    @Deprecated
+    public static RenderType getGlowingCutOutEffect(ResourceLocation location) {
+        return RenderType.entityTranslucentEmissive(location);
     }
 
-    public static RenderType entityTranslucent(Identifier location) {
-        return RenderTypes.entityTranslucent(location);
+    public static RenderType getGlowingCutOutEffect(ResourceLocation location, boolean backFaceCulling) {
+        return RenderType.entityTranslucentEmissive(location);
     }
 
-    public static RenderType entityTranslucentCull(Identifier location) {
-        return RenderTypes.entityTranslucent(location);
+    public static RenderType entityTranslucent(ResourceLocation location) {
+        return RenderType.entityTranslucent(location);
+    }
+
+    public static RenderType entityTranslucentCull(ResourceLocation location) {
+        return RenderType.entityTranslucent(location);
     }
 
     // Old custom ParticleRenderType overrode ParticleRenderType#begin (Tesselator/TextureManager) which no longer

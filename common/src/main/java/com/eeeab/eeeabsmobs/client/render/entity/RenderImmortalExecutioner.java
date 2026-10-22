@@ -12,9 +12,9 @@ import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 public class RenderImmortalExecutioner extends EMMobRenderer<EntityImmortalExecutioner, ModelImmortalExecutioner> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_executioner.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_executioner.png");
     private static final String[] FIRE = new String[]{"upper", "body", "fire"};
 
     public RenderImmortalExecutioner(EntityRendererProvider.Context context) {
@@ -32,7 +32,7 @@ public class RenderImmortalExecutioner extends EMMobRenderer<EntityImmortalExecu
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState entity) {
+    public ResourceLocation getTextureLocation(EMRenderState entity) {
         return TEXTURE;
     }
 

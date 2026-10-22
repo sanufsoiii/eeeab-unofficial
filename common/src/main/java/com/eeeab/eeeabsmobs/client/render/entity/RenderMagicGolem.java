@@ -8,9 +8,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 public class RenderMagicGolem extends EMMobRenderer<EntityMagicGolem, ModelMagicGolem> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_golem.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_golem.png");
 
     public RenderMagicGolem(EntityRendererProvider.Context context) {
         super(context, new ModelMagicGolem(context.bakeLayer(ModModelLayer.MAGIC_GOLEM)), 0.3f);
@@ -25,7 +25,7 @@ public class RenderMagicGolem extends EMMobRenderer<EntityMagicGolem, ModelMagic
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState entity) {
+    public ResourceLocation getTextureLocation(EMRenderState entity) {
         return TEXTURE;
     }
 }

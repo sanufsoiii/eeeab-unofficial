@@ -10,13 +10,13 @@ import com.eeeab.eeeabsmobs.server.entity.mob.immortal.EntityImmortalShaman;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 public class RenderImmortalShaman extends EMMobRenderer<EntityImmortalShaman, ModelImmortalShaman> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman.png");
-    private static final Identifier GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_decoration.png");
-    private static final Identifier OUTER_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_outer.png");
-    public static final Identifier EYES_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_eyes.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman.png");
+    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_decoration.png");
+    private static final ResourceLocation OUTER_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_outer.png");
+    public static final ResourceLocation EYES_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_eyes.png");
 
     public RenderImmortalShaman(EntityRendererProvider.Context context) {
         super(context, new ModelImmortalShaman(context.bakeLayer(ModModelLayer.IMMORTAL_SHAMAN)), 0.45F);
@@ -29,7 +29,7 @@ public class RenderImmortalShaman extends EMMobRenderer<EntityImmortalShaman, Mo
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState entity) {
+    public ResourceLocation getTextureLocation(EMRenderState entity) {
         return TEXTURE;
     }
 }

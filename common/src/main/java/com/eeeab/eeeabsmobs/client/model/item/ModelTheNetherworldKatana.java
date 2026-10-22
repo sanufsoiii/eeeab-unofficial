@@ -5,13 +5,13 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Unit;
+import net.minecraft.client.renderer.RenderType;
 
 public class ModelTheNetherworldKatana extends Model<Unit> {
 
     public ModelTheNetherworldKatana(ModelPart root) {
-        super(root.getChild("root"), RenderTypes::entityCutoutNoCull);
+        super(root.getChild("root"), RenderType::entityCutoutNoCull);
     }
 
     public static LayerDefinition createBodyLayer() {

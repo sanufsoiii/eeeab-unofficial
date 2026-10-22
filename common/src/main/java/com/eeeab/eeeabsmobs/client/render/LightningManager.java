@@ -4,8 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 import org.joml.Matrix4f;
@@ -32,7 +31,7 @@ public class LightningManager {
      * 更新与渲染所有闪电实例
      */
     public void render(float partialTicks, PoseStack matrixStack, MultiBufferSource bufferSource) {
-        VertexConsumer buffer = bufferSource.getBuffer(RenderTypes.lightning());
+        VertexConsumer buffer = bufferSource.getBuffer(RenderType.lightning());
         Matrix4f matrix = matrixStack.last().pose();
         long renderTicks = minecraft.level.getGameTime();
         double now = renderTicks + partialTicks;

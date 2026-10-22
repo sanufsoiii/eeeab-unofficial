@@ -11,24 +11,24 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Unit;
 import java.util.List;
 public class RenderGuardianBlade extends EntityRenderer<EntityGuardianBlade, GuardianBladeRenderState> {
-    private static final Identifier[] TEXTURES = new Identifier[6];
+    private static final ResourceLocation[] TEXTURES = new ResourceLocation[6];
     private final ModelGuardianBlade model;
 
     public RenderGuardianBlade(EntityRendererProvider.Context context) {
         super(context);
         this.model = new ModelGuardianBlade(context.bakeLayer(ModModelLayer.GUARDIAN_BLADE));
         for (int i = 0; i < TEXTURES.length; i++) {
-            TEXTURES[i] = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/guardian_blade/index_" + (i + 1) + ".png");
+            TEXTURES[i] = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/guardian_blade/index_" + (i + 1) + ".png");
         }
     }
 

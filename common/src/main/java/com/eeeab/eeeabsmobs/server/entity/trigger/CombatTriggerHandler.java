@@ -1,13 +1,13 @@
 package com.eeeab.eeeabsmobs.server.entity.trigger;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.*;
 
 public class CombatTriggerHandler {
-    private static final Map<Identifier, Set<CombatTrigger>> TRIGGERS = new HashMap<>();
-    private static final Map<UUID, Set<Identifier>> PLAYER_TRIGGERED = new HashMap<>();
+    private static final Map<ResourceLocation, Set<CombatTrigger>> TRIGGERS = new HashMap<>();
+    private static final Map<UUID, Set<ResourceLocation>> PLAYER_TRIGGERED = new HashMap<>();
 
     public static void init() {
         TriggerRegister.register();
@@ -18,11 +18,11 @@ public class CombatTriggerHandler {
         TRIGGERS.computeIfAbsent(trigger.getEntityKey(), k -> new HashSet<>()).add(trigger);
     }
 
-    public static boolean canTriggerEntityType(Identifier location) {
+    public static boolean canTriggerEntityType(ResourceLocation location) {
         return TRIGGERS.containsKey(location);
     }
 
-    public static void checkAndTrigger(ServerPlayer player, Identifier entityId, TriggerContext context) {
+    public static void checkAndTrigger(ServerPlayer player, ResourceLocation entityId, TriggerContext context) {
         Set<CombatTrigger> triggers = TRIGGERS.get(entityId);
         if (triggers == null) return;
         for (CombatTrigger trigger : triggers) {
@@ -42,7 +42,7 @@ public class CombatTriggerHandler {
         if (!trigger.isOncePerEncounter()) {
             return false;
         }
-        Set<Identifier> triggered = PLAYER_TRIGGERED.getOrDefault(player.getUUID(), new HashSet<>());
+        Set<ResourceLocation> triggered = PLAYER_TRIGGERED.getOrDefault(player.getUUID(), new HashSet<>());
         return triggered.contains(trigger.getTriggerKey());
     }
 

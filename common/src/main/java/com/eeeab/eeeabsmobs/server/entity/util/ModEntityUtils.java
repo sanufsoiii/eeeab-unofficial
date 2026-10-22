@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.level.gamerules.GameRules;
+import net.minecraft.world.level.GameRules;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -123,7 +123,7 @@ public class ModEntityUtils {
         // Was EventHooks.canEntityGrief; that wraps the vanilla mobGriefing gamerule (plus a NeoForge event other
         // mods can use to override it per-entity). No Fabric equivalent event exists, so this reads the gamerule
         // directly, matching NeoForge's own unmodified default.
-        return entity.level() instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING);
+        return entity.level() instanceof ServerLevel serverLevel && serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
     }
 
     /**

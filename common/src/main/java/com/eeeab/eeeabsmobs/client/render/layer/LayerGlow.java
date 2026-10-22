@@ -5,13 +5,12 @@ import com.eeeab.eeeabsmobs.server.entity.mob.GlowEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.LivingEntity;
 /**
@@ -22,32 +21,32 @@ import net.minecraft.world.entity.LivingEntity;
  * @see GlowEntity
  */
 public class LayerGlow<T extends LivingEntity & GlowEntity, M extends EntityModel<? super EMRenderState>> extends RenderLayer<EMRenderState, M> {
-    protected final Identifier location;
+    protected final ResourceLocation location;
     protected final ConditionPredicate<T> predicate;
     protected final GlowAmountSupplier<T> supplier;
     protected final boolean overlayTexture;
 
-    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, Identifier location) {
+    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, ResourceLocation location) {
         this(renderLayerParent, location, GlowEntity::isGlow, (entity, partialTicks) -> 1, false);
     }
 
-    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, Identifier location, float brightness) {
+    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, ResourceLocation location, float brightness) {
         this(renderLayerParent, location, GlowEntity::isGlow, (entity, partialTicks) -> brightness, false);
     }
 
-    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, Identifier location, float brightness, ConditionPredicate<T> predicate) {
+    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, ResourceLocation location, float brightness, ConditionPredicate<T> predicate) {
         this(renderLayerParent, location, predicate, (entity, partialTicks) -> brightness, false);
     }
 
-    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, Identifier location, GlowAmountSupplier<T> supplier) {
+    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, ResourceLocation location, GlowAmountSupplier<T> supplier) {
         this(renderLayerParent, location, GlowEntity::isGlow, supplier, false);
     }
 
-    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, Identifier location, ConditionPredicate<T> predicate, GlowAmountSupplier<T> supplier) {
+    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, ResourceLocation location, ConditionPredicate<T> predicate, GlowAmountSupplier<T> supplier) {
         this(renderLayerParent, location, predicate, supplier, false);
     }
 
-    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, Identifier location, ConditionPredicate<T> predicate, GlowAmountSupplier<T> supplier, boolean overlayTexture) {
+    public LayerGlow(RenderLayerParent<EMRenderState, M> renderLayerParent, ResourceLocation location, ConditionPredicate<T> predicate, GlowAmountSupplier<T> supplier, boolean overlayTexture) {
         super(renderLayerParent);
         this.location = location;
         this.predicate = predicate;
@@ -74,7 +73,7 @@ public class LayerGlow<T extends LivingEntity & GlowEntity, M extends EntityMode
      * @return 渲染类型
      */
     protected RenderType getRenderType(T entity) {
-        return RenderTypes.eyes(this.location);
+        return RenderType.eyes(this.location);
     }
 
     @FunctionalInterface

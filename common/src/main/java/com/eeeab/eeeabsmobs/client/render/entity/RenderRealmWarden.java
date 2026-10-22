@@ -13,19 +13,19 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 public class RenderRealmWarden extends EMMobRenderer<EntityRealmWarden, ModelRealmWarden> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/realm_warden.png");
-    private static final Identifier GLOW_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/realm_warden_glow.png");
-    private static final Identifier FLAME_LAYER = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/realm_warden_exhaust.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/realm_warden.png");
+    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/realm_warden_glow.png");
+    private static final ResourceLocation FLAME_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/realm_warden_exhaust.png");
     private static final String[] LEFT_GLOVE = new String[]{"upper", "leftArm", "leftArmUnder", "leftGlove", "lGloveJoint"};
     private static final String[] RIGHT_GLOVE = new String[]{"upper", "rightArm", "rightArmUnder", "rightGlove", "rGloveJoint"};
     private static final String[] LEFT_BLADE = new String[]{"upper", "mainBooster", "axe_back", "leftSocket", "leftBlade"};
@@ -56,7 +56,7 @@ public class RenderRealmWarden extends EMMobRenderer<EntityRealmWarden, ModelRea
     }
 
     @Override
-    public Identifier getTextureLocation(EMRenderState sentinelHeavy) {
+    public ResourceLocation getTextureLocation(EMRenderState sentinelHeavy) {
         return TEXTURE;
     }
 

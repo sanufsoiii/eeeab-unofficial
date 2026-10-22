@@ -7,16 +7,15 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.joml.Vector3fc;
+import org.joml.Vector3f;
 
-import java.util.function.Consumer;
+import java.util.Set;
 
 /**
  * 1.21.11 replacement for the old BlockEntityWithoutLevelRenderer (ModItemStackRender) that drew the
@@ -27,7 +26,7 @@ import java.util.function.Consumer;
  * Transforms mirror the original renderByItem (translate 0.5,1,0.5; scale -1,-1,1).
  */
 public class BusterGauntletSpecialRenderer implements NoDataSpecialModelRenderer {
-    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/item/buster_gauntlet.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/item/buster_gauntlet.png");
     private final ModelBusterGauntlet model;
 
     public BusterGauntletSpecialRenderer(ModelBusterGauntlet model) {
@@ -38,7 +37,7 @@ public class BusterGauntletSpecialRenderer implements NoDataSpecialModelRenderer
     public void submit(ItemDisplayContext displayContext, PoseStack poseStack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
         float ageInTicks = Minecraft.getInstance().player == null ? 0F : Minecraft.getInstance().player.tickCount + Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
         this.model.setupAnim(ItemStack.EMPTY, ageInTicks);
-        RenderType renderType = RenderTypes.armorCutoutNoCull(TEXTURE);
+        RenderType renderType = RenderType.armorCutoutNoCull(TEXTURE);
         poseStack.pushPose();
         poseStack.translate(0.5F, 1F, 0.5F);
         poseStack.scale(-1F, -1F, 1F);
@@ -47,11 +46,11 @@ public class BusterGauntletSpecialRenderer implements NoDataSpecialModelRenderer
     }
 
     @Override
-    public void getExtents(Consumer<Vector3fc> consumer) {
+    public void getExtents(Set<Vector3f> output) {
         PoseStack poseStack = new PoseStack();
         poseStack.translate(0.5F, 1F, 0.5F);
         poseStack.scale(-1F, -1F, 1F);
-        this.model.root().getExtentsForGui(poseStack, consumer);
+        this.model.root().getExtentsForGui(poseStack, output);
     }
 public record Unbaked() implements SpecialModelRenderer.Unbaked {
         public static final MapCodec<BusterGauntletSpecialRenderer.Unbaked> MAP_CODEC = MapCodec.unit(new BusterGauntletSpecialRenderer.Unbaked());

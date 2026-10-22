@@ -4,8 +4,8 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Unit;
+import net.minecraft.client.renderer.RenderType;
 
 public class ModelBloodBall extends Model<Unit> {
     public final ModelPart ball_1;
@@ -13,7 +13,7 @@ public class ModelBloodBall extends Model<Unit> {
     public final ModelPart ball_3;
 
     public ModelBloodBall(ModelPart root) {
-        super(root, RenderTypes::entitySolid);
+        super(root, RenderType::entitySolid);
         this.ball_1 = root.getChild("ball_1");
         this.ball_2 = root.getChild("ball_2");
         this.ball_3 = root.getChild("ball_3");

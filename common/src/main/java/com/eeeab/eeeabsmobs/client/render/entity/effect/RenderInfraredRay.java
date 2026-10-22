@@ -9,18 +9,17 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 public class RenderInfraredRay extends EntityRenderer<EntityInfraredRay, RenderInfraredRay.InfraredRayRenderState> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/infrared_ray.png");
-    private static final Identifier FLASH_TEXTURE = Identifier.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/infrared_ray_flash.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/infrared_ray.png");
+    private static final ResourceLocation FLASH_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/infrared_ray_flash.png");
     private static final float QUAD_RADIUS = 0.15F;
     private static final float BEAM_RADIUS = 0.15F;
 
@@ -59,8 +58,8 @@ public class RenderInfraredRay extends EntityRenderer<EntityInfraredRay, RenderI
     @Override
     public void submit(InfraredRayRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
         if (!state.shouldRender) return;
-        Identifier texture = state.isBlinking ? FLASH_TEXTURE : TEXTURE;
-        RenderType renderType = RenderTypes.entityTranslucentEmissive(texture);
+        ResourceLocation texture = state.isBlinking ? FLASH_TEXTURE : TEXTURE;
+        RenderType renderType = RenderType.entityTranslucentEmissive(texture);
         collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
             com.mojang.blaze3d.vertex.PoseStack ps = com.eeeab.eeeabsmobs.client.render.ModRenderType.seededStack(pose);
             renderStart(state, ps, builder, state.lightCoords);
@@ -112,7 +111,7 @@ public class RenderInfraredRay extends EntityRenderer<EntityInfraredRay, RenderI
         matrixStackIn.mulPose(Axis.ZP.rotationDegrees(state.yaw - 90F));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(-state.pitch));
 
-        float cameraXRot = this.entityRenderDispatcher.camera.xRot();
+        float cameraXRot = this.entityRenderDispatcher.camera.getXRot();
 
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(cameraXRot + 90F));
