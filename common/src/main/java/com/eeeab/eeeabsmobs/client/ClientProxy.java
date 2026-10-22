@@ -13,7 +13,7 @@ import com.eeeab.eeeabsmobs.server.handler.ClientEventHandler;
 import com.eeeab.eeeabsmobs.server.handler.RegisterHandler;
 import com.eeeab.eeeabsmobs.server.init.MenuInit;
 import com.eeeab.eeeabsmobs.server.integration.curios.CuriosRegistry;
-import dev.architectury.registry.client.gui.MenuScreenRegistry;
+import dev.architectury.registry.menu.MenuRegistry;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
@@ -36,7 +36,7 @@ public class ClientProxy extends ServerProxy {
         RegisterHandler.registerAll();
         ClientEventHandler.register();
         PlatformServices.get().registerClientReloadListener();
-        MenuScreenRegistry.registerScreenFactory(MenuInit.ANIMATION_CONTROLLER.get(), AnimationControllerScreen::new);
+        MenuRegistry.registerScreenFactory(MenuInit.ANIMATION_CONTROLLER.get(), AnimationControllerScreen::new);
         TipNotificationHandler.init();
         BossBarRegistry.init();
         CuriosRegistry.initClient();

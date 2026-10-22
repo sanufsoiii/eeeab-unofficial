@@ -742,10 +742,10 @@ public Vec3[] hand;//0:left 1:right
     }
 
     @Override
-    public boolean killedEntity(ServerLevel level, LivingEntity entity, net.minecraft.world.damagesource.DamageSource source) {
+    public boolean killedEntity(ServerLevel level, LivingEntity entity) {
         float maxHealth = this.getMaxHealth();
         this.heal(Math.min(entity.getMaxHealth() * 0.05F + maxHealth * 0.025F, maxHealth * 0.1F));
-        return super.killedEntity(level, entity, source);
+        return super.killedEntity(level, entity);
     }
 
     private static KeyframeManager<EntityImmortalBoss> setupAnimations() {

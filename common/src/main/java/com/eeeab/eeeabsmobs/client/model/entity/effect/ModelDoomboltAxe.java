@@ -4,10 +4,9 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Unit;
 import net.minecraft.client.renderer.RenderType;
 
-public class ModelDoomboltAxe extends Model<Unit> {
+public class ModelDoomboltAxe extends Model {
     public ModelDoomboltAxe(ModelPart root) {
         super(root.getChild("root"), RenderType::entitySolid);
     }

@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
-public class ModelMagicGolem extends ModHierarchicalModel<EntityMagicGolem> implements ArmedModel<EMRenderState> {
+public class ModelMagicGolem extends ModHierarchicalModel<EntityMagicGolem> implements ArmedModel {
     private final ModelPart root;
     private final ModelPart head;
     private final ModelPart body;
@@ -85,7 +85,7 @@ public class ModelMagicGolem extends ModHierarchicalModel<EntityMagicGolem> impl
     }
 
     @Override
-    public void translateToHand(EMRenderState state, HumanoidArm humanoidArm, PoseStack poseStack) {
+    public void translateToHand(HumanoidArm humanoidArm, PoseStack poseStack) {
         boolean flag = humanoidArm == HumanoidArm.RIGHT;
         ModelPart model$part = flag ? this.rightArm : this.leftArm;
         this.root.translateAndRotate(poseStack);

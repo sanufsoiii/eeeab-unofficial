@@ -6,7 +6,8 @@ import com.eeeab.eeeabsmobs.client.model.util.ModModelLayer;
 import com.eeeab.eeeabsmobs.client.render.layer.LayerGlow;
 import com.eeeab.eeeabsmobs.server.entity.mob.relicron.EntityNamelessGuardian;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.eeeab.animate.client.render.EMMobRenderer;
@@ -24,11 +25,14 @@ public class RenderNamelessGuardian extends EMMobRenderer<EntityNamelessGuardian
         super(context, new ModelNamelessGuardian(context.bakeLayer(ModModelLayer.NAMELESS_GUARDIAN)), 1.5F);
         this.addLayer(new RenderLayer<>(this) {
             @Override
-            public void submit(PoseStack stack, SubmitNodeCollector collector, int packedLightIn, EMRenderState state, float yRot, float xRot) {
+            public void render(PoseStack stack, MultiBufferSource buffer, int packedLightIn, EMRenderState state, float yRot, float xRot) {
                 EntityNamelessGuardian entity = (EntityNamelessGuardian) state.entity;
                 float coefficient = entity.getExplodeCoefficient(state.partialTick);
                 if (coefficient > 0) {
-                    collector.submitModel(this.getParentModel(), state, stack, RenderType.entityTranslucentEmissive(TEXTURE), packedLightIn, OverlayTexture.pack(OverlayTexture.u(Mth.clamp(coefficient, 0F, 1F)), OverlayTexture.v(false)), net.minecraft.util.ARGB.color(net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient)), null, 0, null);
+                    VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucentEmissive(TEXTURE));
+                    int overlay = OverlayTexture.pack(OverlayTexture.u(Mth.clamp(coefficient, 0F, 1F)), OverlayTexture.v(false));
+                    int color = net.minecraft.util.ARGB.color(net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient), net.minecraft.util.ARGB.as8BitChannel(coefficient));
+                    this.getParentModel().renderToBuffer(stack, consumer, packedLightIn, overlay, color);
                 }
             }
         });

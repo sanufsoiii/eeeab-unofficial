@@ -2,26 +2,23 @@ package com.eeeab.eeeabsmobs.client.particle.lib;
 
 import com.eeeab.eeeabsmobs.client.particle.lib.component.ParticleComponent;
 import com.eeeab.eeeabsmobs.client.particle.lib.data.AdvancedParticleData;
+import com.eeeab.eeeabsmobs.client.render.ModRenderType;
 import com.eeeab.eeeabsmobs.server.util.ModMathUtils;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
-// 参考自: https://github.com/BobMowzie/MowziesMobs/blob/master/src/main/java/com/bobmowzie/mowziesmobs/client/particle/util/AdvancedParticleBase.java
-// 1.21.9: TextureSheetParticle was removed; base is now SingleQuadParticle and drawing goes through the
-// deferred QuadParticleRenderState pipeline (extract()) instead of an immediate render(VertexConsumer,...).
-// The custom per-mode quaternion is preserved and fed to the inherited extractRotatedQuad(...) helper, which
-// builds the rotated quad at the particle's interpolated position. Component#postRender (which used to draw
-// extra geometry via a VertexConsumer) is dropped - no component in this mod overrode it to draw.
-public class AdvancedParticleBase extends SingleQuadParticle {
+//参考自: https://github.com/BobMowzie/MowziesMobs/blob/master/src/main/java/com/bobmowzie/mowziesmobs/client/particle/util/AdvancedParticleBase.java
+public class AdvancedParticleBase extends TextureSheetParticle {
     public float airDiffusionSpeed;
-    public float red, green, blue;
+    public float red, green, blue, alpha;
     public float prevRed, prevGreen, prevBlue, prevAlpha;
     public float scale, prevScale, particleScale;
     public ParticleRotation rotation;
@@ -32,8 +29,31 @@ public class AdvancedParticleBase extends SingleQuadParticle {
     public ParticleComponent[] components;
     public ParticleRibbon ribbon;
 
+    /**
+     * AdvancedParticle
+     *
+     * @param worldIn           level
+     * @param pX                初始坐标X
+     * @param pY                初始坐标Y
+     * @param pZ                初始坐标Z
+     * @param motionX           移动X坐标
+     * @param motionY           移动Y坐标
+     * @param motionZ           移动Z坐标
+     * @param rotation          粒子旋转方式
+     * @param scale             粒子大小
+     * @param r                 红
+     * @param g                 绿
+     * @param b                 蓝
+     * @param a                 透明度
+     * @param airDiffusionSpeed 传播速度
+     * @param duration          存在时长
+     * @param emissive          发光
+     * @param canCollide        重力
+     * @param components        粒子组件
+     * @param spriteSet         null
+     */
     protected AdvancedParticleBase(ClientLevel worldIn, double pX, double pY, double pZ, double motionX, double motionY, double motionZ, ParticleRotation rotation, double scale, double r, double g, double b, double a, double airDiffusionSpeed, double duration, boolean emissive, boolean canCollide, ParticleComponent[] components, SpriteSet spriteSet) {
-        super(worldIn, pX, pY, pZ, 0.0D, 0.0D, 0.0D, null);
+        super(worldIn, pX, pY, pZ, 0.0D, 0.0D, 0.0D);
         this.xd = motionX;
         this.yd = motionY;
         this.zd = motionZ;
@@ -67,22 +87,16 @@ public class AdvancedParticleBase extends SingleQuadParticle {
     }
 
     @Override
-    public SingleQuadParticle.Layer getLayer() {
-        return SingleQuadParticle.Layer.TRANSLUCENT;
+    public ParticleRenderType getRenderType() {
+        return ModRenderType.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
     }
 
-    @Override
     public int getLightColor(float partialTick) {
         int i = super.getLightColor(partialTick);
         if (emissive) {
             int k = i >> 16 & 255;
             return 240 | k << 16;
         } else return i;
-    }
-
-    @Override
-    public float getQuadSize(float scaleFactor) {
-        return this.particleScale * 0.1F;
     }
 
     @Override
@@ -139,27 +153,35 @@ public class AdvancedParticleBase extends SingleQuadParticle {
     }
 
     @Override
-    public void extract(QuadParticleRenderState renderState, Camera renderInfo, float partialTicks) {
-        this.alpha = prevAlpha + (alpha - prevAlpha) * partialTicks;
+    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
+        alpha = prevAlpha + (alpha - prevAlpha) * partialTicks;
         if (alpha < 0.01) alpha = 0.01f;
-        this.rCol = prevRed + (red - prevRed) * partialTicks;
-        this.gCol = prevGreen + (green - prevGreen) * partialTicks;
-        this.bCol = prevBlue + (blue - prevBlue) * partialTicks;
+        rCol = prevRed + (red - prevRed) * partialTicks;
+        gCol = prevGreen + (green - prevGreen) * partialTicks;
+        bCol = prevBlue + (blue - prevBlue) * partialTicks;
         particleScale = prevScale + (scale - prevScale) * partialTicks;
 
         for (ParticleComponent component : components) {
             component.preRender(this, renderInfo, partialTicks);
         }
 
+        Vec3 Vector3d = renderInfo.getPosition();
+        float f = (float) (Mth.lerp(partialTicks, this.xo, this.x) - Vector3d.x());
+        float f1 = (float) (Mth.lerp(partialTicks, this.yo, this.y) - Vector3d.y());
+        float f2 = (float) (Mth.lerp(partialTicks, this.zo, this.z) - Vector3d.z());
+
         Quaternionf quaternion = new Quaternionf();
         if (rotation instanceof ParticleRotation.FaceCamera faceCameraRot) {
+            //ParticleRotation.FaceCamera faceCameraRot = (ParticleRotation.FaceCamera) rotation;
             if (faceCameraRot.faceCameraAngle == 0.0F && faceCameraRot.prevFaceCameraAngle == 0.0F) {
-                quaternion = new Quaternionf(renderInfo.rotation());
+                quaternion = renderInfo.rotation();
             } else {
                 quaternion = new Quaternionf(renderInfo.rotation());
                 quaternion.rotateZ(Mth.lerp(partialTicks, faceCameraRot.prevFaceCameraAngle, faceCameraRot.faceCameraAngle));
+                //quaternion.mul(Axis.ZP.rotation(f3));
             }
         } else if (rotation instanceof ParticleRotation.EulerAngles eulerRot) {
+            //ParticleRotation.EulerAngles eulerRot = (ParticleRotation.EulerAngles) rotation;
             float rotX = eulerRot.prevPitch + (eulerRot.pitch - eulerRot.prevPitch) * partialTicks;
             float rotY = eulerRot.prevYaw + (eulerRot.yaw - eulerRot.prevYaw) * partialTicks;
             float rotZ = eulerRot.prevRoll + (eulerRot.roll - eulerRot.prevRoll) * partialTicks;
@@ -170,6 +192,7 @@ public class AdvancedParticleBase extends SingleQuadParticle {
             quaternion.mul(quatY);
             quaternion.mul(quatX);
         } else if (rotation instanceof ParticleRotation.OrientVector orientRot) {
+            //ParticleRotation.OrientVector orientRot = (ParticleRotation.OrientVector) rotation;
             double x = orientRot.prevOrientation.x + (orientRot.orientation.x - orientRot.prevOrientation.x) * partialTicks;
             double y = orientRot.prevOrientation.y + (orientRot.orientation.y - orientRot.prevOrientation.y) * partialTicks;
             double z = orientRot.prevOrientation.z + (orientRot.orientation.z - orientRot.prevOrientation.z) * partialTicks;
@@ -187,18 +210,30 @@ public class AdvancedParticleBase extends SingleQuadParticle {
             quaternion = vertical.getRotation(renderInfo, vec3);
         }
 
-        this.extractRotatedQuad(renderState, renderInfo, quaternion, partialTicks);
-    }
+        Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
+        float f4 = particleScale * 0.1f;
 
-    // The mod's old public `alpha` field is now the inherited protected SingleQuadParticle#alpha; expose it so
-    // out-of-package ParticleComponents can still read/write particle opacity.
-    public float getAlpha() {
-        return this.alpha;
-    }
+        for (int i = 0; i < 4; ++i) {
+            Vector3f vector3f = avector3f[i];
+            //vector3f.transform(quaternion);
+            vector3f.rotate(quaternion);
+            vector3f.mul(f4);
+            vector3f.add(f, f1, f2);
+        }
 
-    @Override
-    public void setAlpha(float alpha) {
-        this.alpha = alpha;
+        float f7 = this.getU0();
+        float f8 = this.getU1();
+        float f5 = this.getV0();
+        float f6 = this.getV1();
+        int j = this.getLightColor(partialTicks);
+        buffer.addVertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).setUv(f8, f6).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+        buffer.addVertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).setUv(f8, f5).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+        buffer.addVertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).setUv(f7, f5).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+        buffer.addVertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).setUv(f7, f6).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+
+        for (ParticleComponent component : components) {
+            component.postRender(this, buffer, renderInfo, partialTicks, j);
+        }
     }
 
     public float getAge() {
@@ -280,7 +315,8 @@ public class AdvancedParticleBase extends SingleQuadParticle {
     public void setGravity(float gravity) {
         this.gravity = gravity;
     }
-public static class Factory implements ParticleProvider<AdvancedParticleData> {
+
+    public static class Factory implements ParticleProvider<AdvancedParticleData> {
         private final SpriteSet spriteSet;
 
         public Factory(SpriteSet sprite) {
@@ -288,12 +324,12 @@ public static class Factory implements ParticleProvider<AdvancedParticleData> {
         }
 
         @Override
-        public Particle createParticle(AdvancedParticleData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, net.minecraft.util.RandomSource randomSource) {
+        public Particle createParticle(AdvancedParticleData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             AdvancedParticleBase particle;
             boolean isAnimation = typeIn.isAnimation();
             particle = new AdvancedParticleBase(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getRotation(), typeIn.getScale(), typeIn.getRed(), typeIn.getGreen(), typeIn.getBlue(), typeIn.getAlpha(), typeIn.getAirDiffusionSpeed(), typeIn.getDuration(), typeIn.isEmissive(), typeIn.getCanCollide(), typeIn.getComponents(), isAnimation ? spriteSet : null);
             if (isAnimation) particle.setSpriteFromAge(spriteSet);
-            else particle.setSprite(spriteSet.get(particle.random));
+            else particle.pickSprite(spriteSet);
             particle.setColor((float) typeIn.getRed(), (float) typeIn.getGreen(), (float) typeIn.getBlue());
             return particle;
         }

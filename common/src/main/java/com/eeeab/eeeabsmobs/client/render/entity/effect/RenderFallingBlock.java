@@ -4,16 +4,23 @@ import com.eeeab.eeeabsmobs.client.render.state.EMFallingBlockRenderState;
 import com.eeeab.eeeabsmobs.server.entity.effect.EntityFallingBlock;
 import com.eeeab.eeeabsmobs.server.handler.ModConfigHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
+
 public class RenderFallingBlock extends EntityRenderer<EntityFallingBlock, EMFallingBlockRenderState> {
 
-    public RenderFallingBlock(EntityRendererProvider.Context p_174112_) {
-        super(p_174112_);
+    public RenderFallingBlock(EntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
@@ -31,32 +38,37 @@ public class RenderFallingBlock extends EntityRenderer<EntityFallingBlock, EMFal
         state.applyRuptureRotation = entity.getMode() == EntityFallingBlock.FallingMoveType.SIMULATE_RUPTURE;
         state.ruptureRotation = entity.getQuaternionf();
         BlockPos blockPos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
-        // NOTE: mod entity has no start-pos equivalent; keep vanilla default (BlockPos.ZERO)
-        // state.movingBlockRenderState.randomSeedPos = entity.getStartPos();
-        state.movingBlockRenderState.blockPos = blockPos;
-        state.movingBlockRenderState.blockState = entity.getBlockState();
-        state.movingBlockRenderState.biome = entity.level().getBiome(blockPos);
-        state.movingBlockRenderState.level = entity.level();
+        state.startBlockPos = BlockPos.ZERO;
+        state.blockPos = blockPos;
+        state.blockState = entity.getBlockState();
+        state.biome = entity.level().getBiome(blockPos);
+        state.level = entity.level();
     }
 
     @Override
-    public void submit(EMFallingBlockRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void render(EMFallingBlockRenderState state, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (ModConfigHandler.CLIENT.enableFallingBlockRender.get()) {
-            poseStack.pushPose();
-            if (state.overallMove) {
-                poseStack.translate(-0.5f, 0, -0.5f);
-            } else {
-                poseStack.translate(0, 0.5f, 0);
-                poseStack.translate(0, Mth.lerp(state.partialTick, state.prevAnimY, state.animY), 0);
-                if (state.applyRuptureRotation && state.ruptureRotation != null) {
-                    poseStack.mulPose(state.ruptureRotation);
+            BlockState blockState = state.blockState;
+            if (blockState != null && blockState.getRenderShape() == RenderShape.MODEL) {
+                poseStack.pushPose();
+                if (state.overallMove) {
+                    poseStack.translate(-0.5f, 0, -0.5f);
+                } else {
+                    poseStack.translate(0, 0.5f, 0);
+                    poseStack.translate(0, Mth.lerp(state.partialTick, state.prevAnimY, state.animY), 0);
+                    if (state.applyRuptureRotation && state.ruptureRotation != null) {
+                        poseStack.mulPose(state.ruptureRotation);
+                    }
+                    poseStack.translate(0, -1, 0);
+                    poseStack.translate(-0.5f, -0.5f, -0.5f);
                 }
-                poseStack.translate(0, -1, 0);
-                poseStack.translate(-0.5f, -0.5f, -0.5f);
+                BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
+                var model = dispatcher.getBlockModel(blockState);
+                var parts = model.collectParts(RandomSource.create(state.startBlockPos.asLong()));
+                dispatcher.getModelRenderer().tesselateBlock(state.level, parts, blockState, state.blockPos, poseStack, buffer.getBuffer(ItemBlockRenderTypes.getMovingBlockRenderType(blockState)), false, OverlayTexture.NO_OVERLAY);
+                poseStack.popPose();
             }
-            collector.submitMovingBlock(poseStack, state.movingBlockRenderState);
-            poseStack.popPose();
         }
-        super.submit(state, poseStack, collector, cameraRenderState);
+        super.render(state, poseStack, buffer, packedLight);
     }
 }

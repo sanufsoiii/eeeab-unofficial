@@ -31,8 +31,9 @@ public class ParticleVoltExplosionSeed extends NoRenderParticle {
             this.remove();
         }
     }
-public static class Factory implements ParticleProvider<SimpleParticleType> {
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, net.minecraft.util.RandomSource randomSource) {
+
+    public static class Factory implements ParticleProvider<SimpleParticleType> {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new ParticleVoltExplosionSeed(level, x, y, z, xSpeed, ySpeed);
         }
     }

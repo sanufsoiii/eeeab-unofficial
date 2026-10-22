@@ -234,7 +234,7 @@ public final class ServerEventHandler {
             if (chance > 0 && hurtEntity.getRandom().nextFloat() <= chance) {
                 amount *= 1.5F;
                 hurtEntity.level().playSound(null, hurtEntity.getX(), hurtEntity.getY(), hurtEntity.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, hurtEntity.getSoundSource(), 1.0F, 1.0F);
-                if (hurtEntity.level() instanceof ServerLevel serverLevel) serverLevel.getChunkSource().sendToTrackingPlayersAndSelf(attacker, new ClientboundAnimatePacket(hurtEntity, 4));
+                if (hurtEntity.level() instanceof ServerLevel serverLevel) serverLevel.getChunkSource().broadcastAndSend(attacker, new ClientboundAnimatePacket(hurtEntity, 4));
             }
         }
 

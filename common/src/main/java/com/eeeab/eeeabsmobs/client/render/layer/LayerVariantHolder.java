@@ -2,8 +2,9 @@ package com.eeeab.eeeabsmobs.client.render.layer;
 
 import com.eeeab.animate.client.render.EMRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -31,14 +32,15 @@ public class LayerVariantHolder<V, T extends Entity & IVariantHolder<V>, M exten
 
     @Override
     @SuppressWarnings("unchecked")
-    public void submit(PoseStack stack, SubmitNodeCollector collector, int packedLightIn, EMRenderState state, float yRot, float xRot) {
+    public void render(PoseStack stack, MultiBufferSource buffer, int packedLightIn, EMRenderState state, float yRot, float xRot) {
         T entity = (T) state.entity;
         if (entity != null && !entity.isInvisible()) {
             ResourceLocation resourcelocation = locationMap.get(entity.getVariant());
             if (resourcelocation == null) {
                 return;
             }
-            collector.submitModel(this.getParentModel(), state, stack, this.getRenderType(resourcelocation), packedLightIn, LivingEntityRenderer.getOverlayCoords(state, 0.0F), 0xFFFFFFFF, null, 0, null);
+            VertexConsumer consumer = buffer.getBuffer(this.getRenderType(resourcelocation));
+            this.getParentModel().renderToBuffer(stack, consumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(state, 0.0F), 0xFFFFFFFF);
         }
     }
 

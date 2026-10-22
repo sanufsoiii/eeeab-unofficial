@@ -26,10 +26,12 @@ public class AdvancedBlockParticleData extends AdvancedParticleData {
         this.state = state;
         this.pos = pos;
     }
-public BlockState getState() {
+
+    public BlockState getState() {
         return state;
     }
-public BlockPos getPos() {
+
+    public BlockPos getPos() {
         return pos;
     }
 

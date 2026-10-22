@@ -23,7 +23,8 @@ public class RibbonParticleData extends AdvancedParticleData {
         super(type, rotation, scale, r, g, b, a, drag, duration, emissive, false, components, isAnimation);
         this.length = length;
     }
-public int getLength() {
+
+    public int getLength() {
         return this.length;
     }
 

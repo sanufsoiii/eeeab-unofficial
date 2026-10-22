@@ -12,12 +12,11 @@ import com.eeeab.eeeabsmobs.server.entity.mob.relicron.EntityRealmWarden;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
@@ -81,8 +80,8 @@ public class RenderRealmWarden extends EMMobRenderer<EntityRealmWarden, ModelRea
     }
 
     @Override
-    public void submit(EMRenderState state, PoseStack matrixStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
-        super.submit(state, matrixStack, collector, cameraRenderState);
+    public void render(EMRenderState state, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
+        super.render(state, matrixStack, buffer, packedLight);
         EntityRealmWarden entity = (EntityRealmWarden) state.entity;
         if (entity == null) return;
         Animation animation = entity.getAnimation();

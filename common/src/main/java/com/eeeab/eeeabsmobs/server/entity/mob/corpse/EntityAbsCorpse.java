@@ -91,8 +91,8 @@ public abstract class EntityAbsCorpse extends EEEABMobLibrary implements Enemy, 
     }
 
     @Override
-    protected boolean shouldDropLoot(net.minecraft.server.level.ServerLevel level) {
-        return super.shouldDropLoot(level) && !this.isSummon();
+    protected boolean shouldDropLoot() {
+        return super.shouldDropLoot() && !this.isSummon();
     }
 
     @Nullable

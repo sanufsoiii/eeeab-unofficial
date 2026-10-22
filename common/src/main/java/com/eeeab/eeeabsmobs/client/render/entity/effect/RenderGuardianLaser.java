@@ -7,12 +7,11 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -67,19 +66,17 @@ public class RenderGuardianLaser extends EntityRenderer<EntityGuardianLaser, Ren
     }
 
     @Override
-    public void submit(GuardianLaserRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void render(GuardianLaserRenderState state, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (!state.shouldRender) return;
         RenderType renderType = RenderType.entityTranslucentEmissive(TEXTURE);
-        collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
-            com.mojang.blaze3d.vertex.PoseStack ps = com.eeeab.eeeabsmobs.client.render.ModRenderType.seededStack(pose);
-            renderStart(state, ps, builder, state.lightCoords);
-            renderBeam(state, ps, builder, state.lightCoords);
-            ps.pushPose();
-            ps.translate(state.collidePosX - state.posX, state.collidePosY - state.posY, state.collidePosZ - state.posZ);
-            renderEnd(state, ps, builder, state.lightCoords);
-            ps.popPose();
-        });
-        super.submit(state, poseStack, collector, cameraRenderState);
+        VertexConsumer builder = buffer.getBuffer(renderType);
+        renderStart(state, poseStack, builder, packedLight);
+        renderBeam(state, poseStack, builder, packedLight);
+        poseStack.pushPose();
+        poseStack.translate(state.collidePosX - state.posX, state.collidePosY - state.posY, state.collidePosZ - state.posZ);
+        renderEnd(state, poseStack, builder, packedLight);
+        poseStack.popPose();
+        super.render(state, poseStack, buffer, packedLight);
     }
 
     private void renderStart(GuardianLaserRenderState state, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {

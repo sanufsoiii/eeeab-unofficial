@@ -1,8 +1,8 @@
 package com.eeeab.eeeabsmobs.client.particle;
 
-import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import com.eeeab.eeeabsmobs.client.render.ModRenderType;
 import com.eeeab.eeeabsmobs.server.init.ParticleInit;
-
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Camera;
@@ -13,11 +13,11 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-public class ParticleOrb extends SingleQuadParticle {
+public class ParticleOrb extends TextureSheetParticle {
     private final double duration;
 
     public ParticleOrb(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, double scale, int duration) {
-        super(world, x, y, z, (net.minecraft.client.renderer.texture.TextureAtlasSprite) null);
+        super(world, x, y, z);
         quadSize = (float) scale * 0.1f;
         lifetime = duration;
         xd = vx;
@@ -27,8 +27,8 @@ public class ParticleOrb extends SingleQuadParticle {
     }
 
     @Override
-    public SingleQuadParticle.Layer getLayer() {
-        return SingleQuadParticle.Layer.TRANSLUCENT;
+    public ParticleRenderType getRenderType() {
+        return ModRenderType.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
     }
 
     @Override
@@ -50,11 +50,12 @@ public class ParticleOrb extends SingleQuadParticle {
     }
 
     @Override
-    public void extract(QuadParticleRenderState renderState, Camera renderInfo, float partialTicks) {
+    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
         alpha = Math.max(1 - ((float) age + partialTicks) / (float) duration, 0.001f);
-        super.extract(renderState, renderInfo, partialTicks);
+        super.render(buffer, renderInfo, partialTicks);
     }
-public static final class Factory implements ParticleProvider<OrbData> {
+
+    public static final class Factory implements ParticleProvider<OrbData> {
         private final SpriteSet spriteSet;
 
         public Factory(SpriteSet sprite) {
@@ -62,7 +63,7 @@ public static final class Factory implements ParticleProvider<OrbData> {
         }
 
         @Override
-        public Particle createParticle(OrbData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, net.minecraft.util.RandomSource randomSource) {
+        public Particle createParticle(OrbData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             ParticleOrb particle = new ParticleOrb(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getScale(), typeIn.getDuration());
             particle.setSpriteFromAge(spriteSet);
             particle.setColor(typeIn.getR(), typeIn.getG(), typeIn.getB());
@@ -89,19 +90,24 @@ public static final class Factory implements ParticleProvider<OrbData> {
         public ParticleType<OrbData> getType() {
             return ParticleInit.ORB.get();
         }
-public float getR() {
+
+        public float getR() {
             return this.r;
         }
-public float getG() {
+
+        public float getG() {
             return this.g;
         }
-public float getB() {
+
+        public float getB() {
             return this.b;
         }
-public float getScale() {
+
+        public float getScale() {
             return this.scale;
         }
-public int getDuration() {
+
+        public int getDuration() {
             return this.duration;
         }
 

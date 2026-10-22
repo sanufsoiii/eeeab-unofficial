@@ -7,13 +7,13 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+
 public class AdvancedBlockParticle extends AdvancedParticleBase {
     private final BlockPos pos;
     private final float uo, vo;
@@ -66,8 +66,8 @@ public class AdvancedBlockParticle extends AdvancedParticleBase {
     }
 
     @Override
-    public SingleQuadParticle.Layer getLayer() {
-        return SingleQuadParticle.Layer.TERRAIN;
+    public ParticleRenderType getRenderType() {
+        return ParticleRenderType.TERRAIN_SHEET;
     }
 
     @Override
@@ -79,12 +79,13 @@ public class AdvancedBlockParticle extends AdvancedParticleBase {
         }
         return light;
     }
-public static final class Factory implements ParticleProvider<AdvancedBlockParticleData> {
+
+    public static final class Factory implements ParticleProvider<AdvancedBlockParticleData> {
         public Factory(SpriteSet sprite) {
         }
 
         @Override
-        public Particle createParticle(AdvancedBlockParticleData data, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, net.minecraft.util.RandomSource randomSource) {
+        public Particle createParticle(AdvancedBlockParticleData data, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new AdvancedBlockParticle(
                     level, x, y, z, xSpeed, ySpeed, zSpeed, data.getScale(),
                     data.getRed(), data.getGreen(), data.getBlue(), data.getAlpha(),

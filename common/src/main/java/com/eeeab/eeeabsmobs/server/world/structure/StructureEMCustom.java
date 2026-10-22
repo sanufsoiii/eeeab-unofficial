@@ -86,7 +86,7 @@ public class StructureEMCustom extends Structure {
                         // Here, blockpos's y value is 60 which means the structure spawn 60 blocks above terrain height.
                         // Set this to false for structure to be place only at the passed in blockpos's Y value instead.
                         // Definitely keep this false when placing structures in the nether as otherwise, heightmap placing will put the structure on the Bedrock roof.
-                        new net.minecraft.world.level.levelgen.structure.structures.JigsawStructure.MaxDistance(this.maxDistanceFromCenter, this.maxDistanceFromCenter), // Maximum limit for how far pieces can spawn from center. You cannot set this bigger than 128 or else pieces gets cutoff.
+                        this.maxDistanceFromCenter, // Maximum limit for how far pieces can spawn from center. You cannot set this bigger than 128 or else pieces gets cutoff.
                         // 1.21 added three more trailing parameters to JigsawPlacement.addPieces: pool aliasing,
                         // per-dimension height padding, and waterlogging behaviour. None of those are things this
                         // structure customizes, so the vanilla no-op defaults are used.

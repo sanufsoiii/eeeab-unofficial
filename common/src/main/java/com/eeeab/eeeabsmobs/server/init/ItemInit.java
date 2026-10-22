@@ -94,9 +94,7 @@ public class ItemInit {
     // int, Item.Properties)). That's safe here because EggObject.get() forces EntityInit's static
     // initializer (and therefore all entity-type registration) to run first, per normal JVM class-init order.
     public static FabricDeferredRegister.Entry<Item> registerEgg(String name, FabricDeferredRegister.Entry<? extends EntityType<? extends Mob>> EggObject, int backgroundColor, int highlightColor) {
-        // 1.21.9: SpawnEggItem(Properties); entity type bound via Properties#spawnEgg, egg colors moved to the
-        // client item model (assets .../items/*_spawn_egg.json), no longer passed in code.
-        return reg(name, p -> new SpawnEggItem(p.spawnEgg(EggObject.get())));
+        return reg(name, p -> new SpawnEggItem(EggObject.get(), p));
     }
 
     public static ItemStack findBlockItemToStack(FabricDeferredRegister.Entry<Block> block) {

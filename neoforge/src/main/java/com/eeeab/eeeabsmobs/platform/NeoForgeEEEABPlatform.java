@@ -185,10 +185,10 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
         NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent.AfterEntities event) -> {
             PoseStack poseStack = event.getPoseStack();
             poseStack.pushPose();
-            Vec3 camera = event.getLevelRenderState().cameraRenderState.pos;
+            Vec3 camera = event.getCamera().getPosition();
             poseStack.translate(-camera.x, -camera.y, -camera.z);
             ClientEventHandler.renderWorld(
-                    Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false),
+                    event.getPartialTick().getGameTimeDeltaPartialTick(false),
                     poseStack,
                     Minecraft.getInstance().renderBuffers().bufferSource()
             );

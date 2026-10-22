@@ -12,14 +12,15 @@ public class ParticleLastingExplosion extends HugeExplosionParticle {
       this.lifetime = 10 + this.random.nextInt(5);
       this.setSpriteFromAge(pSprites);
    }
-public static class Factory implements ParticleProvider<SimpleParticleType> {
+
+   public static class Factory implements ParticleProvider<SimpleParticleType> {
       private final SpriteSet sprites;
 
       public Factory(SpriteSet pSprites) {
          this.sprites = pSprites;
       }
 
-      public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, net.minecraft.util.RandomSource randomSource) {
+      public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
          return new ParticleLastingExplosion(pLevel, pX, pY, pZ, pXSpeed, this.sprites);
       }
    }

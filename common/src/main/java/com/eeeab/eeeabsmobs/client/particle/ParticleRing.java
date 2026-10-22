@@ -20,7 +20,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-public class ParticleRing extends SingleQuadParticle {
+
+public class ParticleRing extends TextureSheetParticle {
     public float red, green, blue, opacity;
     public boolean facesCamera;
     public float yRot, xRot;
@@ -36,7 +37,7 @@ public class ParticleRing extends SingleQuadParticle {
     }
 
     public ParticleRing(ClientLevel world, double x, double y, double z, double motionX, double motionY, double motionZ, float yRot, float xRot, int duration, float red, float green, float blue, float opacity, float scale, boolean facesCamera, EnumRingBehavior behavior) {
-        super(world, x, y, z, (net.minecraft.client.renderer.texture.TextureAtlasSprite) null);
+        super(world, x, y, z);
         super.alpha = 1;
         setSize(1, 1);
         this.scale = scale * 0.1f;
@@ -68,8 +69,8 @@ public class ParticleRing extends SingleQuadParticle {
     }
 
     @Override
-    //参考自: net.minecraft.client.particle.SingleQuadParticle.extract
-    public void extract(net.minecraft.client.renderer.state.QuadParticleRenderState renderState, Camera renderInfo, float partialTicks) {
+    //参考自: net.minecraft.client.particle.SingleQuadParticle.render
+    public void render(VertexConsumer vertexConsumer, Camera renderInfo, float partialTicks) {
         float var = (age + partialTicks) / lifetime;
         var = Mth.clamp(var, 0.0F, 1.0F);
         if (behavior == EnumRingBehavior.GROW) {
@@ -93,6 +94,10 @@ public class ParticleRing extends SingleQuadParticle {
         rCol = red;
         gCol = green;
         bCol = blue;
+        Vec3 vec3 = renderInfo.getPosition();
+        float f = (float) (Mth.lerp(partialTicks, this.xo, this.x) - vec3.x());
+        float f1 = (float) (Mth.lerp(partialTicks, this.yo, this.y) - vec3.y());
+        float f2 = (float) (Mth.lerp(partialTicks, this.zo, this.z) - vec3.z());
         Quaternionf quaternion = new Quaternionf();
         if (facesCamera) {
             if (this.roll == 0.0F) {
@@ -108,20 +113,40 @@ public class ParticleRing extends SingleQuadParticle {
             quaternion.mul(quatY);
             quaternion.mul(quatX);
         }
-        // 1.21.9: draw via the deferred quad pipeline. extractRotatedQuad adds ONE (single-sided) quad, but the
-        // original ParticleRing drew a double-sided quad (8 verts) — these rings are oriented to the flight
-        // direction (facesCamera=false), so when the axe flies away you see the back face, which a single quad
-        // culls (that was the "no rings" bug). Emit both sides: the given orientation and a 180° Y-flip.
-        this.extractRotatedQuad(renderState, renderInfo, quaternion, partialTicks);
-        Quaternionf back = new Quaternionf(quaternion).rotateY((float) Math.PI);
-        this.extractRotatedQuad(renderState, renderInfo, back, partialTicks);
+        Vector3f[] avector3f = new Vector3f[]{
+                new Vector3f(-1.0F, -1.0F, 0.0F),
+                new Vector3f(-1.0F, 1.0F, 0.0F),
+                new Vector3f(1.0F, 1.0F, 0.0F),
+                new Vector3f(1.0F, -1.0F, 0.0F)
+        };
+        float f3 = this.getQuadSize(partialTicks);
+        for (int i = 0; i < 4; ++i) {
+            Vector3f vector3f = avector3f[i];
+            vector3f.rotate(quaternion);
+            vector3f.mul(f3);
+            vector3f.add(f, f1, f2);
+        }
+        float f6 = this.getU0();
+        float f7 = this.getU1();
+        float f4 = this.getV0();
+        float f5 = this.getV1();
+        int j = this.getLightColor(partialTicks);
+        vertexConsumer.addVertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).setUv(f7, f5).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+        vertexConsumer.addVertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).setUv(f7, f4).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+        vertexConsumer.addVertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).setUv(f6, f4).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+        vertexConsumer.addVertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).setUv(f6, f5).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+        vertexConsumer.addVertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).setUv(f6, f5).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+        vertexConsumer.addVertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).setUv(f6, f4).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+        vertexConsumer.addVertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).setUv(f7, f4).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
+        vertexConsumer.addVertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).setUv(f7, f5).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(j);
     }
 
     @Override
-    public SingleQuadParticle.Layer getLayer() {
-        return SingleQuadParticle.Layer.TRANSLUCENT;
+    public ParticleRenderType getRenderType() {
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
-public static final class Factory implements ParticleProvider<RingData> {
+
+    public static final class Factory implements ParticleProvider<RingData> {
         private final SpriteSet spriteSet;
 
         public Factory(SpriteSet sprite) {
@@ -129,7 +154,7 @@ public static final class Factory implements ParticleProvider<RingData> {
         }
 
         @Override
-        public Particle createParticle(RingData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, net.minecraft.util.RandomSource randomSource) {
+        public Particle createParticle(RingData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             ParticleRing particle = new ParticleRing(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getyRot(), typeIn.getxRot(), typeIn.getDuration(), typeIn.getRed(), typeIn.getGreen(), typeIn.getBlue(), typeIn.getAlpha(), typeIn.getScale(), typeIn.getFacesCamera(), typeIn.getBehavior());
             particle.setSpriteFromAge(spriteSet);
             return particle;
@@ -171,34 +196,44 @@ public static final class Factory implements ParticleProvider<RingData> {
         public ParticleType<? extends RingData> getType() {
             return this.type;
         }
-public float getyRot() {
+
+        public float getyRot() {
             return this.yRot;
         }
-public float getxRot() {
+
+        public float getxRot() {
             return this.xRot;
         }
-public float getRed() {
+
+        public float getRed() {
             return this.red;
         }
-public float getGreen() {
+
+        public float getGreen() {
             return this.green;
         }
-public float getBlue() {
+
+        public float getBlue() {
             return this.blue;
         }
-public float getAlpha() {
+
+        public float getAlpha() {
             return this.alpha;
         }
-public float getScale() {
+
+        public float getScale() {
             return this.scale;
         }
-public int getDuration() {
+
+        public int getDuration() {
             return this.duration;
         }
-public boolean getFacesCamera() {
+
+        public boolean getFacesCamera() {
             return this.facesCamera;
         }
-public EnumRingBehavior getBehavior() {
+
+        public EnumRingBehavior getBehavior() {
             return this.behavior;
         }
 

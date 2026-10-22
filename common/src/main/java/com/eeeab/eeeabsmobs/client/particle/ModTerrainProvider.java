@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 public class ModTerrainProvider extends TerrainParticle.Provider {
     @Override
-    public Particle createParticle(BlockParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, net.minecraft.util.RandomSource randomSource) {
+    public Particle createParticle(BlockParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         BlockState blockstate = type.getState();
         if (blockstate.isAir() || blockstate.is(Blocks.MOVING_PISTON)) return null;
         // Was type.getPos() + Particle#updateSprite(BlockState, BlockPos), a NeoForge patch to BlockParticleOption

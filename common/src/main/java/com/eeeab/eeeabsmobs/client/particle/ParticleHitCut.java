@@ -4,11 +4,11 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-public class ParticleHitCut extends SingleQuadParticle {
+public class ParticleHitCut extends TextureSheetParticle {
     private final SpriteSet sprites;
 
     ParticleHitCut(ClientLevel pLevel, double pX, double pY, double pZ, double pQuadSizeMultiplier, SpriteSet pSprites) {
-        super(pLevel, pX, pY, pZ, 0.0D, 0.0D, 0.0D, (net.minecraft.client.renderer.texture.TextureAtlasSprite) null);
+        super(pLevel, pX, pY, pZ, 0.0D, 0.0D, 0.0D);
         this.sprites = pSprites;
         this.lifetime = 5;
         float f = this.random.nextFloat() * 0.3F + 0.7F;
@@ -39,17 +39,18 @@ public class ParticleHitCut extends SingleQuadParticle {
     }
 
     @Override
-    public SingleQuadParticle.Layer getLayer() {
-        return SingleQuadParticle.Layer.OPAQUE;
+    public ParticleRenderType getRenderType() {
+        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
-public static class Factory implements ParticleProvider<SimpleParticleType> {
+
+    public static class Factory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
 
         public Factory(SpriteSet sprites) {
             this.sprites = sprites;
         }
 
-        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, net.minecraft.util.RandomSource randomSource) {
+        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
             return new ParticleHitCut(pLevel, pX, pY, pZ, pXSpeed, this.sprites);
         }
     }

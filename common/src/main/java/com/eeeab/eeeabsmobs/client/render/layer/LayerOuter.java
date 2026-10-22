@@ -2,8 +2,10 @@ package com.eeeab.eeeabsmobs.client.render.layer;
 
 import com.eeeab.animate.client.render.EMRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -11,7 +13,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.client.renderer.RenderType;
+
 /**
  * 生物模型外图层
  *
@@ -40,16 +42,14 @@ public class LayerOuter<T extends LivingEntity, M extends EntityModel<? super EM
 
     @Override
     @SuppressWarnings("unchecked")
-    public void submit(PoseStack stack, SubmitNodeCollector collector, int packedLightIn, EMRenderState state, float yRot, float xRot) {
+    public void render(PoseStack stack, MultiBufferSource buffer, int packedLightIn, EMRenderState state, float yRot, float xRot) {
         T entity = (T) state.entity;
         if (entity != null && predicate.outer(entity)) {
             int overlay = overlayTexture ? LivingEntityRenderer.getOverlayCoords(state, 0F) : OverlayTexture.NO_OVERLAY;
             float alpha = getAlpha(entity, state.partialTick);
             int color = getTintColor(entity, alpha);
-            // 10-arg overload: (…, light, overlay, COLOR, sprite=null, outline=0, crumbling=null). The 8-arg
-            // form forces model color to -1 (white) and treats the 7th arg as the OUTLINE color (which renders
-            // through blocks) — that was the white-through-terrain bug on every LayerOuter/LayerGlow mob.
-            collector.submitModel(this.getParentModel(), state, stack, this.getRenderType(), packedLightIn, overlay, color, null, 0, null);
+            VertexConsumer consumer = buffer.getBuffer(this.getRenderType());
+            this.getParentModel().renderToBuffer(stack, consumer, packedLightIn, overlay, color);
         }
     }
 
@@ -59,21 +59,18 @@ public class LayerOuter<T extends LivingEntity, M extends EntityModel<? super EM
     }
 
     /**
-     * Render type for the outer layer. Default is translucent (matches the original mod). Subclasses may
-     * override — e.g. a lit, depth-writing cutout — to stop bright inner parts bleeding through the body.
-     */
-    protected net.minecraft.client.renderer.RenderType getRenderType() {
-        return RenderType.entityTranslucent(resourceLocation);
-    }
-
-    /**
-     * 获取渲染图层透明度
+     * 透明度
      *
-     * @param entity 实体
+     * @param entity       实体
+     * @param partialTicks partialTicks
      * @return 透明度
      */
     protected float getAlpha(T entity, float partialTicks) {
         return 1F;
+    }
+
+    protected RenderType getRenderType() {
+        return RenderType.entityTranslucent(this.resourceLocation);
     }
 
     @FunctionalInterface

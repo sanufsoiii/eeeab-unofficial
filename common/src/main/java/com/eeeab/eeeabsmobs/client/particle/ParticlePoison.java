@@ -5,12 +5,10 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.PortalParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.util.RandomSource;
 public class ParticlePoison extends PortalParticle {
-    ParticlePoison(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, TextureAtlasSprite sprite) {
-        super(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed, sprite);
+    ParticlePoison(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+        super(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed);
         this.quadSize *= 1.5F;
         this.lifetime = (int) (Math.random() * 2.0D) + 60;
         float f = this.random.nextFloat() * 0.6F + 0.4F;
@@ -38,15 +36,17 @@ public class ParticlePoison extends PortalParticle {
             this.setPos(this.x, this.y, this.z);
         }
     }
-public static class Factory implements ParticleProvider<SimpleParticleType> {
+
+    public static class Factory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprite;
 
         public Factory(SpriteSet pSprites) {
             this.sprite = pSprites;
         }
 
-        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, RandomSource randomSource) {
-            ParticlePoison particlePoison = new ParticlePoison(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed, this.sprite.get(randomSource));
+        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+            ParticlePoison particlePoison = new ParticlePoison(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed);
+            particlePoison.pickSprite(this.sprite);
             return particlePoison;
         }
     }

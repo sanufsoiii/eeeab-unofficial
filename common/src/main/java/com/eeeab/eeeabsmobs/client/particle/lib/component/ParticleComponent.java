@@ -126,8 +126,8 @@ public abstract class ParticleComponent {
                 if (additive) particle.blue += value;
                 else particle.blue = value;
             } else if (property == EnumParticleProperty.ALPHA) {
-                if (additive) particle.setAlpha(particle.getAlpha() + value);
-                else particle.setAlpha(value);
+                if (additive) particle.alpha += value;
+                else particle.alpha = value;
             } else if (property == EnumParticleProperty.SCALE) {
                 if (additive) particle.scale += value;
                 else particle.scale = value;

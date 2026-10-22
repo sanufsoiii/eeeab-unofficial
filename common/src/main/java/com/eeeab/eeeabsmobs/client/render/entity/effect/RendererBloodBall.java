@@ -3,20 +3,19 @@ package com.eeeab.eeeabsmobs.client.render.entity.effect;
 import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.client.model.entity.effect.ModelBloodBall;
 import com.eeeab.eeeabsmobs.client.model.util.ModModelLayer;
+import com.eeeab.eeeabsmobs.client.render.ModRenderType;
 import com.eeeab.eeeabsmobs.client.render.state.BloodBallRenderState;
 import com.eeeab.eeeabsmobs.server.entity.effect.projectile.EntityBloodBall;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.util.Unit;
-import java.util.List;
+
 public class RendererBloodBall extends EntityRenderer<EntityBloodBall, BloodBallRenderState> {
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/blood_ball.png");
     private final ModelBloodBall model;
@@ -27,35 +26,20 @@ public class RendererBloodBall extends EntityRenderer<EntityBloodBall, BloodBall
     }
 
     @Override
-    public void submit(BloodBallRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void render(BloodBallRenderState state, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
+        VertexConsumer vertexconsumer = buffer.getBuffer(ModRenderType.entityTranslucent(TEXTURE));
         poseStack.translate(0, 0.5F, 0);
         float s = state.scale * state.progress;
         poseStack.scale(s, s, s);
-        float sinRad = Mth.sin(state.f * 0.1F) * (float) Math.PI;
-        this.model.ball_1.xRot = sinRad;
-        this.model.ball_1.yRot = sinRad;
-        this.model.ball_1.zRot = sinRad;
-        this.model.ball_2.xRot = sinRad;
-        this.model.ball_2.yRot = sinRad;
-        this.model.ball_3.xRot = sinRad;
-        List<RenderType> list = ItemRenderer.getFoilRenderTypes(this.model.renderType(TEXTURE), false, false);
-        for (int i = 0; i < list.size(); i++) {
-            collector.order(i).submitModel(
-                this.model,
-                Unit.INSTANCE,
-                poseStack,
-                list.get(i),
-                state.lightCoords,
-                OverlayTexture.NO_OVERLAY,
-                -1,
-                null,
-                state.outlineColor,
-                null
-            );
-        }
+        poseStack.mulPose(Axis.XP.rotationDegrees(Mth.sin(state.f * 0.1F) * 180.0F));
+        this.model.ball_3.render(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
+        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.sin(state.f * 0.1F) * 180.0F));
+        this.model.ball_2.render(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
+        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.sin(state.f * 0.1F) * 180.0F));
+        this.model.ball_1.render(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
-        super.submit(state, poseStack, collector, cameraRenderState);
+        super.render(state, poseStack, buffer, packedLight);
     }
 
     @Override

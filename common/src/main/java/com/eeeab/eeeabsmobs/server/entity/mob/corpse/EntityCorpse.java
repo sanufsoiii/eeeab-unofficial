@@ -172,8 +172,8 @@ public class EntityCorpse extends EntityAbsCorpse {
     }
 
     @Override
-    public boolean killedEntity(ServerLevel level, LivingEntity entity, net.minecraft.world.damagesource.DamageSource source) {
-        boolean flag = super.killedEntity(level, entity, source);
+    public boolean killedEntity(ServerLevel level, LivingEntity entity) {
+        boolean flag = super.killedEntity(level, entity);
         if (!ModConfigHandler.COMMON.mobs.corpses.corpse.enableConvertToCorpse.get() || !this.belongsToMob()) return flag;
         if ((level.getDifficulty() == Difficulty.NORMAL || level.getDifficulty() == Difficulty.HARD)) {
             if (level.getDifficulty() != Difficulty.HARD && this.random.nextBoolean()) {

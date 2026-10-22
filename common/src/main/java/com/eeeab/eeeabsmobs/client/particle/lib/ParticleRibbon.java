@@ -36,10 +36,140 @@ public class ParticleRibbon extends AdvancedParticleBase {
         super.updatePosition();
     }
 
-    // 1.21.9 note: the original custom ribbon/trail mesh was drawn immediately via a VertexConsumer strip,
-    // which the deferred QuadParticleRenderState pipeline has no direct equivalent for. Rather than fake it,
-    // ParticleRibbon now inherits AdvancedParticleBase#extract (renders as a single billboard quad). The
-    // connected trail visual is lost pending a submitCustomGeometry-based reimplementation - verify/redo in-game.
+    @Override
+    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
+        alpha = prevAlpha + (alpha - prevAlpha) * partialTicks;
+        if (alpha < 0.01) alpha = 0.01f;
+        rCol = prevRed + (red - prevRed) * partialTicks;
+        gCol = prevGreen + (green - prevGreen) * partialTicks;
+        bCol = prevBlue + (blue - prevBlue) * partialTicks;
+        particleScale = prevScale + (scale - prevScale) * partialTicks;
+
+        for (ParticleComponent component : components) {
+            component.preRender(this, renderInfo, partialTicks);
+        }
+
+        int j = this.getLightColor(partialTicks);
+
+        float r = rCol;
+        float g = gCol;
+        float b = bCol;
+        float a = alpha;
+        float scale = particleScale;
+        float prevR = r;
+        float prevG = g;
+        float prevB = b;
+        float prevA = a;
+        float prevScale = scale;
+
+        for (ParticleComponent component : components) {
+            if (component instanceof RibbonComponent.PropertyOverLength) {
+                RibbonComponent.PropertyOverLength pOverLength = (RibbonComponent.PropertyOverLength) component;
+                float value = pOverLength.evaluate(0);
+                if (pOverLength.getProperty() == RibbonComponent.PropertyOverLength.EnumRibbonProperty.SCALE) {
+                    prevScale *= value;
+                } else if (pOverLength.getProperty() == RibbonComponent.PropertyOverLength.EnumRibbonProperty.RED) {
+                    prevR *= value;
+                } else if (pOverLength.getProperty() == RibbonComponent.PropertyOverLength.EnumRibbonProperty.GREEN) {
+                    prevG *= value;
+                } else if (pOverLength.getProperty() == RibbonComponent.PropertyOverLength.EnumRibbonProperty.BLUE) {
+                    prevB *= value;
+                } else if (pOverLength.getProperty() == RibbonComponent.PropertyOverLength.EnumRibbonProperty.ALPHA) {
+                    prevA *= value;
+                }
+            }
+        }
+
+        Vec3 offsetDir = new Vec3(0, 0, 0);
+        for (int index = 0; index < positions.length - 1; index++) {
+            if (positions[index] == null || positions[index + 1] == null) continue;
+
+            r = rCol;
+            g = gCol;
+            b = bCol;
+            scale = particleScale;
+            float t = ((float) index + 1) / ((float) positions.length - 1);
+            float tPrev = ((float) index) / ((float) positions.length - 1);
+
+            for (ParticleComponent component : components) {
+                if (component instanceof RibbonComponent.PropertyOverLength) {
+                    RibbonComponent.PropertyOverLength pOverLength = (RibbonComponent.PropertyOverLength) component;
+                    float value = pOverLength.evaluate(t);
+                    if (pOverLength.getProperty() == RibbonComponent.PropertyOverLength.EnumRibbonProperty.SCALE) {
+                        scale *= value;
+                    } else if (pOverLength.getProperty() == RibbonComponent.PropertyOverLength.EnumRibbonProperty.RED) {
+                        r *= value;
+                    } else if (pOverLength.getProperty() == RibbonComponent.PropertyOverLength.EnumRibbonProperty.GREEN) {
+                        g *= value;
+                    } else if (pOverLength.getProperty() == RibbonComponent.PropertyOverLength.EnumRibbonProperty.BLUE) {
+                        b *= value;
+                    } else if (pOverLength.getProperty() == RibbonComponent.PropertyOverLength.EnumRibbonProperty.ALPHA) {
+                        a *= value;
+                    }
+                }
+            }
+
+            Vec3 Vector3d = renderInfo.getPosition();
+            Vec3 p1 = prevPositions[index].add(positions[index].subtract(prevPositions[index]).scale(partialTicks)).subtract(Vector3d);
+            Vec3 p2 = prevPositions[index + 1].add(positions[index + 1].subtract(prevPositions[index + 1]).scale(partialTicks)).subtract(Vector3d);
+
+            if (index == 0) {
+                Vec3 moveDir = p2.subtract(p1).normalize();
+                if (rotation instanceof ParticleRotation.FaceCamera) {
+                    Vec3 viewVec = new Vec3(renderInfo.getLookVector());
+                    offsetDir = moveDir.cross(viewVec).normalize();
+                } else {
+                    offsetDir = moveDir.cross(new Vec3(0, 1, 0)).normalize();
+                }
+                offsetDir = offsetDir.scale(prevScale);
+            }
+
+            Vec3[] aVector3d2 = new Vec3[]{offsetDir.scale(-1), offsetDir, null, null};
+            Vec3 moveDir = p2.subtract(p1).normalize();
+            if (rotation instanceof ParticleRotation.FaceCamera) {
+                Vec3 viewVec = new Vec3(renderInfo.getLookVector());
+                offsetDir = moveDir.cross(viewVec).normalize();
+            } else {
+                offsetDir = moveDir.cross(new Vec3(0, 1, 0)).normalize();
+            }
+            offsetDir = offsetDir.scale(scale);
+            aVector3d2[2] = offsetDir;
+            aVector3d2[3] = offsetDir.scale(-1);
+
+            Vector4f[] vertices2 = new Vector4f[]{
+                    new Vector4f((float) aVector3d2[0].x, (float) aVector3d2[0].y, (float) aVector3d2[0].z, 1f),
+                    new Vector4f((float) aVector3d2[1].x, (float) aVector3d2[1].y, (float) aVector3d2[1].z, 1f),
+                    new Vector4f((float) aVector3d2[2].x, (float) aVector3d2[2].y, (float) aVector3d2[2].z, 1f),
+                    new Vector4f((float) aVector3d2[3].x, (float) aVector3d2[3].y, (float) aVector3d2[3].z, 1f)
+            };
+            Matrix4f boxTranslate = (new Matrix4f()).translate((float) p1.x, (float) p1.y, (float) p1.z);
+            vertices2[0].mul(boxTranslate);
+            vertices2[1].mul(boxTranslate);
+            boxTranslate = (new Matrix4f()).translate((float) p2.x, (float) p2.y, (float) p2.z);
+            vertices2[2].mul(boxTranslate);
+            vertices2[3].mul(boxTranslate);
+
+            float halfU = (getU1() - getU0()) / 2 + getU0();
+            float f = this.getU0() + texPanOffset;
+            float f1 = halfU + texPanOffset;
+            float f2 = this.getV0();
+            float f3 = this.getV1();
+
+            buffer.addVertex(vertices2[0].x(), vertices2[0].y(), vertices2[0].z()).setUv(f1, f3).setColor(prevR, prevG, prevB, prevA).setLight(j);
+            buffer.addVertex(vertices2[1].x(), vertices2[1].y(), vertices2[1].z()).setUv(f1, f2).setColor(prevR, prevG, prevB, prevA).setLight(j);
+            buffer.addVertex(vertices2[2].x(), vertices2[2].y(), vertices2[2].z()).setUv(f, f2).setColor(r, g, b, a).setLight(j);
+            buffer.addVertex(vertices2[3].x(), vertices2[3].y(), vertices2[3].z()).setUv(f, f3).setColor(r, g, b, a).setLight(j);
+
+            prevR = r;
+            prevG = g;
+            prevB = b;
+            prevA = a;
+        }
+
+        for (ParticleComponent component : components) {
+            component.postRender(this, buffer, renderInfo, partialTicks, j);
+        }
+    }
 
     @Override
     public AABB getBoundingBox() {
@@ -77,7 +207,8 @@ public class ParticleRibbon extends AdvancedParticleBase {
     public float getMaxVPublic() {
         return getV1();
     }
-public static final class Factory implements ParticleProvider<RibbonParticleData> {
+
+    public static final class Factory implements ParticleProvider<RibbonParticleData> {
         private final SpriteSet spriteSet;
 
         public Factory(SpriteSet spriteSet) {
@@ -85,14 +216,14 @@ public static final class Factory implements ParticleProvider<RibbonParticleData
         }
 
         @Override
-        public Particle createParticle(RibbonParticleData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, net.minecraft.util.RandomSource randomSource) {
+        public Particle createParticle(RibbonParticleData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             ParticleRibbon particle;
             if (typeIn.isAnimation()) {
                 particle = new ParticleRibbon(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getRotation(), typeIn.getScale(), typeIn.getRed(), typeIn.getGreen(), typeIn.getBlue(), typeIn.getAlpha(), typeIn.getAirDiffusionSpeed(), typeIn.getDuration(), typeIn.isEmissive(), typeIn.getLength(), typeIn.getComponents(), spriteSet);
                 particle.setSpriteFromAge(spriteSet);
             } else {
                 particle = new ParticleRibbon(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getRotation(), typeIn.getScale(), typeIn.getRed(), typeIn.getGreen(), typeIn.getBlue(), typeIn.getAlpha(), typeIn.getAirDiffusionSpeed(), typeIn.getDuration(), typeIn.isEmissive(), typeIn.getLength(), typeIn.getComponents(), null);
-                particle.setSprite(spriteSet.get(randomSource));
+                particle.pickSprite(spriteSet);
             }
             return particle;
         }

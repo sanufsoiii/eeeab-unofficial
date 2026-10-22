@@ -50,40 +50,52 @@ public class AdvancedParticleData implements ParticleOptions {
     public ParticleType<? extends AdvancedParticleData> getType() {
         return type;
     }
-public double getRed() {
+
+    public double getRed() {
         return this.red;
     }
-public double getGreen() {
+
+    public double getGreen() {
         return this.green;
     }
-public double getBlue() {
+
+    public double getBlue() {
         return this.blue;
     }
-public double getAlpha() {
+
+    public double getAlpha() {
         return this.alpha;
     }
-public double getAirDiffusionSpeed() {
+
+    public double getAirDiffusionSpeed() {
         return this.airDiffusionSpeed;
     }
-public ParticleRotation getRotation() {
+
+    public ParticleRotation getRotation() {
         return this.rotation;
     }
-public double getScale() {
+
+    public double getScale() {
         return this.scale;
     }
-public boolean isEmissive() {
+
+    public boolean isEmissive() {
         return this.emissive;
     }
-public double getDuration() {
+
+    public double getDuration() {
         return this.duration;
     }
-public boolean getCanCollide() {
+
+    public boolean getCanCollide() {
         return canCollide;
     }
-public ParticleComponent[] getComponents() {
+
+    public ParticleComponent[] getComponents() {
         return this.components;
     }
-public boolean isAnimation() {
+
+    public boolean isAnimation() {
         return this.isAnimation;
     }
 

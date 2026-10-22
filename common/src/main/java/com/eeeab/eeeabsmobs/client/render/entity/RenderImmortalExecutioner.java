@@ -6,11 +6,10 @@ import com.eeeab.eeeabsmobs.client.model.entity.ModelImmortalExecutioner;
 import com.eeeab.eeeabsmobs.client.model.util.ModModelLayer;
 import com.eeeab.eeeabsmobs.server.entity.mob.immortal.EntityImmortalExecutioner;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 public class RenderImmortalExecutioner extends EMMobRenderer<EntityImmortalExecutioner, ModelImmortalExecutioner> {
@@ -42,8 +41,8 @@ public class RenderImmortalExecutioner extends EMMobRenderer<EntityImmortalExecu
     }
 
     @Override
-    public void submit(EMRenderState state, PoseStack matrixStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
-        super.submit(state, matrixStack, collector, cameraRenderState);
+    public void render(EMRenderState state, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
+        super.render(state, matrixStack, buffer, packedLight);
         EntityImmortalExecutioner entity = (EntityImmortalExecutioner) state.entity;
         if (entity.fire != null && entity.fire.length > 0) {
             entity.fire[0] = ModelPartUtils.getWorldPosition(entity, entity.yBodyRot, this.model.root(), FIRE);

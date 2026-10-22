@@ -4,10 +4,9 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Unit;
 import net.minecraft.client.renderer.RenderType;
 
-public class ModelBloodBall extends Model<Unit> {
+public class ModelBloodBall extends Model {
     public final ModelPart ball_1;
     public final ModelPart ball_2;
     public final ModelPart ball_3;

@@ -5,12 +5,11 @@ import com.eeeab.eeeabsmobs.server.entity.effect.EntityCrimsonRay;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -58,19 +57,17 @@ public class RenderCrimsonRay extends EntityRenderer<EntityCrimsonRay, RenderCri
     }
 
     @Override
-    public void submit(CrimsonRayRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void render(CrimsonRayRenderState state, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (!state.shouldRender) return;
         RenderType renderType = RenderType.entityTranslucentEmissive(TEXTURE);
-        collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
-            com.mojang.blaze3d.vertex.PoseStack ps = com.eeeab.eeeabsmobs.client.render.ModRenderType.seededStack(pose);
-            renderStart(state, ps, builder, state.lightCoords);
-            renderBeam(state, ps, builder, state.lightCoords);
-            ps.pushPose();
-            ps.translate(state.collidePosX - state.posX, state.collidePosY - state.posY, state.collidePosZ - state.posZ);
-            renderEnd(state, ps, builder, state.lightCoords);
-            ps.popPose();
-        });
-        super.submit(state, poseStack, collector, cameraRenderState);
+        VertexConsumer builder = buffer.getBuffer(renderType);
+        renderStart(state, poseStack, builder, packedLight);
+        renderBeam(state, poseStack, builder, packedLight);
+        poseStack.pushPose();
+        poseStack.translate(state.collidePosX - state.posX, state.collidePosY - state.posY, state.collidePosZ - state.posZ);
+        renderEnd(state, poseStack, builder, packedLight);
+        poseStack.popPose();
+        super.render(state, poseStack, buffer, packedLight);
     }
 
     private void renderStart(CrimsonRayRenderState state, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
@@ -219,27 +216,25 @@ public class RenderCrimsonRay extends EntityRenderer<EntityCrimsonRay, RenderCri
         }
 
         @Override
-        public void submit(PreAttackRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+        public void render(PreAttackRenderState state, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
             RenderType renderType = RenderType.entityTranslucentEmissive(TEXTURE);
-            collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
-                com.mojang.blaze3d.vertex.PoseStack ps = com.eeeab.eeeabsmobs.client.render.ModRenderType.seededStack(pose);
-                ps.pushPose();
-                ps.mulPose(Axis.YP.rotationDegrees(90.0F - state.yRot));
-                ps.translate(0.0, 0.001F, 0.0);
-                ps.scale(-SIZE, -SIZE, -SIZE);
-                float minU = 0 + 32F / TEXTURE_WIDTH * state.phase;
-                float minV = 0;
-                float maxU = minU + 32F / TEXTURE_WIDTH;
-                float maxV = minV + 32F / TEXTURE_HEIGHT;
-                PoseStack.Pose entry = ps.last();
-                Matrix4f matrix4f = entry.pose();
-                drawVertex(matrix4f, entry, builder, -SIZE, 0, -SIZE, minU, minV, state.lightCoords);
-                drawVertex(matrix4f, entry, builder, -SIZE, 0, SIZE, minU, maxV, state.lightCoords);
-                drawVertex(matrix4f, entry, builder, SIZE, 0, SIZE, maxU, maxV, state.lightCoords);
-                drawVertex(matrix4f, entry, builder, SIZE, 0, -SIZE, maxU, minV, state.lightCoords);
-                ps.popPose();
-            });
-            super.submit(state, poseStack, collector, cameraRenderState);
+            VertexConsumer builder = buffer.getBuffer(renderType);
+            poseStack.pushPose();
+            poseStack.mulPose(Axis.YP.rotationDegrees(90.0F - state.yRot));
+            poseStack.translate(0.0, 0.001F, 0.0);
+            poseStack.scale(-SIZE, -SIZE, -SIZE);
+            float minU = 0 + 32F / TEXTURE_WIDTH * state.phase;
+            float minV = 0;
+            float maxU = minU + 32F / TEXTURE_WIDTH;
+            float maxV = minV + 32F / TEXTURE_HEIGHT;
+            PoseStack.Pose entry = poseStack.last();
+            Matrix4f matrix4f = entry.pose();
+            drawVertex(matrix4f, entry, builder, -SIZE, 0, -SIZE, minU, minV, packedLight);
+            drawVertex(matrix4f, entry, builder, -SIZE, 0, SIZE, minU, maxV, packedLight);
+            drawVertex(matrix4f, entry, builder, SIZE, 0, SIZE, maxU, maxV, packedLight);
+            drawVertex(matrix4f, entry, builder, SIZE, 0, -SIZE, maxU, minV, packedLight);
+            poseStack.popPose();
+            super.render(state, poseStack, buffer, packedLight);
         }
 
         private void drawVertex(Matrix4f matrix, PoseStack.Pose pose, VertexConsumer vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, int packedLightIn) {

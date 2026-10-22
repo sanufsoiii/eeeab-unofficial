@@ -1,7 +1,7 @@
 package com.eeeab.eeeabsmobs.client.particle;
 
-import net.minecraft.client.renderer.state.QuadParticleRenderState;
-
+import com.eeeab.eeeabsmobs.client.render.ModRenderType;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -15,7 +15,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
-public class ParticleDust extends SingleQuadParticle {
+public class ParticleDust extends TextureSheetParticle {
     private final float scale, airDiffusionSpeed, maxAlpha;
     private final boolean emissive;
     private final EnumDustBehavior behavior;
@@ -27,7 +27,7 @@ public class ParticleDust extends SingleQuadParticle {
     }
 
     public ParticleDust(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, double scale, int duration, EnumDustBehavior behavior, double airDiffusionSpeed, boolean emissive) {
-        super(world, x, y, z, (net.minecraft.client.renderer.texture.TextureAtlasSprite) null);
+        super(world, x, y, z);
         float randomFactor = 0.6F + 0.4F * this.random.nextFloat();
         this.scale = (float) scale * 0.05F * randomFactor;
         this.maxAlpha = 0.25F + this.random.nextFloat() * 0.25F;
@@ -42,8 +42,8 @@ public class ParticleDust extends SingleQuadParticle {
     }
 
     @Override
-    public SingleQuadParticle.Layer getLayer() {
-        return SingleQuadParticle.Layer.TRANSLUCENT;
+    public ParticleRenderType getRenderType() {
+        return ModRenderType.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ParticleDust extends SingleQuadParticle {
     }
 
     @Override
-    public void extract(QuadParticleRenderState renderState, Camera renderInfo, float partialTicks) {
+    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
         float var = (age + partialTicks) / (float) lifetime;
         var = Mth.clamp(var, 0.0F, 1.0F);
         float fadeStart = 0.1F;
@@ -80,9 +80,11 @@ public class ParticleDust extends SingleQuadParticle {
         } else {
             this.quadSize = scale;
         }
-        super.extract(renderState, renderInfo, partialTicks);
+        super.render(buffer, renderInfo, partialTicks);
     }
-public static final class Factory implements ParticleProvider<DustData> {
+
+
+    public static final class Factory implements ParticleProvider<DustData> {
         private final SpriteSet spriteSet;
 
         public Factory(SpriteSet sprite) {
@@ -90,7 +92,7 @@ public static final class Factory implements ParticleProvider<DustData> {
         }
 
         @Override
-        public Particle createParticle(DustData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, net.minecraft.util.RandomSource randomSource) {
+        public Particle createParticle(DustData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             ParticleDust particleDust = new ParticleDust(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getScale(), typeIn.getDuration(), typeIn.getBehavior(), typeIn.getAirDiffusionSpeed(), typeIn.getEmissive());
             particleDust.setSpriteFromAge(spriteSet);
             float randomFactor = (particleDust.random.nextFloat() - particleDust.random.nextFloat()) * 0.1F;
@@ -139,28 +141,36 @@ public static final class Factory implements ParticleProvider<DustData> {
         public ParticleType<DustData> getType() {
             return type;
         }
-public float getR() {
+
+        public float getR() {
             return this.r;
         }
-public float getG() {
+
+        public float getG() {
             return this.g;
         }
-public float getB() {
+
+        public float getB() {
             return this.b;
         }
-public float getScale() {
+
+        public float getScale() {
             return this.scale;
         }
-public EnumDustBehavior getBehavior() {
+
+        public EnumDustBehavior getBehavior() {
             return this.behavior;
         }
-public int getDuration() {
+
+        public int getDuration() {
             return this.duration;
         }
-public float getAirDiffusionSpeed() {
+
+        public float getAirDiffusionSpeed() {
             return this.airDiffusionSpeed;
         }
-public boolean getEmissive() {
+
+        public boolean getEmissive() {
             return this.emissive;
         }
 

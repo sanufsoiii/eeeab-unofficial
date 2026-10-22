@@ -4,8 +4,8 @@ import com.eeeab.animate.server.animation.Animation;
 import com.eeeab.animate.server.animation.AnimatedEntity;
 import com.eeeab.animate.server.message.MessagePlayAnimation;
 import com.eeeab.eeeabsmobs.EEEABMobs;
-import com.eeeab.eeeabsmobs.server.message.ModNetwork;
 import com.eeeab.animate.server.inventory.AnimationControllerMenu;
+import com.eeeab.eeeabsmobs.server.message.ModNetwork;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -48,18 +48,16 @@ public class AnimationControllerScreen extends AbstractContainerScreen<Animation
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int gx, int gy) {
-        // RenderSystem.setShaderColor/enableBlend/defaultBlendFunc/disableBlend were removed with the
-        // GPU render-pipeline rework; GuiGraphics#blit now runs the GUI_TEXTURED pipeline itself.
         guiGraphics.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0.0F, 0.0F, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
     }
 
     @Override
-    public boolean keyPressed(net.minecraft.client.input.KeyEvent keyEvent) {
-        if (keyEvent.isEscape()) {
+    public boolean keyPressed(int key, int b, int c) {
+        if (key == 256) {
             return close();
         }
-        if (animationIndexEdit.isFocused()) return animationIndexEdit.keyPressed(keyEvent);
-        return super.keyPressed(keyEvent);
+        if (animationIndexEdit.isFocused()) return animationIndexEdit.keyPressed(key, b, c);
+        return super.keyPressed(key, b, c);
     }
 
     @Override

@@ -3,8 +3,9 @@ package com.eeeab.eeeabsmobs.client.render.layer;
 import com.eeeab.animate.client.render.EMRenderState;
 import com.eeeab.eeeabsmobs.server.entity.mob.GlowEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.LivingEntity;
+
 /**
  * 生物发光图层
  *
@@ -56,13 +58,14 @@ public class LayerGlow<T extends LivingEntity & GlowEntity, M extends EntityMode
 
     @Override
     @SuppressWarnings("unchecked")
-    public void submit(PoseStack stack, SubmitNodeCollector collector, int packedLightIn, EMRenderState state, float yRot, float xRot) {
+    public void render(PoseStack stack, MultiBufferSource buffer, int packedLightIn, EMRenderState state, float yRot, float xRot) {
         T entity = (T) state.entity;
         if (entity != null && predicate.test(entity)) {
             float brightness = this.supplier.get(entity, state.partialTick);
             int overlay = overlayTexture ? LivingEntityRenderer.getOverlayCoords(state, 0F) : OverlayTexture.NO_OVERLAY;
             int color = ARGB.color(ARGB.as8BitChannel(brightness), ARGB.as8BitChannel(brightness), ARGB.as8BitChannel(brightness), ARGB.as8BitChannel(brightness));
-            collector.submitModel(this.getParentModel(), state, stack, this.getRenderType(entity), packedLightIn, overlay, color, null, 0, null);
+            VertexConsumer consumer = buffer.getBuffer(this.getRenderType(entity));
+            this.getParentModel().renderToBuffer(stack, consumer, packedLightIn, overlay, color);
         }
     }
 

@@ -101,8 +101,7 @@ public class EntityEyeOfStructure extends Entity implements ItemSupplier, IEntit
     }
 
     @Override
-    public void lerpMotion(net.minecraft.world.phys.Vec3 vec) {
-        double px = vec.x, py = vec.y, pz = vec.z;
+    public void lerpMotion(double px, double py, double pz) {
         this.setDeltaMovement(px, py, pz);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
             double d0 = Math.sqrt(px * px + pz * pz);

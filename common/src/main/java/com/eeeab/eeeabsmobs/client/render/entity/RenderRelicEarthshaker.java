@@ -10,10 +10,9 @@ import com.eeeab.eeeabsmobs.client.render.layer.LayerGlow;
 import com.eeeab.eeeabsmobs.server.entity.mob.GlowEntity;
 import com.eeeab.eeeabsmobs.server.entity.mob.relicron.EntityRelicEarthshaker;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
 import net.minecraft.resources.ResourceLocation;
@@ -54,8 +53,8 @@ public class RenderRelicEarthshaker extends EMMobRenderer<EntityRelicEarthshaker
     }
 
     @Override
-    public void submit(EMRenderState state, PoseStack matrixStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
-        super.submit(state, matrixStack, collector, cameraRenderState);
+    public void render(EMRenderState state, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
+        super.render(state, matrixStack, buffer, packedLight);
         EntityRelicEarthshaker entity = (EntityRelicEarthshaker) state.entity;
         if (entity == null) return;
         Animation animation = entity.getAnimation();

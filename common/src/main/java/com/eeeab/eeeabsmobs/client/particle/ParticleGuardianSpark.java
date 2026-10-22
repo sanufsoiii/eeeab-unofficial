@@ -5,11 +5,12 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-public class ParticleGuardianSpark extends SingleQuadParticle {
+
+public class ParticleGuardianSpark extends TextureSheetParticle {
     private final SpriteSet sprite;
 
     protected ParticleGuardianSpark(SpriteSet sprite, ClientLevel level, double x, double y, double z, Vec3 speed) {
-        super(level, x, y, z, speed.x, speed.y, speed.z, (net.minecraft.client.renderer.texture.TextureAtlasSprite) null);
+        super(level, x, y, z, speed.x, speed.y, speed.z);
         this.sprite = sprite;
         this.hasPhysics = false;
         this.xd = speed.x;
@@ -35,15 +36,16 @@ public class ParticleGuardianSpark extends SingleQuadParticle {
 
     @Override
     //粒子渲染效果 半透明
-    public SingleQuadParticle.Layer getLayer() {
-        return SingleQuadParticle.Layer.TRANSLUCENT;
+    public ParticleRenderType getRenderType() {
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @Override
     protected int getLightColor(float partialTick) {
         return 240;
     }
-public static final class Factory implements ParticleProvider<SimpleParticleType> {
+
+    public static final class Factory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprite;
 
         public Factory(SpriteSet sprite) {
@@ -53,7 +55,7 @@ public static final class Factory implements ParticleProvider<SimpleParticleType
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z,
-                                       double dx, double dy, double dz, net.minecraft.util.RandomSource randomSource) {
+                                       double dx, double dy, double dz) {
             return new ParticleGuardianSpark(this.sprite, level, x, y, z, new Vec3(dx, dy, dz));
         }
     }

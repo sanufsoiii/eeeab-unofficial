@@ -57,7 +57,7 @@ public class EntityCorpseToPlayer extends EntityCorpse implements GlowEntity {
     }
 
     @Override
-    protected boolean shouldDropLoot(net.minecraft.server.level.ServerLevel level) {
+    protected boolean shouldDropLoot() {
         return false;
     }
 

@@ -19,10 +19,15 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
-import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.server.packs.resources.ResourceManager;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -177,13 +182,31 @@ public class FabricEEEABPlatform implements EEEABPlatform {
 
     @Override
     public void registerWorldRender() {
-        // WorldRenderEvents was omitted from Fabric API 0.134.1+1.21.9 during Mojang's FrameGraph migration
+        WorldRenderEvents.AFTER_ENTITIES.register(context -> {
+            PoseStack poseStack = context.matrixStack();
+            poseStack.pushPose();
+            Vec3 camera = context.camera().getPosition();
+            poseStack.translate(-camera.x, -camera.y, -camera.z);
+            ClientEventHandler.renderWorld(context.tickCounter().getGameTimeDeltaPartialTick(false), poseStack, Minecraft.getInstance().renderBuffers().bufferSource());
+            poseStack.popPose();
+        });
     }
 
     @Override
     public void registerClientReloadListener() {
-        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(
-                ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "boss_bar_textures"), new BossBarTexReloadListener());
+        BossBarTexReloadListener delegate = new BossBarTexReloadListener();
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new IdentifiableResourceReloadListener() {
+            @Override
+            public ResourceLocation getFabricId() {
+                return ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "boss_bar_textures");
+            }
+
+            @Override
+            public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager resourceManager,
+                                                  Executor backgroundExecutor, Executor gameExecutor) {
+                return delegate.reload(barrier, resourceManager, backgroundExecutor, gameExecutor);
+            }
+        });
     }
 
     @Override

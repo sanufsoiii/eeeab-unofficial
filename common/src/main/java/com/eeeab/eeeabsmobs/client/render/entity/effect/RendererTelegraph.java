@@ -4,8 +4,7 @@ import com.eeeab.eeeabsmobs.server.entity.effect.EntityTelegraph;
 import com.eeeab.animate.client.render.EMRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -45,14 +44,14 @@ public class RendererTelegraph extends EntityRenderer<EntityTelegraph, EMRenderS
     }
 
     @Override
-    public void submit(EMRenderState renderState, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void render(EMRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         EntityTelegraph entity = (EntityTelegraph) renderState.entity;
         float partialTick = renderState.partialTick;
         if (entity == null || entity.controlled == null) return;
         RenderType renderType = RenderType.entityTranslucentEmissive(WHITE_TEXTURE);
-        int packedLight = renderState.lightCoords;
-        collector.submitCustomGeometry(poseStack, renderType, (pose, consumer) ->
-            renderGeometry(pose, consumer, packedLight, entity, partialTick));
+        VertexConsumer consumer = buffer.getBuffer(renderType);
+        renderGeometry(poseStack.last(), consumer, packedLight, entity, partialTick);
+        super.render(renderState, poseStack, buffer, packedLight);
     }
 
     private void renderGeometry(PoseStack.Pose pose, VertexConsumer consumer, int packedLight, EntityTelegraph entity, float partialTick) {

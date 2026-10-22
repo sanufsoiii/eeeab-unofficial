@@ -4,12 +4,12 @@ import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.client.render.FlatTextureRenderer;
 import com.eeeab.eeeabsmobs.server.entity.effect.projectile.EntityShamanBomb;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -48,20 +48,19 @@ public class RenderShamanBomb extends FlatTextureRenderer<EntityShamanBomb, Rend
     }
 
     @Override
-    public void submit(ShamanBombRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void render(ShamanBombRenderState state, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         float fraction = state.fraction;
         float scale = SCALE * fraction;
         poseStack.scale(scale, scale, scale);
         poseStack.translate(0F, 0.5F - 0.5F * fraction, 0F);
-        poseStack.mulPose(cameraRenderState.orientation);
+        poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
         RenderType renderType = RenderType.entityCutoutNoCull(state.dangerous ? D_TEXTURE : N_TEXTURE);
-        collector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
-            PoseStack ps = com.eeeab.eeeabsmobs.client.render.ModRenderType.seededStack(pose);
-            renderFlatQuad(ps, vertexConsumer, state.lightCoords, 1F, 0F, 0F, 1F, 1F, 1F, Quad.XY);
-        });
+        VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
+        renderFlatQuad(poseStack, vertexConsumer, packedLight, 1F, 0F, 0F, 1F, 1F, 1F, Quad.XY);
         poseStack.popPose();
+        super.render(state, poseStack, buffer, packedLight);
     }
 
     public static class ShamanBombRenderState extends EntityRenderState {

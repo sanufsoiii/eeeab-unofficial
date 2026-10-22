@@ -13,10 +13,9 @@ import com.eeeab.eeeabsmobs.server.entity.mob.relicron.EntityRelicAnnihilator;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
 import net.minecraft.resources.ResourceLocation;
@@ -55,8 +54,8 @@ public class RenderRelicAnnihilator extends EMMobRenderer<EntityRelicAnnihilator
     }
 
     @Override
-    public void submit(EMRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
-        super.submit(state, poseStack, collector, cameraRenderState);
+    public void render(EMRenderState state, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        super.render(state, poseStack, buffer, packedLight);
         EntityRelicAnnihilator entity = (EntityRelicAnnihilator) state.entity;
         if (entity == null) return;
         Animation animation = entity.getAnimation();
@@ -70,8 +69,6 @@ public class RenderRelicAnnihilator extends EMMobRenderer<EntityRelicAnnihilator
             }
             if (afterImage) afterImageHelper.recordIfNeeded(entity, entity.level().getGameTime());
         }
-        // 1.21.11: renderAfterImages(...) still draws into a MultiBufferSource, which the new
-        // submit(...)/SubmitNodeCollector pipeline does not provide, so the after-image pass is
-        // temporarily disabled (visual debt: BACKDASH/STAB after-images no longer render).
+        afterImageHelper.renderAfterImages(entity, poseStack, buffer, packedLight, state.partialTick, entity.level().getGameTime(), e -> TEXTURE);
     }
 }

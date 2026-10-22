@@ -3,20 +3,18 @@ package com.eeeab.eeeabsmobs.client.render.entity.effect;
 import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.client.model.entity.effect.ModelImmortalShuriken;
 import com.eeeab.eeeabsmobs.client.model.util.ModModelLayer;
+import com.eeeab.eeeabsmobs.client.render.ModRenderType;
 import com.eeeab.eeeabsmobs.client.render.state.ImmortalShurikenRenderState;
 import com.eeeab.eeeabsmobs.server.entity.effect.projectile.EntityImmortalShuriken;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.util.Unit;
-import java.util.List;
+
 public class RenderImmortalShuriken extends EntityRenderer<EntityImmortalShuriken, ImmortalShurikenRenderState> {
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_shuriken.png");
     private final ModelImmortalShuriken model;
@@ -27,30 +25,17 @@ public class RenderImmortalShuriken extends EntityRenderer<EntityImmortalShurike
     }
 
     @Override
-    public void submit(ImmortalShurikenRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void render(ImmortalShurikenRenderState state, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
         poseStack.pushPose();
         poseStack.translate(0F, 0.93875F, 0F);
         poseStack.scale(-0.5F, -0.5F, 0.5F);
         this.model.root.yRot = state.yRot * ((float) Math.PI / 180F);
         this.model.root.xRot = state.xRot * ((float) Math.PI / 180F);
         this.model.bladeGroup.yRot += state.bladeSpin;
-        List<RenderType> list = ItemRenderer.getFoilRenderTypes(this.model.renderType(TEXTURE), false, false);
-        for (int i = 0; i < list.size(); i++) {
-            collector.order(i).submitModel(
-                this.model,
-                Unit.INSTANCE,
-                poseStack,
-                list.get(i),
-                state.lightCoords,
-                OverlayTexture.NO_OVERLAY,
-                -1,
-                null,
-                state.outlineColor,
-                null
-            );
-        }
+        VertexConsumer buffer = bufferIn.getBuffer(ModRenderType.getGlowingCutOutEffect(TEXTURE, false));
+        this.model.renderToBuffer(poseStack, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
         poseStack.popPose();
-        super.submit(state, poseStack, collector, cameraRenderState);
+        super.render(state, poseStack, bufferIn, packedLightIn);
     }
 
     @Override

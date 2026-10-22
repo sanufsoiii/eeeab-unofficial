@@ -5,11 +5,10 @@ import com.eeeab.eeeabsmobs.server.entity.effect.EntityAbsBeam;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -68,7 +67,7 @@ public abstract class RenderAbsBeam<T extends EntityAbsBeam, S extends EntityRen
     }
 
     @Override
-    public void submit(S state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void render(S state, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         AbsBeamRenderState s = (AbsBeamRenderState) state;
         if (!s.accumulating) return;
         double collidePosX = s.prevCollidePosX + (s.collidePosX - s.prevCollidePosX) * s.partialTick;
@@ -76,15 +75,14 @@ public abstract class RenderAbsBeam<T extends EntityAbsBeam, S extends EntityRen
         double collidePosZ = s.prevCollidePosZ + (s.collidePosZ - s.prevCollidePosZ) * s.partialTick;
         float length = (float) Math.sqrt(Math.pow(collidePosX - s.posX, 2) + Math.pow(collidePosY - s.posY, 2) + Math.pow(collidePosZ - s.posZ, 2));
         T laser = (T) s.entity;
-        collector.submitCustomGeometry(poseStack, ModRenderType.getGlowingEffect(s.texture), (pose, vertexConsumer) -> {
-            PoseStack ps = ModRenderType.seededStack(pose);
-            renderStart(laser, s.frame, ps, vertexConsumer, s.partialTick, s.lightCoords);
-            renderBeam(length, 180f / (float) Math.PI * s.yaw, 180f / (float) Math.PI * s.pitch, s.frame, ps, vertexConsumer, s.lightCoords);
-            ps.pushPose();
-            ps.translate(collidePosX - s.posX, collidePosY - s.posY, collidePosZ - s.posZ);
-            renderEnd(laser, s.frame, s.blockSide, ps, vertexConsumer, s.partialTick, s.lightCoords);
-            ps.popPose();
-        });
+        VertexConsumer vertexConsumer = buffer.getBuffer(ModRenderType.getGlowingEffect(s.texture));
+        renderStart(laser, s.frame, poseStack, vertexConsumer, s.partialTick, packedLight);
+        renderBeam(length, 180f / (float) Math.PI * s.yaw, 180f / (float) Math.PI * s.pitch, s.frame, poseStack, vertexConsumer, packedLight);
+        poseStack.pushPose();
+        poseStack.translate(collidePosX - s.posX, collidePosY - s.posY, collidePosZ - s.posZ);
+        renderEnd(laser, s.frame, s.blockSide, poseStack, vertexConsumer, s.partialTick, packedLight);
+        poseStack.popPose();
+        super.render(state, poseStack, buffer, packedLight);
     }
 
     //渲染四边形平面

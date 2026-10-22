@@ -3,16 +3,17 @@ package com.eeeab.eeeabsmobs.client.render.layer;
 import com.eeeab.animate.client.render.EMRenderState;
 import com.eeeab.eeeabsmobs.server.entity.mob.GlowEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.client.renderer.RenderType;
+
 /**
  * 生物呼吸发光图层
  *
@@ -38,12 +39,13 @@ public class LayerBreath<T extends LivingEntity & GlowEntity, M extends EntityMo
 
     @Override
     @SuppressWarnings("unchecked")
-    public void submit(PoseStack stack, SubmitNodeCollector collector, int packedLightIn, EMRenderState state, float yRot, float xRot) {
+    public void render(PoseStack stack, MultiBufferSource buffer, int packedLightIn, EMRenderState state, float yRot, float xRot) {
         T entity = (T) state.entity;
         if (entity != null && predicate.test(entity)) {
             float alpha = Mth.clamp((Mth.cos(state.ageInTicks * speed) * 2.0F) - 1.0F, 0, supplier.get(entity, state.partialTick));
             int color = ARGB.color(255, ARGB.as8BitChannel(alpha), ARGB.as8BitChannel(alpha), ARGB.as8BitChannel(alpha));
-            collector.submitModel(this.getParentModel(), state, stack, RenderType.eyes(this.location), packedLightIn, OverlayTexture.NO_OVERLAY, color, null, 0, null);
+            VertexConsumer consumer = buffer.getBuffer(RenderType.eyes(this.location));
+            this.getParentModel().renderToBuffer(stack, consumer, packedLightIn, OverlayTexture.NO_OVERLAY, color);
         }
     }
 }

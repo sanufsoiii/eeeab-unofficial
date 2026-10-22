@@ -6,18 +6,16 @@ import com.eeeab.eeeabsmobs.client.model.util.ModModelLayer;
 import com.eeeab.eeeabsmobs.client.render.state.DoomboltAxeRenderState;
 import com.eeeab.eeeabsmobs.server.entity.effect.projectile.EntityThrownDoomboltAxe;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.util.Unit;
-import java.util.List;
+
 public class RenderDoomboltAxe extends EntityRenderer<EntityThrownDoomboltAxe, DoomboltAxeRenderState> {
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/item/doombolt_battleaxe.png");
     private final ModelDoomboltAxe model;
@@ -28,27 +26,14 @@ public class RenderDoomboltAxe extends EntityRenderer<EntityThrownDoomboltAxe, D
     }
 
     @Override
-    public void submit(DoomboltAxeRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void render(DoomboltAxeRenderState state, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(state.xRot + 90.0F));
-        List<RenderType> list = ItemRenderer.getFoilRenderTypes(this.model.renderType(TEXTURE), false, state.isFoil);
-        for (int i = 0; i < list.size(); i++) {
-            collector.order(i).submitModel(
-                this.model,
-                Unit.INSTANCE,
-                poseStack,
-                list.get(i),
-                state.lightCoords,
-                OverlayTexture.NO_OVERLAY,
-                -1,
-                null,
-                state.outlineColor,
-                null
-            );
-        }
+        VertexConsumer vertexconsumer = ItemRenderer.getFoilBuffer(bufferIn, this.model.renderType(TEXTURE), false, state.isFoil);
+        this.model.renderToBuffer(poseStack, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
         poseStack.popPose();
-        super.submit(state, poseStack, collector, cameraRenderState);
+        super.render(state, poseStack, bufferIn, packedLightIn);
     }
 
     @Override

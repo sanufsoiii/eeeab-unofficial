@@ -63,9 +63,9 @@ public class NeoForgeEEEABNetwork implements EEEABNetwork {
         if (entity.level() instanceof ServerLevel serverLevel) {
             Packet<ClientGamePacketListener> packet = (Packet<ClientGamePacketListener>) (Packet<?>) NetworkManager.toPacket(NetworkManager.Side.S2C, wireId, EEEABNetwork.encode(codec, payload));
             if (includeSelf) {
-                serverLevel.getChunkSource().sendToTrackingPlayersAndSelf(entity, packet);
+                serverLevel.getChunkSource().broadcastAndSend(entity, packet);
             } else {
-                serverLevel.getChunkSource().sendToTrackingPlayers(entity, packet);
+                serverLevel.getChunkSource().broadcast(entity, packet);
             }
         }
     }

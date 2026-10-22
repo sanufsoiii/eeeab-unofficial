@@ -3,13 +3,13 @@ package com.eeeab.eeeabsmobs.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-public class ParticleImmortalExplosion extends SingleQuadParticle {
+public class ParticleImmortalExplosion extends TextureSheetParticle {
     private final float rotSpeed;
     private final SpriteSet sprites;
     private final boolean invert;
 
     public ParticleImmortalExplosion(ClientLevel level, double x, double y, double z, double quadSizeMultiplier, SpriteSet sprites) {
-        super(level, x, y, z, 0.0D, 0.0D, 0.0D, (net.minecraft.client.renderer.texture.TextureAtlasSprite) null);
+        super(level, x, y, z, 0.0D, 0.0D, 0.0D);
         this.lifetime = 6 + this.random.nextInt(5);
         float f = this.random.nextFloat() * 0.2F;
         this.invert = this.random.nextBoolean();
@@ -42,17 +42,18 @@ public class ParticleImmortalExplosion extends SingleQuadParticle {
         }
     }
 
-    public SingleQuadParticle.Layer getLayer() {
-        return SingleQuadParticle.Layer.OPAQUE;
+    public ParticleRenderType getRenderType() {
+        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
-public static class Factory implements ParticleProvider<SimpleParticleType> {
+
+    public static class Factory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
 
         public Factory(SpriteSet spriteSet) {
             this.sprites = spriteSet;
         }
 
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, net.minecraft.util.RandomSource randomSource) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new ParticleImmortalExplosion(level, x, y, z, xSpeed, this.sprites);
         }
     }

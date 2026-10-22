@@ -4,10 +4,9 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Unit;
 import net.minecraft.client.renderer.RenderType;
 
-public class ModelPulsedGrenade extends Model<Unit> {
+public class ModelPulsedGrenade extends Model {
     public final ModelPart ball;
 
     public ModelPulsedGrenade(ModelPart root) {

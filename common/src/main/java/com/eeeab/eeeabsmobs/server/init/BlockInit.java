@@ -119,7 +119,7 @@ public class BlockInit {
     public static final FabricDeferredRegister.Entry<Block> BOUNDARY_CORE = registryBlock("boundary_core", key -> new BlockVoidCrackPortalLock(BlockBehaviour.Properties.of().setId(key)
             .randomTicks().pushReaction(PushReaction.BLOCK).strength(-1.0F).sound(SoundType.STONE).lightLevel(s -> 3).noLootTable()), false);
     public static final FabricDeferredRegister.Entry<Block> VOID_CRACK_PORTAL = registryBlock("void_crack_portal", key -> new BlockVoidCrackPortal(BlockBehaviour.Properties.of().setId(key)
-            .noCollision().randomTicks().pushReaction(PushReaction.BLOCK).strength(-1.0F).isValidSpawn(BlockInit::never).sound(SoundType.GLASS).lightLevel(s -> 11).noLootTable()), false);
+            .noCollission().randomTicks().pushReaction(PushReaction.BLOCK).strength(-1.0F).isValidSpawn(BlockInit::never).sound(SoundType.GLASS).lightLevel(s -> 11).noLootTable()), false);
     public static final FabricDeferredRegister.Entry<Block> EROSION_DEEPSLATE_BRICKS = registryBlock("erosion_deepslate_bricks", key -> new Block(BlockBehaviour.Properties
             .ofFullCopy(Blocks.DEEPSLATE_BRICKS).setId(key).lightLevel(s -> 7).noLootTable()), false);
 

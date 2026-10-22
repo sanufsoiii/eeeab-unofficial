@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
-public class ModelImmortalShaman extends ModHierarchicalModel<EntityImmortalShaman> implements ArmedModel<EMRenderState> {
+public class ModelImmortalShaman extends ModHierarchicalModel<EntityImmortalShaman> implements ArmedModel {
     private final ModelPart root;
     private final ModelPart head;
     private final ModelPart upper;
@@ -114,7 +114,7 @@ public class ModelImmortalShaman extends ModHierarchicalModel<EntityImmortalSham
     }
 
     @Override
-    public void translateToHand(EMRenderState state, HumanoidArm humanoidArm, PoseStack poseStack) {
+    public void translateToHand(HumanoidArm humanoidArm, PoseStack poseStack) {
         boolean isRightArm = humanoidArm == HumanoidArm.RIGHT;
         ModelPart model$part = isRightArm ? this.rightHand : this.leftHand;
         this.root.translateAndRotate(poseStack);

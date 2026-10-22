@@ -10,10 +10,9 @@ import com.eeeab.eeeabsmobs.client.render.layer.LayerGlow;
 import com.eeeab.eeeabsmobs.client.render.layer.LayerOuter;
 import com.eeeab.eeeabsmobs.server.entity.mob.immortal.EntityImmortalBoss;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import com.eeeab.animate.client.render.EMMobRenderer;
 import com.eeeab.animate.client.render.EMRenderState;
 import net.minecraft.core.BlockPos;
@@ -94,7 +93,7 @@ public class RenderImmortal extends EMMobRenderer<EntityImmortalBoss, ModelImmor
     }
 
     @Override
-    public void submit(EMRenderState state, PoseStack matrixStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void render(EMRenderState state, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
         EntityImmortalBoss entity = (EntityImmortalBoss) state.entity;
         if (entity != null && !entity.alphaControlled.isStop()) {
             float alpha = 1F - entity.alphaControlled.getAnimationFraction(state.partialTick);
@@ -104,7 +103,7 @@ public class RenderImmortal extends EMMobRenderer<EntityImmortalBoss, ModelImmor
             this.shadowStrength = 1F;
             this.shadowRadius = 2F;
         }
-        super.submit(state, matrixStack, collector, cameraRenderState);
+        super.render(state, matrixStack, buffer, packedLight);
         if (entity != null) {
             Animation animation = entity.getAnimation();
             if (animation == EntityImmortalBoss.SHORYUKEN_ANIMATION || animation == EntityImmortalBoss.ATTRACT_ANIMATION || animation == EntityImmortalBoss.PUNCH_RIGHT_ANIMATION
