@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "eeeabsmobs:block/cut_ghost_steel",
-    "side": "eeeabsmobs:block/cut_ghost_steel",
-    "top": "eeeabsmobs:block/cut_ghost_steel"
-  }
-}

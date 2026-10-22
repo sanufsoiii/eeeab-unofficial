@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column_horizontal",
-  "textures": {
-    "end": "eeeabsmobs:block/rough_boundary_stone_pillar_top",
-    "side": "eeeabsmobs:block/rough_boundary_stone_pillar"
-  }
-}

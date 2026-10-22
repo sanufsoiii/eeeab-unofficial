@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "eeeabsmobs:polished_rough_boundary_stone"
-  },
-  "result": {
-    "id": "eeeabsmobs:rough_boundary_stone_pillar"
-  }
-}

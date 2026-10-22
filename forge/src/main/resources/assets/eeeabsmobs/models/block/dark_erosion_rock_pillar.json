@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "eeeabsmobs:block/dark_erosion_rock_pillar_top",
-    "side": "eeeabsmobs:block/dark_erosion_rock_pillar"
-  }
-}

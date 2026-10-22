@@ -1,0 +1,54 @@
+plugins {
+	id 'java-library'
+	id 'architectury-plugin'
+}
+
+architectury {
+	minecraft = project.minecraft_version
+}
+
+base {
+	archivesName = project.archives_base_name
+}
+
+version = "${project.minecraft_version}-${project.mod_version}"
+group = project.maven_group
+
+repositories {
+	maven { url = 'https://maven.blamejared.com' }
+	maven { url = 'https://www.cursemaven.com' }
+	maven { url = 'https://maven.architectury.dev/' }
+	mavenCentral()
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'architectury-plugin'
+
+	base {
+		archivesName = project.archives_base_name
+	}
+
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(21)
+		}
+		withSourcesJar()
+	}
+
+	tasks.withType(JavaCompile).configureEach {
+		it.options.encoding = 'UTF-8'
+		it.options.release = 21
+		it.options.compilerArgs << '-Xmaxerrs' << '10000'
+	}
+}
+
+tasks.register('bootstrap') {
+	group = 'build'
+	description = 'Builds :common so the loader modules can be configured.'
+	dependsOn ':common:build'
+}
+
+tasks.named('build') {
+	dependsOn 'bootstrap'
+}

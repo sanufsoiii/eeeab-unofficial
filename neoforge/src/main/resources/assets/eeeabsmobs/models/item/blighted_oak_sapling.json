@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "eeeabsmobs:block/blighted_oak_sapling"
-  }
-}

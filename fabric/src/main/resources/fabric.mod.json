@@ -2,25 +2,27 @@
   "schemaVersion": 1,
   "id": "${mod_id}",
   "version": "${mod_version}",
-  "name": "EEEAB's Mobs (Unofficial Fabric Port)",
-  "description": "EEEAB's Mobs adds a variety of new mobs, bosses, items and structures.\n\nUnofficial port of EEEAB's Mobs (originally Forge 1.20.1) to Fabric 1.21.1. The original mod and all of its assets are by EEEAB and remain under LGPL-3.0; this port has been modified from the original sources.",
+  "name": "EEEAB's Mobs (Unofficial Architectury Port)",
+  "description": "EEEAB's Mobs adds a variety of new mobs, bosses, items and structures.\n\nUnofficial port of EEEAB's Mobs to Architectury API (Fabric).",
   "authors": [ "EEEAB (original author)" ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/eeeabs-mobs",
-    "sources": "https://github.com/sanufsoiii/eeeab-neoforge"
+    "sources": "https://github.com/sanufsoiii/eeeab-unofficial"
   },
   "license": "LGPL-3.0",
   "icon": "banner.png",
   "environment": "*",
   "entrypoints": {
-    "main": [ "com.eeeab.eeeabsmobs.EEEABMobs" ],
-    "client": [ "com.eeeab.eeeabsmobs.client.ClientProxy" ]
+    "main": [ "com.eeeab.eeeabsmobs.fabric.EEEABMobsFabric" ],
+    "client": [ "com.eeeab.eeeabsmobs.fabric.EEEABMobsFabricClient" ]
   },
   "mixins": [ "eeeabsmobs.mixins.json" ],
+  "accessWidener": "eeeabsmobs.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
     "minecraft": "1.21.1",
     "java": ">=21",
-    "fabric-api": "*"
+    "fabric-api": "*",
+    "architectury": ">=13.0.11"
   }
 }

@@ -1,0 +1,14 @@
+package com.eeeab.eeeabsmobs.client.sound.ability;
+
+import com.eeeab.eeeabsmobs.server.ability.AbilityHandler;
+import com.eeeab.eeeabsmobs.server.init.SoundInit;
+import net.minecraft.world.entity.player.Player;
+public class GuardianLaserSound extends AbsAbilityTickableSound {
+    public GuardianLaserSound(Player user) {
+        super(user, SoundInit.LASER.get(), AbilityHandler.GUARDIAN_LASER_ABILITY);
+        this.looping = true;
+        this.volume = 0.8F;
+        this.pitch = 1F;
+        this.delay = 0;
+    }
+}

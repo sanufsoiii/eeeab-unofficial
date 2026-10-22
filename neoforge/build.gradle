@@ -1,69 +1,123 @@
 plugins {
-	id 'net.neoforged.moddev' version "${moddev_version}"
-	id 'java'
+	id 'architectury-plugin'
+	id 'net.neoforged.moddev'
 }
 
-version = mod_version
-group = mod_group
+evaluationDependsOn(':common')
+
+group = project.maven_group
+version = "${project.minecraft_version}-${project.mod_version}"
+
+repositories {
+	maven { url = 'https://maven.curseforge.com' }
+	maven { url = 'https://maven.blamejared.com' }
+	maven { url = 'https://maven.architectury.dev/' }
+	mavenCentral()
+	maven { url = 'https://maven.neoforged.net/releases/' }
+}
 
 neoForge {
-	version = project.neoforge_version
+	version = project.neo_version
 
 	runs {
-		client { client() }
-		server { server() }
+		client {
+			client()
+			jvmArguments.addAll '-Dmixin.debug=true', '-Dmixin.debug.verbose=true'
+		}
+		server {
+			server()
+			programArguments.addAll '--nogui'
+			gameDirectory = project.file('run-server')
+			jvmArguments.addAll '-Dmixin.debug=true', '-Dmixin.debug.verbose=true'
+		}
 	}
 
 	mods {
-		"${mod_id}" {
+		"${project.mod_id}" {
 			sourceSet sourceSets.main
 		}
 	}
 }
 
-
-// The datagen sources are a build-time tool: they regenerate the 37 JSON files that already sit
-// in src/main/resources/data. Porting them means fixing 101 compile errors against a heavily
-// churned 1.21 datagen API in order to reproduce files we can migrate directly in a fraction of
-// the effort -- and none of it ships in the jar. Excluded from compilation, kept in the tree so
-// the mod stays buildable upstream-side once someone wants to port them.
-sourceSets {
-	main {
-		java {
-			exclude 'com/eeeab/eeeabsmobs/server/world/datagen/**'
-		}
-	}
-}
-
-repositories {
-	mavenCentral()
-	maven { url = 'https://maven.blamejared.com/' }        // JEI
-	maven { url = 'https://maven.theillusivec4.top/' }     // Curios
-}
-
 dependencies {
-	// Both integrations are already written as soft/runtime-optional (ModList presence checks for Curios,
-	// JEI's own @JeiPlugin/ServiceLoader discovery for JEI), so compileOnly is enough - and correct, since
-	// neither should be force-installed as a hard dependency of this mod. Versions are the latest available
-	// for NeoForge 1.21.1 on each project's own maven repo (declared above) as of this port.
-	compileOnly "top.theillusivec4.curios:curios-neoforge:9.5.1+1.21.1"
-	compileOnly "mezz.jei:jei-1.21.1-neoforge:19.51.0.417"
+	implementation files(
+			project(':common').tasks.named('transformProductionNeoForge').flatMap { it.archiveFile }
+	)
+	implementation "dev.architectury:architectury-neoforge:${project.architectury_api_version}"
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }
 
-tasks.withType(JavaCompile).configureEach { it.options.release = 21
-	it.options.compilerArgs << "-Xmaxerrs" << "10000" }
+def explodedCommon = layout.buildDirectory.dir('explodedCommon')
 
-java {
-	toolchain.languageVersion = JavaLanguageVersion.of(21)
+def explodeCommon = tasks.register('explodeCommon', Copy) {
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	dependsOn ':common:transformProductionNeoForge'
+	from { zipTree(project(':common').tasks.named('transformProductionNeoForge').get().archiveFile) }
+	into explodedCommon
+}
+
+sourceSets.main.output.dir(explodedCommon, builtBy: explodeCommon)
+
+processResources {
+	from(project(':common').file('src/main/resources/eeeabsmobs.accesswidener'))
+	from(project(':common').file('src/main/resources/eeeabsmobs.mixins.json'))
+	from(rootProject.file('LICENSE.txt')) { rename { "${it}_${project.mod_id}" } }
 }
 
 tasks.named('processResources', ProcessResources).configure {
-	def expandProps = [mod_id: mod_id, mod_version: mod_version, mod_group: mod_group,
-	                   minecraft_version: minecraft_version, neoforge_version: neoforge_version]
+	def expandProps = [
+			mod_id             : project.mod_id,
+			mod_name           : project.mod_name,
+			mod_version        : project.mod_version,
+			mod_license        : project.mod_license,
+			mod_authors        : project.mod_authors,
+			maven_group        : project.maven_group,
+			minecraft_version  : project.minecraft_version,
+			neo_version        : project.neo_version,
+	]
 	inputs.properties(expandProps)
 	filesMatching(['META-INF/neoforge.mods.toml']) { expand expandProps }
 }
 
-jar {
-	from("LICENSE.txt") { rename { "${it}_${mod_id}" } }
+tasks.register('distJar', Jar) {
+	group = 'build'
+	description = 'Assembles the distributable NeoForge jar (common + neoforge module).'
+
+	archiveClassifier = 'neoforge'
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	from({
+		zipTree(project(':common').tasks.named('transformProductionNeoForge').get().archiveFile.get().asFile)
+	})
+	from(sourceSets.main.output)
+
+	manifest {
+		attributes(
+				'Implementation-Title': project.mod_name,
+				'Implementation-Version': project.mod_version,
+				'Implementation-Vendor': project.mod_authors
+		)
+	}
+}
+
+tasks.named('assemble') {
+	dependsOn 'distJar'
+}
+
+tasks.register('checkNeoForgeArtifact') {
+	dependsOn 'distJar'
+	doLast {
+		def jarFile = tasks.named('distJar', Jar).get().archiveFile.get().asFile
+		if (!jarFile.exists()) {
+			throw new GradleException("Distributable NeoForge jar was not produced: ${jarFile}")
+		}
+	}
+}
+
+tasks.named('build') {
+	dependsOn 'checkNeoForgeArtifact'
+}
+
+tasks.withType(Jar).configureEach {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

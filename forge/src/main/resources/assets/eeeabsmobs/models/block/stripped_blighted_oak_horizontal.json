@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column_horizontal",
-  "textures": {
-    "end": "eeeabsmobs:block/stripped_blighted_oak_top",
-    "side": "eeeabsmobs:block/stripped_blighted_oak"
-  }
-}

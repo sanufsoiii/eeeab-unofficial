@@ -1,0 +1,47 @@
+# Gradle
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradlew
+!gradlew.bat
+
+# Architectury / Loom
+.architectury-transformer/
+**/explodedCommon/
+**/loom-cache/
+
+# Minecraft dev environment
+run/
+run-server/
+**/run/
+**/run-server/
+**/.mixin.out/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+bin/
+out/
+
+# OS
+.DS_Store
+Thumbs.db
+.directory
+
+# Release artifacts
+/*.jar
+common/build/libs/
+fabric/build/libs/
+neoforge/build/libs/
+*.class
+
+# Build logs
+*.log
+!LICENSE.txt

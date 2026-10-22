@@ -1,0 +1,61 @@
+package com.eeeab.eeeabsmobs.client.render;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+
+/**
+ * 通用渲染平面四边形渲染器
+ *
+ * @author EEEAB
+ */
+public abstract class FlatTextureRenderer<T extends Entity> extends EntityRenderer<T> {
+
+    protected FlatTextureRenderer(EntityRendererProvider.Context context) {
+        super(context);
+    }
+
+    protected enum Quad {
+        XY, XZ, YZ
+    }
+
+    protected void drawVertex(Matrix4f matrix, PoseStack.Pose pose, VertexConsumer vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, float alpha, int packedLightIn) {
+        vertexBuilder.addVertex(matrix, offsetX, offsetY, offsetZ)
+                .setColor(1F, 1F, 1F, alpha)
+                .setUv(textureX, textureY)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(packedLightIn)
+                .setNormal(pose, 0F, 1F, 0F);
+    }
+
+    protected void renderFlatQuad(PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn, float alpha, float minU, float minV, float maxU, float maxV, float size, @NotNull Quad quadType) {
+        PoseStack.Pose matrix$stack$entry = matrixStackIn.last();
+        Matrix4f matrix4f = matrix$stack$entry.pose();
+        switch (quadType) {
+            case XZ -> {
+                drawVertex(matrix4f, matrix$stack$entry, builder, -size, 0, -size, minU, minV, alpha, packedLightIn);
+                drawVertex(matrix4f, matrix$stack$entry, builder, -size, 0, size, minU, maxV, alpha, packedLightIn);
+                drawVertex(matrix4f, matrix$stack$entry, builder, size, 0, size, maxU, maxV, alpha, packedLightIn);
+                drawVertex(matrix4f, matrix$stack$entry, builder, size, 0, -size, maxU, minV, alpha, packedLightIn);
+            }
+            case XY -> {
+                drawVertex(matrix4f, matrix$stack$entry, builder, -size, -size, 0, minU, minV, alpha, packedLightIn);
+                drawVertex(matrix4f, matrix$stack$entry, builder, -size, size, 0, minU, maxV, alpha, packedLightIn);
+                drawVertex(matrix4f, matrix$stack$entry, builder, size, size, 0, maxU, maxV, alpha, packedLightIn);
+                drawVertex(matrix4f, matrix$stack$entry, builder, size, -size, 0, maxU, minV, alpha, packedLightIn);
+            }
+            case YZ -> {
+                drawVertex(matrix4f, matrix$stack$entry, builder, 0, -size, -size, minU, minV, alpha, packedLightIn);
+                drawVertex(matrix4f, matrix$stack$entry, builder, 0, -size, size, minU, maxV, alpha, packedLightIn);
+                drawVertex(matrix4f, matrix$stack$entry, builder, 0, size, size, maxU, maxV, alpha, packedLightIn);
+                drawVertex(matrix4f, matrix$stack$entry, builder, 0, size, -size, maxU, minV, alpha, packedLightIn);
+            }
+        }
+    }
+}

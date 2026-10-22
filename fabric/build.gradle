@@ -1,67 +1,115 @@
 plugins {
-	id 'fabric-loom' version "${loom_version}"
-	id 'java'
+	id 'architectury-plugin'
+	id 'dev.architectury.loom'
 }
 
-version = mod_version
-group = mod_group
-base { archivesName = mod_id }
+evaluationDependsOn(':common')
 
-// Key decision of this branch: official Mojang mappings instead of Yarn. The game version is
-// the same as the NeoForge and Forge builds, so with the same names the entire vanilla-facing
-// half of the mod -- 163 entities, renderers, models, items -- carries over with no edits at
-// all. With Yarn, every call into the game would have to be renamed, i.e. nearly the whole mod
-// rewritten for zero gain.
+version = "${project.minecraft_version}-${project.mod_version}"
+group = project.maven_group
+
+architectury {
+	platformSetupLoomIde()
+	fabric()
+}
+
 loom {
+	accessWidenerPath = project(':common').file('src/main/resources/eeeabsmobs.accesswidener')
+
 	mods {
-		"${mod_id}" {
+		"${project.mod_id}" {
 			sourceSet sourceSets.main
 		}
 	}
 }
 
-// Datagen excluded for the same reason as the other branches: it is a build tool, never lands
-// in the jar, and its output already sits in src/main/resources.
-sourceSets {
-	main {
-		java {
-			exclude 'com/eeeab/eeeabsmobs/server/world/datagen/**'
+processResources {
+	from(rootProject.file('LICENSE.txt')) { rename { "${it}_${project.mod_id}" } }
+}
+
+tasks.named('processResources') {
+	def props = [
+			version            : project.version,
+			mod_version        : project.mod_version,
+			mod_id             : project.mod_id,
+			mod_name           : project.mod_name,
+			mod_license        : project.mod_license,
+			mod_authors        : project.mod_authors,
+			minecraft_version  : project.minecraft_version,
+			loader_version     : project.loader_version,
+	]
+	inputs.properties props
+	filesMatching('fabric.mod.json') { expand props }
+}
+
+['runClient', 'runServer'].each { runTask ->
+	tasks.named(runTask) {
+		it.jvmArgs '-Dmixin.debug=true', '-Dmixin.debug.verbose=true'
+	}
+}
+
+sourceSets.main.resources.srcDir project(':common').file('src/main/resources')
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.officialMojangMappings()
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	modImplementation "dev.architectury:architectury-fabric:${project.architectury_api_version}"
+	compileOnly project(':common')
+	modImplementation project(':common')
+
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+	compileOnly "com.google.code.gson:gson:2.10.1"
+}
+
+tasks.withType(Jar).configureEach {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.register('distJar', Jar) {
+	group = 'build'
+	description = 'Assembles the distributable Fabric jar (common + fabric module).'
+
+	archiveClassifier = 'fabric'
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	dependsOn ':common:remapJar'
+	dependsOn ':fabric:remapJar'
+
+	from({
+		zipTree(tasks.named('remapJar').get().archiveFile.get().asFile)
+	})
+
+	from({
+		zipTree(project(':common').tasks.named('remapJar').get().archiveFile.get().asFile)
+	}) {
+		exclude 'eeeabsmobs.accesswidener'
+	}
+
+	manifest {
+		attributes(
+				'Implementation-Title': project.mod_name,
+				'Implementation-Version': project.mod_version,
+				'Implementation-Vendor': project.mod_authors
+		)
+	}
+}
+
+tasks.named('assemble') {
+	dependsOn 'distJar'
+}
+
+tasks.register('checkFabricArtifact') {
+	dependsOn 'distJar'
+	doLast {
+		def jarFile = tasks.named('distJar', Jar).get().archiveFile.get().asFile
+		if (!jarFile.exists()) {
+			throw new GradleException("Distributable Fabric jar was not produced: ${jarFile}")
 		}
 	}
 }
 
-repositories {
-	mavenCentral()
-	maven { url = 'https://maven.blamejared.com/' }
-}
-
-dependencies {
-	minecraft "com.mojang:minecraft:${minecraft_version}"
-	mappings loom.officialMojangMappings()
-	modImplementation "net.fabricmc:fabric-loader:${loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
-
-	// JEI ships a Fabric build for 1.21.1; compile-only so the mod still loads without it.
-	// Curios does not exist on Fabric at all, so that integration is stubbed out like on the Forge branch.
-	modCompileOnly "mezz.jei:jei-1.21.1-fabric-api:19.51.0.417"
-}
-
-processResources {
-	def props = [mod_id: mod_id, mod_version: mod_version, minecraft_version: minecraft_version,
-	             loader_version: loader_version]
-	inputs.properties(props)
-	filesMatching('fabric.mod.json') { expand props }
-}
-
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
-	it.options.compilerArgs << "-Xmaxerrs" << "10000"
-}
-
-java {
-	toolchain.languageVersion = JavaLanguageVersion.of(21)
-}
-
-jar {
-	from("LICENSE.txt") { rename { "${it}_${mod_id}" } }
+tasks.named('build') {
+	dependsOn 'checkFabricArtifact'
 }

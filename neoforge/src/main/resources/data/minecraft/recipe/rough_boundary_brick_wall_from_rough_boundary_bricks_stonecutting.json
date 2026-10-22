@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "eeeabsmobs:rough_boundary_bricks"
-  },
-  "result": {
-    "id": "eeeabsmobs:rough_boundary_brick_wall"
-  }
-}

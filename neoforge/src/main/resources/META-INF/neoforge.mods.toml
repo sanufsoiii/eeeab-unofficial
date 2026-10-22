@@ -5,21 +5,22 @@ license = "LGPL-3.0"
 [[mods]]
 modId = "${mod_id}"
 version = "${mod_version}"
-displayName = "EEEAB's Mobs (Unofficial NeoForge Port)"
+displayName = "EEEAB's Mobs (Unofficial Architectury Port)"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/eeeabs-mobs"
 logoFile = "banner.png"
 authors = "EEEAB (original author)"
 credits = "Original mod by EEEAB. This is an unofficial port and is not endorsed by the original author."
 description = '''EEEAB's Mobs adds a variety of new mobs, bosses, items and structures.
 
-Unofficial port of EEEAB's Mobs (originally Forge 1.20.1) to NeoForge 1.21.1. The original mod
-and all of its assets are by EEEAB and remain under LGPL-3.0; this port has been modified from
-the original sources to run on 1.21.1.'''
+Unofficial port of EEEAB's Mobs to Architectury API.'''
+
+[[mixins]]
+config = "eeeabsmobs.mixins.json"
 
 [[dependencies.${mod_id}]]
 modId = "neoforge"
 type = "required"
-versionRange = "[${neoforge_version},)"
+versionRange = "[${neo_version},)"
 ordering = "NONE"
 side = "BOTH"
 
@@ -30,14 +31,9 @@ versionRange = "[${minecraft_version},1.21.2)"
 ordering = "NONE"
 side = "BOTH"
 
-#[[dependencies.${mod_id}]] #optional
-## the modid of the dependency
-#modId = "citadel" #mandatory
-## The type of the dependency - required, optional, incompatible or discouraged
-#type = "optional" #mandatory
-## The version range of the dependency
-#versionRange = "[2.4.4,)" #mandatory
-## An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-#ordering = "AFTER"
-## Side this dependency is applied on - BOTH, CLIENT or SERVER
-#side = "BOTH"
+[[dependencies.${mod_id}]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.11,)"
+ordering = "AFTER"
+side = "BOTH"

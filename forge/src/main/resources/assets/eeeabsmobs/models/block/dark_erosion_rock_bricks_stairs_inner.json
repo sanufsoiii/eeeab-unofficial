@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "eeeabsmobs:block/dark_erosion_rock_bricks",
-    "side": "eeeabsmobs:block/dark_erosion_rock_bricks",
-    "top": "eeeabsmobs:block/dark_erosion_rock_bricks"
-  }
-}

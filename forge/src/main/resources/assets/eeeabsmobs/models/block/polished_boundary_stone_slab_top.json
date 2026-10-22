@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "eeeabsmobs:block/polished_boundary_stone",
-    "side": "eeeabsmobs:block/polished_boundary_stone",
-    "top": "eeeabsmobs:block/polished_boundary_stone"
-  }
-}
