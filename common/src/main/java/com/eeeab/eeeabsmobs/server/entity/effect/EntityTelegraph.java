@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.client.ControlledAnimation;
 import com.eeeab.eeeabsmobs.server.init.EntityInit;
@@ -61,11 +61,11 @@ public class EntityTelegraph extends Entity implements IEntity {
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput compoundTag) {
+    protected void readAdditionalSaveData(CompoundTag compoundTag) {
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput compoundTag) {
+    protected void addAdditionalSaveData(CompoundTag compoundTag) {
     }
 
     @Override

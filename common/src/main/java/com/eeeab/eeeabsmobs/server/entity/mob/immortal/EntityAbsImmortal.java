@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.immortal;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.animate.server.animation.Animation;
 import com.eeeab.eeeabsmobs.server.entity.EEEABMobLibrary;
@@ -177,7 +177,7 @@ public abstract class EntityAbsImmortal extends EEEABMobLibrary implements Enemy
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (this.isSummon) {
             compound.putInt("countdown", countdown);
@@ -188,7 +188,7 @@ public abstract class EntityAbsImmortal extends EEEABMobLibrary implements Enemy
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.getInt("countdown").isPresent()) {
             this.setSummonAliveTime(compound.getIntOr("countdown", 0));

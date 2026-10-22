@@ -48,7 +48,7 @@ public class AnimationControllerScreen extends AbstractContainerScreen<Animation
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int gx, int gy) {
-        guiGraphics.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0.0F, 0.0F, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
+        guiGraphics.blit(net.minecraft.client.renderer.RenderType::guiTextured, TEXTURE, this.leftPos, this.topPos, 0.0F, 0.0F, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
     }
 
     @Override

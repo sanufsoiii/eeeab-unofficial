@@ -107,17 +107,17 @@ public class EntityBlockTombstone extends BaseContainerBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(net.minecraft.world.level.storage.ValueInput input) {
-        super.loadAdditional(input);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider provider) {
+        super.loadAdditional(input, provider);
         this.tick = input.getIntOr("tickCount", 0);
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(input, this.items);
+        ContainerHelper.loadAllItems(input, this.items, provider);
     }
 
     @Override
-    protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput output) {
-        super.saveAdditional(output);
-        ContainerHelper.saveAllItems(output, this.items);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider provider) {
+        super.saveAdditional(output, provider);
+        ContainerHelper.saveAllItems(output, this.items, provider);
         output.putInt("tickCount", this.tick);
     }
 

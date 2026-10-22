@@ -37,14 +37,6 @@ public class BusterGauntletSpecialRenderer implements NoDataSpecialModelRenderer
         poseStack.popPose();
     }
 
-    @Override
-    public void getExtents(Set<Vector3f> output) {
-        PoseStack poseStack = new PoseStack();
-        poseStack.translate(0.5F, 1F, 0.5F);
-        poseStack.scale(-1F, -1F, 1F);
-        this.model.root().getExtentsForGui(poseStack, output);
-    }
-
     public record Unbaked() implements SpecialModelRenderer.Unbaked {
         public static final MapCodec<BusterGauntletSpecialRenderer.Unbaked> MAP_CODEC = MapCodec.unit(new BusterGauntletSpecialRenderer.Unbaked());
 

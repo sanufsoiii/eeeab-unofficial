@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.server.init.EntityInit;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -102,7 +102,7 @@ public float getShakeAmount(Player player, float delta) {
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput compound) {
+    protected void readAdditionalSaveData(CompoundTag compound) {
         setRadius(compound.getFloatOr("radius", 0F));
         setMagnitude(compound.getFloatOr("magnitude", 0F));
         setDuration(compound.getIntOr("duration", 0));
@@ -111,7 +111,7 @@ public float getShakeAmount(Player player, float delta) {
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         compound.putFloat("radius", getRadius());
         compound.putFloat("magnitude", getMagnitude());
         compound.putInt("duration", getDuration());

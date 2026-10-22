@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect.projectile;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.client.ControlledAnimation;
 import com.eeeab.eeeabsmobs.server.entity.effect.EntityCameraShake;
@@ -214,7 +214,7 @@ public class EntityBloodBall extends Projectile implements IEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput output) {
+    public void addAdditionalSaveData(CompoundTag output) {
         super.addAdditionalSaveData(output);
         if (getTargetUUID() != null) {
             output.store("target_uuid", net.minecraft.core.UUIDUtil.CODEC, getTargetUUID());
@@ -227,7 +227,7 @@ public class EntityBloodBall extends Projectile implements IEntity {
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-    public void readAdditionalSaveData(ValueInput input) {
+    public void readAdditionalSaveData(CompoundTag input) {
         super.readAdditionalSaveData(input);
         setTargetUUID(input.read("target_uuid", net.minecraft.core.UUIDUtil.CODEC).orElse(null));
         locating = input.getBooleanOr("locating", false);

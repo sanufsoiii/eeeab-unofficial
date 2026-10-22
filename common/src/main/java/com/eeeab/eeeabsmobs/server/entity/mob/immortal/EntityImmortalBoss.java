@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.immortal;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.animate.server.ai.AnimationGroupAI;
 import com.eeeab.animate.server.ai.AnimationMeleePlusAI;
@@ -692,7 +692,7 @@ public Vec3[] hand;//0:left 1:right
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (this.isSwitching()) {
             this.setHoldKatana(this.getStage().holdKatana);
@@ -705,7 +705,7 @@ public Vec3[] hand;//0:left 1:right
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.entityData.set(DATA_STAGE, compound.getByteOr("bossStage", ImmortalStage.STAGE1.id));
         this.setActive(compound.getBooleanOr("isActive", false));

@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect.projectile;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.client.ClientProxy;
@@ -297,14 +297,14 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput input) {
+    public void readAdditionalSaveData(CompoundTag input) {
         super.readAdditionalSaveData(input);
         this.doomboltAxeItem = input.read("doomboltAxe", ItemStack.CODEC).orElse(new ItemStack(ItemInit.DOOMBOLT_AXE.get()));
         this.dealtDamage = input.getBooleanOr("dealtDamage", false);
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput output) {
+    public void addAdditionalSaveData(CompoundTag output) {
         super.addAdditionalSaveData(output);
         output.store("doomboltAxe", ItemStack.CODEC, this.doomboltAxeItem);
         output.putBoolean("dealtDamage", this.dealtDamage);

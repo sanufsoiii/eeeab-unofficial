@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.client.particle.ParticleOrb;
 import com.eeeab.eeeabsmobs.client.ControlledAnimation;
@@ -141,7 +141,7 @@ public class EntityImmortalMagicCircle extends EntityMagicEffects {
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput compoundTag) {
+    protected void addAdditionalSaveData(CompoundTag compoundTag) {
         compoundTag.putFloat("scale", getScale());
         compoundTag.putFloat("speed", getSpeed());
         compoundTag.putFloat("yaw", getYaw());
@@ -150,7 +150,7 @@ public class EntityImmortalMagicCircle extends EntityMagicEffects {
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput compoundTag) {
+    protected void readAdditionalSaveData(CompoundTag compoundTag) {
         setScale(compoundTag.getFloatOr("scale", 0F));
         setSpeed(compoundTag.getFloatOr("speed", 0F));
         setYaw(compoundTag.getFloatOr("yaw", 0F));

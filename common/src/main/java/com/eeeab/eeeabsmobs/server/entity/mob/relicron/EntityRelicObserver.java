@@ -100,7 +100,7 @@ public class EntityRelicObserver extends AbstractRelicron implements CrackinessE
     }
 
     @Override
-    public boolean canBeCollidedWith(net.minecraft.world.entity.Entity entity) {
+    public boolean canBeCollidedWith() {
         return this.isAlive() && !this.isActive();
     }
 

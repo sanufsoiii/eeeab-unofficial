@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.mob;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.animate.server.ai.animation.AnimationActivate;
 import com.eeeab.animate.server.ai.animation.AnimationDeactivate;
@@ -172,13 +172,13 @@ public class EntityTester extends EEEABMobLibrary {
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("isActive", isActive());
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setActive(compound.getBooleanOr("isActive", false));
         active = isActive();

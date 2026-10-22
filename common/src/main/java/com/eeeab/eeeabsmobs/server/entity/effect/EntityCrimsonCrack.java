@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.client.particle.lib.AdvancedParticleBase;
 import com.eeeab.eeeabsmobs.client.particle.lib.component.ParticleComponent;
@@ -156,7 +156,7 @@ public Vec3[] myPos;
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput input) {
+    protected void readAdditionalSaveData(CompoundTag input) {
         super.readAdditionalSaveData(input);
         this.setPhase(input.getIntOr("phase", 0));
         if (this.getPhase() < 3) {
@@ -165,7 +165,7 @@ public Vec3[] myPos;
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput output) {
+    protected void addAdditionalSaveData(CompoundTag output) {
         super.addAdditionalSaveData(output);
         output.putInt("phase", this.getPhase());
     }

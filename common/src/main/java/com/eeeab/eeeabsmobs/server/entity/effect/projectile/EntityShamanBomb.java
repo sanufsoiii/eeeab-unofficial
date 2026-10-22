@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect.projectile;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.client.ControlledAnimation;
 import com.eeeab.eeeabsmobs.server.entity.effect.EntityCameraShake;
@@ -173,14 +173,14 @@ public class EntityShamanBomb extends AbstractHurtingProjectile implements IEnti
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compoundTag) {
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         setIsPlayer(compoundTag.getBooleanOr("isPlayer", false));
         this.tickCount = compoundTag.getIntOr("tickTimer", 0);
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compoundTag) {
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putBoolean("isPlayer", entityData.get(IS_PLAYER));
         compoundTag.putInt("tickTimer", this.tickCount);

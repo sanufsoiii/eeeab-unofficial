@@ -10,6 +10,7 @@ import com.eeeab.eeeabsmobs.server.init.AttributeInit;
 import com.eeeab.eeeabsmobs.server.init.ItemInit;
 import com.eeeab.eeeabsmobs.server.init.PotionInit;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.serialization.Codec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -23,13 +24,9 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.attachment.IAttachmentHolder;
-import net.neoforged.neoforge.attachment.IAttachmentSerializer;
 import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
@@ -85,21 +82,12 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
     private static final EEEABNetwork NETWORK = new NeoForgeEEEABNetwork();
 
     private static <T extends NbtCapability> Supplier<AttachmentType<T>> registerAttachment(String name, Supplier<T> initializer) {
-        return ATTACHMENT_TYPES.register(name, () -> AttachmentType.builder(initializer::get)
-                .serialize(new IAttachmentSerializer<T>() {
-                    @Override
-                    public T read(IAttachmentHolder holder, ValueInput input) {
-                        T value = initializer.get();
-                        input.read("data", CompoundTag.CODEC).ifPresent(value::deserializeNBT);
-                        return value;
-                    }
-
-                    @Override
-                    public boolean write(T attachment, ValueOutput output) {
-                        output.store("data", CompoundTag.CODEC, attachment.serializeNBT());
-                        return true;
-                    }
-                }).build());
+        Codec<T> codec = CompoundTag.CODEC.xmap(nbt -> {
+            T value = initializer.get();
+            value.deserializeNBT(nbt);
+            return value;
+        }, NbtCapability::serializeNBT);
+        return ATTACHMENT_TYPES.register(name, () -> AttachmentType.builder(initializer::get).serialize(codec).build());
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -182,17 +170,19 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
 
     @Override
     public void registerWorldRender() {
-        NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent.AfterEntities event) -> {
-            PoseStack poseStack = event.getPoseStack();
-            poseStack.pushPose();
-            Vec3 camera = event.getCamera().getPosition();
-            poseStack.translate(-camera.x, -camera.y, -camera.z);
-            ClientEventHandler.renderWorld(
-                    event.getPartialTick().getGameTimeDeltaPartialTick(false),
-                    poseStack,
-                    Minecraft.getInstance().renderBuffers().bufferSource()
-            );
-            poseStack.popPose();
+        NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent event) -> {
+            if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
+                PoseStack poseStack = event.getPoseStack();
+                poseStack.pushPose();
+                Vec3 camera = event.getCamera().getPosition();
+                poseStack.translate(-camera.x, -camera.y, -camera.z);
+                ClientEventHandler.renderWorld(
+                        event.getPartialTick().getGameTimeDeltaPartialTick(false),
+                        poseStack,
+                        Minecraft.getInstance().renderBuffers().bufferSource()
+                );
+                poseStack.popPose();
+            }
         });
     }
 

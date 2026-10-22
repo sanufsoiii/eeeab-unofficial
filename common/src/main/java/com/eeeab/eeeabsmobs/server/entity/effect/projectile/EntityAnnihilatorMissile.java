@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect.projectile;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.client.particle.lib.AdvancedParticleBase;
 import com.eeeab.eeeabsmobs.client.particle.lib.AnimData;
@@ -263,13 +263,13 @@ public class EntityAnnihilatorMissile extends Projectile implements IEntity, IVa
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput compound) {
+    protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.entityData.set(DATA_ELEMENT, compound.getIntOr("element", 0));
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("element", this.entityData.get(DATA_ELEMENT));
     }

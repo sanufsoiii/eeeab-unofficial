@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.client.particle.util.ModParticleUtils;
 import com.eeeab.eeeabsmobs.server.init.EntityInit;
@@ -179,7 +179,7 @@ public class EntityEyeOfStructure extends Entity implements ItemSupplier, IEntit
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput output) {
+    public void addAdditionalSaveData(CompoundTag output) {
         ItemStack itemstack = this.getItemRaw();
         if (!itemstack.isEmpty()) {
             output.store("Item", ItemStack.CODEC, itemstack);
@@ -188,7 +188,7 @@ public class EntityEyeOfStructure extends Entity implements ItemSupplier, IEntit
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput input) {
+    public void readAdditionalSaveData(CompoundTag input) {
         this.setItem(input.read("Item", ItemStack.CODEC).orElse(ItemStack.EMPTY));
         this.canConsumeItem = input.getBooleanOr("CanConsumeItem", false);
     }

@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.immortal;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.animate.server.ai.AnimationGroupAI;
 import com.eeeab.animate.server.ai.AnimationMeleePlusAI;
@@ -421,14 +421,14 @@ public Vec3[] fire;
 
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putFloat("flameStrength", this.getFlameStrength());
         compound.putInt("detonationCount", this.detonationCount);
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setFlameStrength(compound.getFloatOr("flameStrength", 0F));
         this.detonationCount = compound.getIntOr("detonationCount", 0);

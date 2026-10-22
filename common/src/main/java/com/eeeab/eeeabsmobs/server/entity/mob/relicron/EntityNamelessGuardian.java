@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.relicron;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.animate.server.ai.AnimationAI;
 import com.eeeab.animate.server.ai.AnimationSimpleAI;
@@ -772,7 +772,7 @@ public class EntityNamelessGuardian extends AbstractRelicron implements com.eeea
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         compound.read("spawnPos", net.minecraft.core.BlockPos.CODEC).ifPresent(this::setRestPos);
         this.fmFlag = compound.getBooleanOr("fmFlag", false);
@@ -782,7 +782,7 @@ public class EntityNamelessGuardian extends AbstractRelicron implements com.eeea
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         this.getRestPos().ifPresent(spawnPos -> compound.store("spawnPos", net.minecraft.core.BlockPos.CODEC, spawnPos));
         if (!this.isChallengeMode() && this.madnessTick != NEVER_STOP) {

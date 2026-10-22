@@ -84,7 +84,7 @@ public class TipNotificationHandler {
         if (alpha > 0 && icons != null) {
             int iconX = groupX;
             int iconY = groupY + (contentHeight - iconSize) / 2;
-            guiGraphics.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED, icons, iconX, iconY, 0F, (float) (level * iconSize), iconSize, iconSize, 16, 48, net.minecraft.util.ARGB.color(net.minecraft.util.ARGB.as8BitChannel(alpha), 255, 255, 255));
+            guiGraphics.blit(net.minecraft.client.renderer.RenderType::guiTextured, icons, iconX, iconY, 0F, (float) (level * iconSize), iconSize, iconSize, 16, 48, net.minecraft.util.ARGB.color(net.minecraft.util.ARGB.as8BitChannel(alpha), 255, 255, 255));
         }
 
         //绘制多行文本

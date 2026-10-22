@@ -37,13 +37,6 @@ public class StaticModelSpecialRenderer implements NoDataSpecialModelRenderer {
         poseStack.popPose();
     }
 
-    @Override
-    public void getExtents(Set<Vector3f> output) {
-        PoseStack poseStack = new PoseStack();
-        applyTransform(poseStack);
-        this.root.getExtentsForGui(poseStack, output);
-    }
-
     public record Unbaked(ModelLayerLocation layer, ResourceLocation texture) implements SpecialModelRenderer.Unbaked {
         public MapCodec<StaticModelSpecialRenderer.Unbaked> codec() {
             return MapCodec.unit(this);

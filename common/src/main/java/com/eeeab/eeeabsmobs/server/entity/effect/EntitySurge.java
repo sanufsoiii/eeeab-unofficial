@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.client.particle.lib.AdvancedParticleBase;
 import com.eeeab.eeeabsmobs.client.particle.lib.AnimData;
@@ -50,13 +50,13 @@ public class EntitySurge extends EntityMagicEffects implements IEntity {
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput compoundTag) {
+    protected void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.warmupDelayTicks = compoundTag.getIntOr("warmup", 0);
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput compoundTag) {
+    protected void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("warmup", this.warmupDelayTicks);
     }

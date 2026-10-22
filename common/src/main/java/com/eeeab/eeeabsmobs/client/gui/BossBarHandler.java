@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.client.gui;
 
-import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -35,17 +35,17 @@ public class BossBarHandler {
         //血条外层
         if (config.hasOverlay()) {
             net.minecraft.util.profiling.Profiler.get().push("modBossBarOverlay");
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, config.getOverlayTexture(), x + 1 + config.getOverlayOffsetX(), y + config.getOverlayOffsetY() + config.getBaseOffsetY(),
+            guiGraphics.blit(RenderType::guiTextured, config.getOverlayTexture(), x + 1 + config.getOverlayOffsetX(), y + config.getOverlayOffsetY() + config.getBaseOffsetY(),
                     0F, 0F, config.getOverlayWidth(), config.getOverlayHeight(), config.getOverlayWidth(), config.getOverlayHeight());
             net.minecraft.util.profiling.Profiler.get().pop();
         }
     }
 
     private static void drawBar(GuiGraphics guiGraphics, int x, int y, BossEvent event, BossBarConfig config) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, config.getBaseTexture(), x, y, 0F, 0F, 182, config.getBaseHeight(), 256, config.getBaseTextureHeight());
+        guiGraphics.blit(RenderType::guiTextured, config.getBaseTexture(), x, y, 0F, 0F, 182, config.getBaseHeight(), 256, config.getBaseTextureHeight());
         int i = (int) (event.getProgress() * 183.0F);
         if (i > 0) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, config.getBaseTexture(), x, y, 0F, (float) config.getBaseHeight(), i, config.getBaseHeight(), 256, config.getBaseTextureHeight());
+            guiGraphics.blit(RenderType::guiTextured, config.getBaseTexture(), x, y, 0F, (float) config.getBaseHeight(), i, config.getBaseHeight(), 256, config.getBaseTextureHeight());
         }
     }
 }

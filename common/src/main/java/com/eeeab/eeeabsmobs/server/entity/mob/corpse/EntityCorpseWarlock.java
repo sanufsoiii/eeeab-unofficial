@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.corpse;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.animate.server.ai.AnimationSimpleAI;
 import com.eeeab.animate.server.ai.AnimationSpellAI;
@@ -633,13 +633,13 @@ public Vec3[] myPos;
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         this.getRestPos().ifPresent(pos -> compound.store("spawnPos", net.minecraft.core.BlockPos.CODEC, pos));
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         compound.read("spawnPos", net.minecraft.core.BlockPos.CODEC).ifPresent(this::setRestPos);
     }

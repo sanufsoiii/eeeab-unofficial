@@ -189,7 +189,7 @@ public abstract class ModHierarchicalModel<E extends Entity> extends EntityModel
     /* ↓↓↓ 基于 AnimationDefinition 播放动画方法 ↓↓↓ */
 
     public Optional<ModelPart> getAnyDescendantWithName(String name) {
-        return name.equals("root") ? Optional.of(this.root()) : this.root().getAllParts().stream().filter((part) -> part.hasChild(name)).findFirst().map((part) -> part.getChild(name));
+        return name.equals("root") ? Optional.of(this.root()) : this.root().getAllParts().filter((part) -> part.hasChild(name)).findFirst().map((part) -> part.getChild(name));
     }
 
     public static <E extends Entity & AnimatedEntity> void playAnimation(ModHierarchicalModel<E> model, E entity, Animation animation, AnimationDefinition definition, float ageInTicks) {

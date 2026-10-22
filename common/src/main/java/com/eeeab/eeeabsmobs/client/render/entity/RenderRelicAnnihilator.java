@@ -40,7 +40,7 @@ public class RenderRelicAnnihilator extends EMMobRenderer<EntityRelicAnnihilator
                 return ModRenderType.getGlowingTranslucentEffect(location);
             }
         });
-        afterImageHelper = new EntityAfterImageHelper<>(model.root().getAllParts(), model.root(), 5, 1, 4);
+        afterImageHelper = new EntityAfterImageHelper<>(model.root().getAllParts().toList(), model.root(), 5, 1, 4);
     }
 
     @Override

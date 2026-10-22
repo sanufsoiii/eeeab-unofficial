@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect.projectile;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.server.entity.effect.EntityCameraShake;
 import com.eeeab.eeeabsmobs.server.entity.effect.EntityExplode;
@@ -172,13 +172,13 @@ public class EntityPulsedGrenade extends Projectile implements IEntity {
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putFloat("radius", this.getRadius());
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput compound) {
+    protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setRadius(compound.getFloatOr("radius", 0F));
     }

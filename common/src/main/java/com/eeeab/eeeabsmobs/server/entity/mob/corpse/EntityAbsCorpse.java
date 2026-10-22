@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.corpse;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.server.entity.EEEABMobLibrary;
 import com.eeeab.eeeabsmobs.server.entity.mob.GlowEntity;
@@ -75,7 +75,7 @@ public abstract class EntityAbsCorpse extends EEEABMobLibrary implements Enemy, 
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (this.owner != null && this.owner.getHealth() > 0F) {
             compound.store("owner", net.minecraft.core.UUIDUtil.CODEC, owner.getUUID());
@@ -84,7 +84,7 @@ public abstract class EntityAbsCorpse extends EEEABMobLibrary implements Enemy, 
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setOwnerUUID(compound.read("owner", net.minecraft.core.UUIDUtil.CODEC).isPresent() ? compound.read("owner", net.minecraft.core.UUIDUtil.CODEC).orElse(null) : null);
         this.isSummon = compound.getBooleanOr("isSummon", false);

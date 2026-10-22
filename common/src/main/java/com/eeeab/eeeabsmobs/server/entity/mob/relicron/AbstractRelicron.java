@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.relicron;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.animate.server.animation.Animation;
 import com.eeeab.eeeabsmobs.client.particle.lib.AdvancedParticleBase;
@@ -166,7 +166,7 @@ public abstract class AbstractRelicron extends EEEABMobLibrary implements Enemy,
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.entityData.set(DATA_ACTIVE, compound.getBooleanOr("isActive", false));
         this.entityData.set(DATA_ALWAYS_ACTIVE, compound.getBooleanOr("isAlwaysActive", false));
@@ -175,7 +175,7 @@ public abstract class AbstractRelicron extends EEEABMobLibrary implements Enemy,
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("isActive", this.entityData.get(DATA_ACTIVE));
         compound.putBoolean("isAlwaysActive", this.entityData.get(DATA_ALWAYS_ACTIVE));

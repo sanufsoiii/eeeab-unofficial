@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -37,11 +37,11 @@ public class ModEntityPart<T extends LivingEntity> extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput p_20052_) {
+    protected void readAdditionalSaveData(CompoundTag p_20052_) {
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput p_20139_) {
+    protected void addAdditionalSaveData(CompoundTag p_20139_) {
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -99,14 +99,14 @@ public abstract class EntityMagicEffects extends Entity implements IEntity, Trac
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput compoundTag) {
+    protected void readAdditionalSaveData(CompoundTag compoundTag) {
         if (compoundTag.read("owner", net.minecraft.core.UUIDUtil.CODEC).isPresent()) {
             this.casterUUID = compoundTag.read("owner", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
         }
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput compoundTag) {
+    protected void addAdditionalSaveData(CompoundTag compoundTag) {
         if (this.casterUUID != null) {
             compoundTag.store("owner", net.minecraft.core.UUIDUtil.CODEC, this.casterUUID);
         }

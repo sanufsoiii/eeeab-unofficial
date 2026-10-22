@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.server.init.EntityInit;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -127,14 +127,14 @@ public class EntityFallingBlock extends Entity implements IEntity {
         }
     }
 
-    protected void addAdditionalSaveData(ValueOutput output) {
+    protected void addAdditionalSaveData(CompoundTag output) {
         output.store("block_state", BlockState.CODEC, this.getBlockState());
         output.putInt("duration", getDuration());
         output.putInt("tickTimer", tickCount);
         output.putFloat("vy", getEntityData().get(ANIM_V_Y));
     }
 
-    protected void readAdditionalSaveData(ValueInput input) {
+    protected void readAdditionalSaveData(CompoundTag input) {
         this.setBlockState(input.read("block_state", BlockState.CODEC).orElse(Blocks.DIRT.defaultBlockState()));
         setDuration(input.getIntOr("duration", 0));
         tickCount = input.getIntOr("tickTimer", 0);

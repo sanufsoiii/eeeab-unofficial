@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.relicron;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.animate.server.ai.AnimationAI;
 import com.eeeab.animate.server.ai.AnimationGroupAI;
@@ -476,13 +476,13 @@ public Vec3 muzzle;
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         compound.read("restPos", net.minecraft.core.BlockPos.CODEC).ifPresent(this::setRestPos);
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         this.getRestPos().ifPresent(pos -> compound.store("restPos", net.minecraft.core.BlockPos.CODEC, pos));
     }

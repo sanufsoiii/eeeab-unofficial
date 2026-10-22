@@ -24,7 +24,7 @@ public class ClientEventHandler {
                 FrenzyCapability.IFrenzyCapability capability = CapabilityHandler.getCapability(player, CapabilityHandler.FRENZY_CAPABILITY);
                 if (capability != null && capability.flag()) {
                     Window res = Minecraft.getInstance().getWindow();
-                    guiGraphics.blit(FRENZY_OUTLINE_LOCATION, 0, 0, 0, 0, res.getGuiScaledWidth(), res.getGuiScaledHeight(), res.getGuiScaledWidth(), res.getGuiScaledHeight());
+                    guiGraphics.blit(net.minecraft.client.renderer.RenderType::guiTextured, FRENZY_OUTLINE_LOCATION, 0, 0, 0, 0, res.getGuiScaledWidth(), res.getGuiScaledHeight(), res.getGuiScaledWidth(), res.getGuiScaledHeight());
                 }
             }
             TipNotificationHandler.renderOverlay(guiGraphics, deltaTracker.getGameTimeDeltaPartialTick(false));

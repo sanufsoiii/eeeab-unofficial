@@ -1,6 +1,6 @@
 package com.eeeab.eeeabsmobs.server.entity.effect.projectile;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
+
+import net.minecraft.nbt.CompoundTag;
 
 import com.eeeab.eeeabsmobs.client.particle.ParticleDust;
 import com.eeeab.eeeabsmobs.client.particle.ParticleOrb;
@@ -219,7 +219,7 @@ public class EntityImmortalShuriken extends Projectile implements IEntity {
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput compoundTag) {
+    protected void addAdditionalSaveData(CompoundTag compoundTag) {
         if (this.target != null) {
             compoundTag.store("target", net.minecraft.core.UUIDUtil.CODEC, this.target.getUUID());
         }
@@ -231,7 +231,7 @@ public class EntityImmortalShuriken extends Projectile implements IEntity {
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput compoundTag) {
+    protected void readAdditionalSaveData(CompoundTag compoundTag) {
         if (compoundTag.read("target", net.minecraft.core.UUIDUtil.CODEC).isPresent()) {
             this.targetUUID = compoundTag.read("target", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
         }
