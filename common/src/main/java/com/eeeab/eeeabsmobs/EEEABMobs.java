@@ -3,6 +3,7 @@ package com.eeeab.eeeabsmobs;
 import com.eeeab.eeeabsmobs.server.ServerProxy;
 import com.eeeab.eeeabsmobs.server.advancement.ModCriteriaTriggers;
 import com.eeeab.eeeabsmobs.server.entity.trigger.CombatTriggerHandler;
+import com.eeeab.eeeabsmobs.server.handler.ServerEventHandler;
 import com.eeeab.eeeabsmobs.server.init.*;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -58,6 +59,7 @@ public class EEEABMobs {
         PROXY.initNetwork();
         PROXY.initBrewing();
 
+        ServerEventHandler.register();
         CombatTriggerHandler.init();
         ItemInit.initializeAttributes();
         PROXY.loadComplete();
