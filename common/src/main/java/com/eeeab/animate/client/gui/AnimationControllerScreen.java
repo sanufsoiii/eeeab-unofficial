@@ -39,7 +39,7 @@ public class AnimationControllerScreen extends AbstractContainerScreen<Animation
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
+        this.renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         animationIndexEdit.render(guiGraphics, mouseX, mouseY, partialTicks);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
@@ -86,8 +86,8 @@ public class AnimationControllerScreen extends AbstractContainerScreen<Animation
         super.init();
         animationIndexEdit = new EditBox(this.font, this.leftPos + 9, this.topPos + 32, 61, 18, Component.empty()) {
             @Override
-            public void moveCursorTo(int pos, boolean shiftSelect) {
-                super.moveCursorTo(pos, shiftSelect);
+            public void moveCursorTo(int pos) {
+                super.moveCursorTo(pos);
                 doSuggestionMsg();
             }
 

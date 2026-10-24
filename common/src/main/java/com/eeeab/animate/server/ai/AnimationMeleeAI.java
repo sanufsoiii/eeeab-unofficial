@@ -66,10 +66,7 @@ public class AnimationMeleeAI<T extends EEEABMobLibrary & AnimatedEntity> extend
     }
 
     @Override
-    protected void checkAndPerformAttack(@NotNull LivingEntity target) {
-        // MeleeAttackGoal#checkAndPerformAttack dropped its distToEnemySqr parameter in 1.21 - the distance
-        // is now computed here instead of being handed down from tick().
-        double distToEnemySqr = this.attacker.distanceToSqr(target);
+    protected void checkAndPerformAttack(@NotNull LivingEntity target, double distToEnemySqr) {
         if (this.attacker.isNoAnimation() && this.ticksUntilNextAttack == 0 && getMeleeAttackRangeSqr(this.attacker, target) >= distToEnemySqr) {
             this.ticksUntilNextAttack = this.getAttackInterval();
             this.attacker.playAnimation(getAnimationByRandom());

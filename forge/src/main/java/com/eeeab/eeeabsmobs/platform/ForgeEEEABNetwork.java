@@ -51,9 +51,9 @@ public class ForgeEEEABNetwork implements EEEABNetwork {
     public <T> void sendToTracking(Entity entity, T message, boolean includeSelf) {
         Packet<?> packet = CHANNEL.toPacket(NetworkManager.Side.S2C, message);
         if (includeSelf) {
-            PacketDistributor.TRACKING_ENTITY_AND_SELF.with(entity).send(packet);
+            PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity).send(packet);
         } else {
-            PacketDistributor.TRACKING_ENTITY.with(entity).send(packet);
+            PacketDistributor.TRACKING_ENTITY.with(() -> entity).send(packet);
         }
     }
 }

@@ -12,10 +12,8 @@ public class ModEffect extends MobEffect {
         this.instant = isInstant;
     }
 
-    //1.21.1中isDurationEffectTick被重命名为shouldApplyEffectTickThisTick，
-    //applyEffectTick从void变为返回boolean(是否继续生效)，逻辑保持不变。
     @Override
-    public boolean shouldApplyEffectTickThisTick(int remainingTicks, int level) {
+    public boolean isDurationEffectTick(int remainingTicks, int level) {
         if (isInstantenous()) {
             return true;
         }
