@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "[46,)"
 license = "${mod_license}"
 issueTrackerURL = "https://github.com/sanufsoiii/eeeab-unofficial/issues"
 
@@ -18,14 +18,14 @@ Unofficial port of EEEAB's Mobs to Architectury API.'''
 [[dependencies.${mod_id}]]
 modId = "forge"
 mandatory = true
-versionRange = "[47,)"
+versionRange = "[46,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.${mod_id}]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.1,1.21)"
+versionRange = "[1.20,1.21)"
 ordering = "NONE"
 side = "BOTH"
 

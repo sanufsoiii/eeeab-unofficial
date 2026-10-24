@@ -18,7 +18,7 @@ import com.mojang.serialization.Codec;
 import com.eeeab.eeeabsmobs.server.capability.IEeeabEntityDataHolder;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
-import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -162,11 +162,10 @@ public class FabricEEEABPlatform implements EEEABPlatform {
 
     @Override
     public void registerSpecialModels() {
-        ModelLoadingPlugin.register(context -> {
-            ResourceLocation[] ids = java.util.Arrays.stream(ModItemModels.HAND_MODEL_ITEMS)
-                    .map(item -> new ResourceLocation(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"))
-                    .toArray(ResourceLocation[]::new);
-            context.addModels(ids);
+        ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> {
+            for (String item : ModItemModels.HAND_MODEL_ITEMS) {
+                out.accept(new ResourceLocation(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"));
+            }
         });
     }
 
