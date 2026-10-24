@@ -148,8 +148,19 @@ public final class ServerEventHandler {
         StunCapability.IStunCapability stunCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.STUN_CAPABILITY);
         if (stunCapability != null) stunCapability.tick(entity);
 
-        AbilityCapability.IAbilityCapability abilityCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.ABILITY_CAPABILITY);
-        if (abilityCapability != null) abilityCapability.tick(entity);
+        if (entity instanceof Player player) {
+            AbilityCapability.IAbilityCapability abilityCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.ABILITY_CAPABILITY);
+            if (abilityCapability != null) {
+                if (abilityCapability.getAbilitiesMap().isEmpty()) {
+                    abilityCapability.onInit(player);
+                }
+                abilityCapability.tick(entity);
+            }
+            updateGuardianCoreStack(player);
+        } else {
+            AbilityCapability.IAbilityCapability abilityCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.ABILITY_CAPABILITY);
+            if (abilityCapability != null) abilityCapability.tick(entity);
+        }
 
         FrenzyCapability.IFrenzyCapability frenzyCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.FRENZY_CAPABILITY);
         if (frenzyCapability != null) frenzyCapability.tick(entity);
@@ -157,7 +168,6 @@ public final class ServerEventHandler {
         ElectricityCapability.IElectricityCapability electricityCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.ELECTRICITY_CAPABILITY);
         if (electricityCapability != null) electricityCapability.tick(entity);
 
-        if (entity instanceof Player player) updateGuardianCoreStack(player);
     }
 
     // 当实体跌落时 - return true to cancel fall damage (was event.setCanceled(true)).
@@ -254,7 +264,7 @@ public final class ServerEventHandler {
                 if (ability instanceof ChainswordComboAbility chainswordAbility) {
                     UUID primaryUUID = chainswordAbility.getPrimary();
                     int primaryTick = chainswordAbility.getPrimaryTick();
-                    boolean isPrimary = primaryUUID != null && primaryTick == player.tickCount && hurtEntity.getUUID().equals(primaryUUID);
+                    boolean isPrimary = primaryUUID != null && Math.abs(primaryTick - player.tickCount) <= 1 && hurtEntity.getUUID().equals(primaryUUID);
                     if (isPrimary) {
                         chainswordAbility.setPrimaryTick(0);
                         chainswordAbility.setPrimary(null);
