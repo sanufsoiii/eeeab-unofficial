@@ -1234,11 +1234,6 @@ public class EntityNamelessGuardian extends AbstractRelicron implements Powerabl
         this.robustTick = ROBUST_ATTACK_TICK;
     }
 
-    @Override
-    public boolean isMultipartEntity() {
-        return true;
-    }
-
     public boolean isTimeOutToUseSkill() {
         return this.noUseSkillFromLongTick >= USE_SKILL_TIME_OUT_MAX_LIMIT || this.shouldUseSkill;
     }
