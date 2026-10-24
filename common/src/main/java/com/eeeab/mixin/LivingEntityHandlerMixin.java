@@ -28,7 +28,58 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * Loom-mapped (official Mojang mappings) 1.21.1 merged jar before being used.
  */
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityHandlerMixin {
+public abstract class LivingEntityHandlerMixin implements com.eeeab.eeeabsmobs.server.capability.IEeeabEntityDataHolder {
+
+    @org.spongepowered.asm.mixin.Unique
+    private Object[] eeeab$capabilities;
+
+    @Override
+    public Object[] eeeab$getCapabilities() {
+        if (this.eeeab$capabilities == null) {
+            this.eeeab$capabilities = new Object[5];
+        }
+        return this.eeeab$capabilities;
+    }
+
+    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+    private void eeeabmobs$saveData(net.minecraft.nbt.CompoundTag compound, CallbackInfo ci) {
+        if (this.eeeab$capabilities != null) {
+            net.minecraft.nbt.CompoundTag eeeabTag = new net.minecraft.nbt.CompoundTag();
+            if (this.eeeab$capabilities[0] instanceof com.eeeab.eeeabsmobs.server.capability.StunCapability.IStunCapability c) eeeabTag.put("stun", c.serializeNBT());
+            if (this.eeeab$capabilities[1] instanceof com.eeeab.eeeabsmobs.server.capability.FrenzyCapability.IFrenzyCapability c) eeeabTag.put("frenzy", c.serializeNBT());
+            if (this.eeeab$capabilities[2] instanceof com.eeeab.eeeabsmobs.server.capability.ElectricityCapability.IElectricityCapability c) eeeabTag.put("electricity", c.serializeNBT());
+            if (this.eeeab$capabilities[3] instanceof com.eeeab.eeeabsmobs.server.capability.AbilityCapability.IAbilityCapability c) eeeabTag.put("ability", c.serializeNBT());
+            compound.put("eeeabsmobs:capabilities", eeeabTag);
+        }
+    }
+
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+    private void eeeabmobs$loadData(net.minecraft.nbt.CompoundTag compound, CallbackInfo ci) {
+        if (compound.contains("eeeabsmobs:capabilities", 10)) {
+            net.minecraft.nbt.CompoundTag eeeabTag = compound.getCompound("eeeabsmobs:capabilities");
+            Object[] caps = eeeab$getCapabilities();
+            if (eeeabTag.contains("stun", 10)) {
+                com.eeeab.eeeabsmobs.server.capability.StunCapability.IStunCapability c = new com.eeeab.eeeabsmobs.server.capability.StunCapability.StunCapabilityImp();
+                c.deserializeNBT(eeeabTag.getCompound("stun"));
+                caps[0] = c;
+            }
+            if (eeeabTag.contains("frenzy", 10)) {
+                com.eeeab.eeeabsmobs.server.capability.FrenzyCapability.IFrenzyCapability c = new com.eeeab.eeeabsmobs.server.capability.FrenzyCapability.FrenzyCapabilityImpl();
+                c.deserializeNBT(eeeabTag.getCompound("frenzy"));
+                caps[1] = c;
+            }
+            if (eeeabTag.contains("electricity", 10)) {
+                com.eeeab.eeeabsmobs.server.capability.ElectricityCapability.IElectricityCapability c = new com.eeeab.eeeabsmobs.server.capability.ElectricityCapability.IElectricityCapabilityImpl();
+                c.deserializeNBT(eeeabTag.getCompound("electricity"));
+                caps[2] = c;
+            }
+            if (eeeabTag.contains("ability", 10)) {
+                com.eeeab.eeeabsmobs.server.capability.AbilityCapability.IAbilityCapability c = new com.eeeab.eeeabsmobs.server.capability.AbilityCapability.AbilityCapabilityImp();
+                c.deserializeNBT(eeeabTag.getCompound("ability"));
+                caps[3] = c;
+            }
+        }
+    }
 
     // Drives the four per-tick capabilities (stun/ability/frenzy/electricity) and the guardian-core-durability
     // player tick, replacing EntityTickEvent.Post + PlayerTickEvent.Post.

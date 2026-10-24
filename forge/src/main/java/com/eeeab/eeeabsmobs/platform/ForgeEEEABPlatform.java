@@ -236,6 +236,17 @@ public class ForgeEEEABPlatform implements EEEABPlatform {
     }
 
     @Override
+    public void registerStrippable(java.util.function.Supplier<Block> input, java.util.function.Supplier<Block> stripped) {
+        if (MOD_BUS != null) {
+            MOD_BUS.addListener((net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) ->
+                    event.enqueueWork(() -> registerStrippable(input.get(), stripped.get()))
+            );
+        } else {
+            registerStrippable(input.get(), stripped.get());
+        }
+    }
+
+    @Override
     public void initWorldgen() {
         // Handled via data/eeeabsmobs/forge/biome_modifier/add_ancient_boundary_stone.json
     }
@@ -291,6 +302,16 @@ public class ForgeEEEABPlatform implements EEEABPlatform {
 
     @Override
     public void registerItemRenderers() {
+        if (MOD_BUS != null) {
+            MOD_BUS.addListener((net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent event) ->
+                    event.enqueueWork(this::doRegisterItemRenderers)
+            );
+        } else {
+            doRegisterItemRenderers();
+        }
+    }
+
+    private void doRegisterItemRenderers() {
         ModItemStackRenderProperties itemProps = new ModItemStackRenderProperties();
         setItemClientExtension(ItemInit.THE_NETHERWORLD_KATANA.get(), itemProps);
         setItemClientExtension(ItemInit.GUARDIAN_AXE.get(), itemProps);
@@ -310,6 +331,17 @@ public class ForgeEEEABPlatform implements EEEABPlatform {
                 return renderer;
             }
         });
+    }
+
+    @Override
+    public void registerMenuScreens() {
+        if (MOD_BUS != null) {
+            MOD_BUS.addListener((net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent event) ->
+                    event.enqueueWork(() ->
+                            net.minecraft.client.gui.screens.MenuScreens.register(com.eeeab.eeeabsmobs.server.init.MenuInit.ANIMATION_CONTROLLER.get(), com.eeeab.animate.client.gui.AnimationControllerScreen::new)
+                    )
+            );
+        }
     }
 
     @Override

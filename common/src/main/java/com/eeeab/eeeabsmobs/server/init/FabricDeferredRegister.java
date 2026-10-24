@@ -60,6 +60,10 @@ public final class FabricDeferredRegister<T> {
             return supplier.get();
         }
 
+        public RegistrySupplier<T> getSupplier() {
+            return supplier;
+        }
+
         @SuppressWarnings("unchecked")
         public Holder<T> holder() {
             T val = supplier.get();

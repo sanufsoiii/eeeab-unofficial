@@ -15,9 +15,7 @@ import com.eeeab.eeeabsmobs.server.util.ModResourceKey;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import com.eeeab.eeeabsmobs.server.capability.IEeeabEntityDataHolder;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -60,60 +58,40 @@ import java.util.function.Supplier;
 
 public class FabricEEEABPlatform implements EEEABPlatform {
 
-    private static final AttachmentType<StunCapability.IStunCapability> STUN_CAPABILITY =
-            registerAttachment("stun", StunCapability.StunCapabilityImp::new, StunCapability.StunCapabilityImp::new);
-    private static final AttachmentType<FrenzyCapability.IFrenzyCapability> FRENZY_CAPABILITY =
-            registerAttachment("frenzy", FrenzyCapability.FrenzyCapabilityImpl::new, FrenzyCapability.FrenzyCapabilityImpl::new);
-    private static final AttachmentType<ElectricityCapability.IElectricityCapability> ELECTRICITY_CAPABILITY =
-            registerAttachment("electricity", ElectricityCapability.IElectricityCapabilityImpl::new, ElectricityCapability.IElectricityCapabilityImpl::new);
-    private static final AttachmentType<AbilityCapability.IAbilityCapability> ABILITY_CAPABILITY =
-            registerAbilityAttachment();
-    private static final AttachmentType<ThreatMemoryCapability.IThreatMemoryCapability> THREAT_MEMORY_CAPABILITY =
-            AttachmentRegistry.<ThreatMemoryCapability.IThreatMemoryCapability>builder()
-                    .initializer(ThreatMemoryCapability.IThreatMemoryCapabilityImpl::new)
-                    .buildAndRegister(new ResourceLocation(EEEABMobs.MOD_ID, "threat_memory"));
-
-    private static final AttachmentType<?>[] ATTACHMENTS = new AttachmentType<?>[]{
-            STUN_CAPABILITY,
-            FRENZY_CAPABILITY,
-            ELECTRICITY_CAPABILITY,
-            ABILITY_CAPABILITY,
-            THREAT_MEMORY_CAPABILITY
-    };
+    static {
+        dev.architectury.event.events.common.PlayerEvent.PLAYER_CLONE.register((oldPlayer, newPlayer, wonGame) -> {
+            if (oldPlayer instanceof IEeeabEntityDataHolder oldHolder && newPlayer instanceof IEeeabEntityDataHolder newHolder) {
+                Object[] oldCaps = oldHolder.eeeab$getCapabilities();
+                Object[] newCaps = newHolder.eeeab$getCapabilities();
+                if (oldCaps[3] instanceof AbilityCapability.IAbilityCapability oldAbility) {
+                    AbilityCapability.IAbilityCapability newAbility = new AbilityCapability.AbilityCapabilityImp();
+                    newAbility.deserializeNBT(oldAbility.serializeNBT());
+                    newCaps[3] = newAbility;
+                }
+            }
+        });
+    }
 
     private static final EEEABNetwork NETWORK = new FabricEEEABNetwork();
-
-    private static <T extends NbtCapability> AttachmentType<T> registerAttachment(String name, Supplier<T> initializer, Supplier<T> forCodec) {
-        Codec<T> codec = CompoundTag.CODEC.xmap(nbt -> {
-            T value = forCodec.get();
-            value.deserializeNBT(nbt);
-            return value;
-        }, NbtCapability::serializeNBT);
-        return AttachmentRegistry.<T>builder()
-                .initializer(initializer)
-                .persistent(codec)
-                .buildAndRegister(new ResourceLocation(EEEABMobs.MOD_ID, name));
-    }
-
-    private static AttachmentType<AbilityCapability.IAbilityCapability> registerAbilityAttachment() {
-        Codec<AbilityCapability.IAbilityCapability> codec = CompoundTag.CODEC.xmap(nbt -> {
-            AbilityCapability.IAbilityCapability value = new AbilityCapability.AbilityCapabilityImp();
-            value.deserializeNBT(nbt);
-            return value;
-        }, NbtCapability::serializeNBT);
-        return AttachmentRegistry.<AbilityCapability.IAbilityCapability>builder()
-                .initializer(AbilityCapability.AbilityCapabilityImp::new)
-                .persistent(codec)
-                .buildAndRegister(new ResourceLocation(EEEABMobs.MOD_ID, "ability"));
-    }
 
     @SuppressWarnings("unchecked")
     @Override
     @Nullable
     public <T> T getCapability(Entity entity, CapabilityHandler.CapabilityToken<T> token) {
-        if (entity == null || !entity.isAlive()) return null;
-        AttachmentType<?> att = ATTACHMENTS[token.getIndex()];
-        return (T) ((AttachmentTarget) entity).getAttachedOrCreate((AttachmentType<Object>) att);
+        if (!(entity instanceof IEeeabEntityDataHolder holder) || !entity.isAlive()) return null;
+        Object[] caps = holder.eeeab$getCapabilities();
+        int idx = token.getIndex();
+        if (caps[idx] == null) {
+            caps[idx] = switch (idx) {
+                case 0 -> new StunCapability.StunCapabilityImp();
+                case 1 -> new FrenzyCapability.FrenzyCapabilityImpl();
+                case 2 -> new ElectricityCapability.IElectricityCapabilityImpl();
+                case 3 -> new AbilityCapability.AbilityCapabilityImp();
+                case 4 -> new ThreatMemoryCapability.IThreatMemoryCapabilityImpl();
+                default -> null;
+            };
+        }
+        return (T) caps[idx];
     }
 
     @Override
@@ -204,6 +182,11 @@ public class FabricEEEABPlatform implements EEEABPlatform {
         ArmorRenderer.register(armorRenderer,
                 ItemInit.GHOST_WARRIOR_HELMET.get(), ItemInit.GHOST_WARRIOR_CHESTPLATE.get(),
                 ItemInit.GHOST_WARRIOR_LEGGINGS.get(), ItemInit.GHOST_WARRIOR_BOOTS.get());
+    }
+
+    @Override
+    public void registerMenuScreens() {
+        net.minecraft.client.gui.screens.MenuScreens.register(com.eeeab.eeeabsmobs.server.init.MenuInit.ANIMATION_CONTROLLER.get(), com.eeeab.animate.client.gui.AnimationControllerScreen::new);
     }
 
     @Override

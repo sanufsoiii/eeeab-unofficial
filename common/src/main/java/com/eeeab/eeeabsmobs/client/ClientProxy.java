@@ -36,7 +36,7 @@ public class ClientProxy extends ServerProxy {
         RegisterHandler.registerAll();
         ClientEventHandler.register();
         PlatformServices.get().registerClientReloadListener();
-        dev.architectury.registry.menu.MenuRegistry.registerScreenFactory(MenuInit.ANIMATION_CONTROLLER.get(), AnimationControllerScreen::new);
+        PlatformServices.get().registerMenuScreens();
         TipNotificationHandler.init();
         BossBarRegistry.init();
         CuriosRegistry.initClient();
