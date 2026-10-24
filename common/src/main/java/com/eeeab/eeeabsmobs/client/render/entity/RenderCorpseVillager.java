@@ -11,10 +11,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 public class RenderCorpseVillager extends MobRenderer<EntityCorpseVillager, ModelCorpse<EntityCorpseVillager>> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_villager.png");
-    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_villager_eyes.png");
-    private static final ResourceLocation FRENZY_GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_villager_frenzy_eyes.png");
-    private static final ResourceLocation LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_villager_plains.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/corpse_villager.png");
+    private static final ResourceLocation GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/corpse_villager_eyes.png");
+    private static final ResourceLocation FRENZY_GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/corpse_villager_frenzy_eyes.png");
+    private static final ResourceLocation LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/corpse_villager_plains.png");
 
     public RenderCorpseVillager(EntityRendererProvider.Context context) {
         super(context, new ModelCorpse<>(context.bakeLayer(ModModelLayer.CORPSE_VILLAGER)), 0.3F);

@@ -18,7 +18,7 @@ import java.util.UUID;
 public record UpdateBossBarMessage(UUID bossID, @Nullable ResourceLocation registryName,
                                     boolean remove) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<UpdateBossBarMessage> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "update_boss_bar"));
+            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "update_boss_bar"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, UpdateBossBarMessage> STREAM_CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC, UpdateBossBarMessage::bossID,

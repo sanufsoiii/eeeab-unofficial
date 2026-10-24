@@ -314,7 +314,7 @@ public final class ServerEventHandler {
         }
         if (projectile instanceof net.minecraft.world.entity.projectile.AbstractArrow arrow) {
             if (arrow.getPierceLevel() == 0 && !arrow.fireImmune() && !arrow.isOnFire() && hitResult.getEntity() instanceof EntityImmortalExecutioner) {
-                arrow.igniteForSeconds(100F);
+                arrow.igniteForSeconds(100);
             }
             if (arrow.getOwner() instanceof EntityAbsImmortal immortal1 && hitResult.getEntity() instanceof EntityAbsImmortal immortal2 && immortal1.isAlliedTo(immortal2)) {
                 return true;

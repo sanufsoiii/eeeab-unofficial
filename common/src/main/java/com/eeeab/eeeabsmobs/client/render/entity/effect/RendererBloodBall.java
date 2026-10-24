@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 public class RendererBloodBall extends EntityRenderer<EntityBloodBall> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/blood_ball.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/blood_ball.png");
     private final ModelBloodBall model;
 
     public RendererBloodBall(EntityRendererProvider.Context context) {

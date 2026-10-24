@@ -16,13 +16,13 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Map;
 
 public class RenderAbsImmortalSkeleton extends MobRenderer<EntityAbsImmortalSkeleton, ModelAbsImmortalSkeleton> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton.png");
-    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton_eyes.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton.png");
+    private static final ResourceLocation GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton_eyes.png");
     private static final Map<ClassType, ResourceLocation> RESOURCE_LOCATION_MAP = ImmutableMap.of(
-            ClassType.ARCHER, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton/archer.png"),
-            ClassType.KNIGHT, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton/knight.png"),
-            ClassType.MAGE, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton/mage.png"),
-            ClassType.WARRIOR, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton/warrior.png")
+            ClassType.ARCHER, new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton/archer.png"),
+            ClassType.KNIGHT, new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton/knight.png"),
+            ClassType.MAGE, new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton/mage.png"),
+            ClassType.WARRIOR, new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_skeleton/warrior.png")
     );
 
     public RenderAbsImmortalSkeleton(EntityRendererProvider.Context context) {

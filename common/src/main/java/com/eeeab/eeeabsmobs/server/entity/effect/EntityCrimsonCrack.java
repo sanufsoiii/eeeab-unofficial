@@ -86,8 +86,9 @@ public class EntityCrimsonCrack extends EntityMagicEffects {
                                 boolean flag = target.hurt(damageSource, finalDamage);
                                 if (flag && target.isAlive()) {
                                     ModEntityUtils.addEffectStackingAmplifier(null, target, EffectInit.ARMOR_LOWER_EFFECT.holder(), 300, 5, false, true, true, false);
-                                    if (owner != null && this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-                                        net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffects(serverLevel, target, damageSource);
+                                    if (owner != null) {
+                                        net.minecraft.world.item.enchantment.EnchantmentHelper.doPostHurtEffects(target, owner);
+                                        net.minecraft.world.item.enchantment.EnchantmentHelper.doPostDamageEffects(owner, target);
                                     }
                                 }
                             }

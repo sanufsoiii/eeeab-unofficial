@@ -24,10 +24,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec3;
 public class RenderImmortal extends MobRenderer<EntityImmortalBoss, ModelImmortal> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal.png");
-    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_eyes.png");
-    private static final ResourceLocation CORE_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_core.png");
-    private static final ResourceLocation NETHERWORLD_KATANA = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal.png");
+    private static final ResourceLocation GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_eyes.png");
+    private static final ResourceLocation CORE_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_core.png");
+    private static final ResourceLocation NETHERWORLD_KATANA = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png");
     private static final String[] RIGHT_FIST = new String[]{"upper", "body", "rightArm", "rightArmUnder", "rightFist"};
     private static final String[] LEFT_FIST = new String[]{"upper", "body", "leftArm", "leftArmUnder", "leftFist"};
 
@@ -137,8 +137,7 @@ public class RenderImmortal extends MobRenderer<EntityImmortalBoss, ModelImmorta
         this.model.setupAnim(entity, f5, f8, f7, f2, f6);
 
         VertexConsumer vertexconsumer = buffer.getBuffer(renderType);
-        int packedColor = FastColor.ARGB32.color(FastColor.as8BitChannel(alpha), FastColor.as8BitChannel(alpha), FastColor.as8BitChannel(alpha), FastColor.as8BitChannel(alpha));
-        this.model.renderToBuffer(matrixStack, vertexconsumer, packedLight, packedOverlay, packedColor);
+        this.model.renderToBuffer(matrixStack, vertexconsumer, packedLight, packedOverlay, alpha, alpha, alpha, alpha);
         for (RenderLayer<EntityImmortalBoss, ModelImmortal> renderlayer : this.layers) {
             renderlayer.render(matrixStack, buffer, packedLight, entity, f5, f8, partialTicks, f7, f2, f6);
         }

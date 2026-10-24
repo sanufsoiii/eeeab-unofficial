@@ -14,7 +14,7 @@ import java.util.*;
 
 //能力处理器
 public class AbilityCapability {
-    public static ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "ability_processor_cap");
+    public static ResourceLocation ID = new ResourceLocation(EEEABMobs.MOD_ID, "ability_processor_cap");
 
     public interface IAbilityCapability extends NbtCapability {
         void onActive(LivingEntity entity, AbilityType<?, ?> type);

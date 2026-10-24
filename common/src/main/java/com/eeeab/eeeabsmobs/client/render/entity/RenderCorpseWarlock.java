@@ -11,9 +11,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 public class RenderCorpseWarlock extends MobRenderer<EntityCorpseWarlock, ModelCorpseWarlock> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_warlock.png");
-    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_warlock_eyes.png");
-    private static final ResourceLocation NECKLACE_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/corpse_warlock_necklace.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/corpse_warlock.png");
+    private static final ResourceLocation GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/corpse_warlock_eyes.png");
+    private static final ResourceLocation NECKLACE_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/corpse_warlock_necklace.png");
 
     public RenderCorpseWarlock(EntityRendererProvider.Context context) {
         super(context, new ModelCorpseWarlock(context.bakeLayer(ModModelLayer.CORPSE_SLAVERY)), 0.3F);

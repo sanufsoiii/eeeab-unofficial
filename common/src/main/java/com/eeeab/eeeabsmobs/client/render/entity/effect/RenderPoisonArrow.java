@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 public class RenderPoisonArrow extends ArrowRenderer<EntityPoisonArrow> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/poison_arrow.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/poison_arrow.png");
 
     public RenderPoisonArrow(EntityRendererProvider.Context pContext) {
         super(pContext);

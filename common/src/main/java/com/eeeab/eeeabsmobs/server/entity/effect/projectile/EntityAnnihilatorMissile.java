@@ -191,7 +191,7 @@ public class EntityAnnihilatorMissile extends Projectile implements IEntity, Var
                             living.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(),
                                     300, 0, false, false, true), this);
                         }
-                        if (fire && !target.fireImmune()) target.igniteForSeconds(5F);
+                        if (fire && !target.fireImmune()) target.igniteForSeconds(5);
                         float damage = getDamage();
                         float percent = 1;
                         if (!(owner instanceof EntityRealmWarden)) {

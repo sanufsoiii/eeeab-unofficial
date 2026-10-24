@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 
 public record MessagePlayAnimation(int entityID, int animationsIndex) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<MessagePlayAnimation> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "play_animation"));
+            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "play_animation"));
 
     public static final StreamCodec<net.minecraft.network.FriendlyByteBuf, MessagePlayAnimation> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, MessagePlayAnimation::entityID,

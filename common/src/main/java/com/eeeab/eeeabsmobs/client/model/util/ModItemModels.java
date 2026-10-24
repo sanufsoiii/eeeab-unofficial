@@ -41,7 +41,7 @@ public class ModItemModels extends BlockEntityWithoutLevelRenderer {
         ResourceLocation itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(itemStack.getItem());
         String item = itemId.getPath();
         ModelManager modelManager = Minecraft.getInstance().getModelManager();
-        ModelResourceLocation modelInventoryId = ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, item));
+        ModelResourceLocation modelInventoryId = new ModelResourceLocation(new ResourceLocation(EEEABMobs.MOD_ID, item), "inventory");
         ModelResourceLocation modelHandId = com.eeeab.eeeabsmobs.platform.PlatformServices.get().getModelHandId(item);
 
         BakedModel modelInventory = modelManager.getModel(modelInventoryId);

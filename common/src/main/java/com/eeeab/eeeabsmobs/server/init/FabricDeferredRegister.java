@@ -31,7 +31,7 @@ public final class FabricDeferredRegister<T> {
     }
 
     public <V extends T> Entry<V> register(String name, Supplier<V> supplier) {
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(modId, name);
+        ResourceLocation id = new ResourceLocation(modId, name);
         RegistrySupplier<V> regSupplier = delegate.register(name, supplier);
         return new Entry<>(regSupplier, registry, id);
     }

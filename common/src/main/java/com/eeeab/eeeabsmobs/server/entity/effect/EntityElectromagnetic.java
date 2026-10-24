@@ -91,7 +91,7 @@ public class EntityElectromagnetic extends EntityMagicEffects implements Trigger
                     float finalDamage = this.getDamage();
                     if (owner instanceof IMob mob) finalDamage += mob.getDamageAmountByTargetHealthPct(hitEntity);
                     if (hitEntity != owner && !owner.isAlliedTo(hitEntity) && hitEntity.hurt(this.damageSources().mobAttack(owner), finalDamage)) {
-                        if (this.entityData.get(DATA_FIRE) && !hitEntity.fireImmune()) hitEntity.igniteForSeconds(5F);
+                        if (this.entityData.get(DATA_FIRE) && !hitEntity.fireImmune()) hitEntity.igniteForSeconds(5);
                         else hitEntity.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true), this);
                         this.strongKnockBlock(hitEntity);
                     }

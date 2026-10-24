@@ -57,15 +57,9 @@ public class ModResourceKey {
     public static final ResourceKey<DensityFunction> BASE_3D_NOISE = registerResourceKey(Registries.DENSITY_FUNCTION, "void_crack/base_3d_noise");
     public static final ResourceKey<DensityFunction> SLOPED_CHEESE_VOID_CRACK = registerResourceKey(Registries.DENSITY_FUNCTION, "void_crack/sloped_cheese");
 
-    // RecordItem was removed - discs now point at a data-driven net.minecraft.world.item.JukeboxSong registry
-    // entry via Item.Properties#jukeboxPlayable(ResourceKey<JukeboxSong>). The entries themselves live in
-    // src/main/resources/data/eeeabsmobs/jukebox_song/*.json (see vanilla's data/minecraft/jukebox_song/*.json
-    // for the schema: sound_event, description, length_in_seconds, comparator_output).
-    public static final ResourceKey<net.minecraft.world.item.JukeboxSong> NAMELESS_GUARDIAN_THEME_SONG = registerResourceKey(Registries.JUKEBOX_SONG, "nameless_guardian_theme_music_disc");
-    public static final ResourceKey<net.minecraft.world.item.JukeboxSong> REALM_WARDEN_THEME_SONG = registerResourceKey(Registries.JUKEBOX_SONG, "realm_warden_theme_music_disc");
-    public static final ResourceKey<net.minecraft.world.item.JukeboxSong> THE_IMMORTAL_THEME_SONG = registerResourceKey(Registries.JUKEBOX_SONG, "the_immortal_theme_music_disc");
+
 
     private static <T> ResourceKey<T> registerResourceKey(ResourceKey<Registry<T>> registry, String key) {
-        return ResourceKey.create(registry, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, key));
+        return ResourceKey.create(registry, new ResourceLocation(EEEABMobs.MOD_ID, key));
     }
 }

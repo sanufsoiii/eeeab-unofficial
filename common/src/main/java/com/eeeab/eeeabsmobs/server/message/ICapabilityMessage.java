@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 
 public record ICapabilityMessage(int entityID, int capIndex, boolean flag) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<ICapabilityMessage> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "capability_state"));
+            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "capability_state"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ICapabilityMessage> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, ICapabilityMessage::entityID,

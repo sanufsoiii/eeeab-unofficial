@@ -1,6 +1,7 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.relicron;
 
 import com.eeeab.animate.server.ai.AnimationAI;
+import java.nio.charset.StandardCharsets;
 import com.eeeab.animate.server.ai.AnimationGroupAI;
 import com.eeeab.animate.server.ai.AnimationMeleePlusAI;
 import com.eeeab.animate.server.ai.AnimationSimpleAI;
@@ -142,7 +143,7 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
     private static final EntityDataAccessor<Integer> DATA_LEAP_HOLD = SynchedEntityData.defineId(EntityRealmWarden.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_SEC_PHASE = SynchedEntityData.defineId(EntityRealmWarden.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> DATA_REST_POS = SynchedEntityData.defineId(EntityRealmWarden.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
-    private static final ResourceLocation SEC_PHASE_ATTACK_ID = ResourceLocation.fromNamespaceAndPath("eeeabsmobs", "realm_warden_second_phase_attack");
+    private static final UUID SEC_PHASE_ATTACK_ID = UUID.nameUUIDFromBytes("eeeabsmobs:realm_warden_second_phase_attack".getBytes(StandardCharsets.UTF_8));
     private static final Vector4f[] COLORS = new Vector4f[]{new Vector4f(1F, 0.88F, 0.48F, 1F), new Vector4f(0.52F, 0.94F, 1F, 1F)};
     private static final float[][] BLOCK_OFFSETS = {{-0.5F, -0.5F}, {-0.5F, 0.5F}, {0.5F, 0.5F}, {0.5F, -0.5F}};
     private static final float[][] SHORT_BLOCK_OFFSETS = {{-0.5F, 0.5F}};
@@ -662,7 +663,7 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
             AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
             if (attack == null) return;
             if (attack.getModifier(SEC_PHASE_ATTACK_ID) != null) attack.removeModifier(SEC_PHASE_ATTACK_ID);
-            attack.addPermanentModifier(new AttributeModifier(SEC_PHASE_ATTACK_ID, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            attack.addPermanentModifier(new AttributeModifier(SEC_PHASE_ATTACK_ID, "Realm warden second phase attack", 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
     }
 

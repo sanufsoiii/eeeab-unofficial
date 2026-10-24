@@ -18,8 +18,8 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderShamanBomb extends FlatTextureRenderer<EntityShamanBomb> {
-    private static final ResourceLocation N_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/shaman_bomb.png");
-    private static final ResourceLocation D_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/shaman_bomb_dangerous.png");
+    private static final ResourceLocation N_TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/shaman_bomb.png");
+    private static final ResourceLocation D_TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/shaman_bomb_dangerous.png");
     private static final float SCALE = 2.0F;
     private final RandomSource random = RandomSource.create();
 
@@ -61,11 +61,12 @@ public class RenderShamanBomb extends FlatTextureRenderer<EntityShamanBomb> {
     protected void drawVertex(Matrix4f matrix, PoseStack.Pose pose, VertexConsumer vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, float alpha, int packedLightIn) {
         offsetX = offsetX < 0 ? 0 : offsetX;
         offsetY = offsetY < 0 ? 0 : offsetY;
-        vertexBuilder.addVertex(matrix, offsetX - 0.5F, offsetY - 0.25F, offsetZ)
-                .setColor(1F, 1F, 1F, alpha)
-                .setUv(textureX, textureY)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(packedLightIn)
-                .setNormal(pose, 0F, 1F, 0F);
+        vertexBuilder.vertex(matrix, offsetX - 0.5F, offsetY - 0.25F, offsetZ)
+                .color(1F, 1F, 1F, alpha)
+                .uv(textureX, textureY)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(packedLightIn)
+                .normal(pose, 0F, 1F, 0F)
+                .endVertex();
     }
 }

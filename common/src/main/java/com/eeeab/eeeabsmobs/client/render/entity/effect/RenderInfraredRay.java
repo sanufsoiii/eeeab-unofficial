@@ -12,8 +12,8 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderInfraredRay extends RenderAbsBeam<EntityInfraredRay> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/infrared_ray.png");
-    private static final ResourceLocation FLASH_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/infrared_ray_flash.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/infrared_ray.png");
+    private static final ResourceLocation FLASH_TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/infrared_ray_flash.png");
 
     public RenderInfraredRay(EntityRendererProvider.Context mgr) {
         super(mgr, 0.15F, 0.15F);
@@ -32,6 +32,6 @@ public class RenderInfraredRay extends RenderAbsBeam<EntityInfraredRay> {
 
     @Override
     protected void drawVertex(Matrix4f matrix, PoseStack.Pose pose, VertexConsumer vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, int packedLightIn) {
-        vertexBuilder.addVertex(matrix, offsetX, offsetY, offsetZ).setColor(1F, 1F, 1F, 0.75F).setUv(textureX, textureY).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLightIn).setNormal(pose, 0.0F, 1.0F, 0.0F);
+        vertexBuilder.vertex(matrix, offsetX, offsetY, offsetZ).color(1F, 1F, 1F, 0.75F).uv(textureX, textureY).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLightIn).normal(pose, 0.0F, 1.0F, 0.0F).endVertex();
     }
 }

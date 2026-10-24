@@ -28,12 +28,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
@@ -169,7 +169,7 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
 
     @Override
     public ModelResourceLocation getModelHandId(String item) {
-        return ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"));
+        return new ModelResourceLocation(new ResourceLocation(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"), "inventory");
     }
 
     @Override
@@ -177,29 +177,34 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
         if (MOD_BUS != null) {
             MOD_BUS.addListener((ModelEvent.RegisterAdditional event) -> {
                 for (String item : ModItemModels.HAND_MODEL_ITEMS) {
-                    event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "item/" + item + "_in_hand")));
+                    event.register(new ModelResourceLocation(new ResourceLocation(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"), "inventory"));
                 }
             });
         }
     }
 
+    private static void setItemClientExtension(Item item, Object extension) {
+        try {
+            Field field = Item.class.getDeclaredField("renderProperties");
+            field.setAccessible(true);
+            field.set(item, extension);
+        } catch (Exception e) {
+            EEEABMobs.LOGGER.error("Failed to set client extension for " + item, e);
+        }
+    }
+
     @Override
     public void registerItemRenderers() {
-        if (MOD_BUS != null) {
-            MOD_BUS.addListener((RegisterClientExtensionsEvent event) -> {
-                event.registerItem(new ModItemStackRenderProperties(),
-                        ItemInit.THE_NETHERWORLD_KATANA.get(),
-                        ItemInit.GUARDIAN_AXE.get(),
-                        ItemInit.BUSTER_GAUNTLET.get()
-                );
-                event.registerItem(new ModArmorStackRenderProperties(),
-                        ItemInit.GHOST_WARRIOR_HELMET.get(),
-                        ItemInit.GHOST_WARRIOR_CHESTPLATE.get(),
-                        ItemInit.GHOST_WARRIOR_LEGGINGS.get(),
-                        ItemInit.GHOST_WARRIOR_BOOTS.get()
-                );
-            });
-        }
+        ModItemStackRenderProperties itemProps = new ModItemStackRenderProperties();
+        setItemClientExtension(ItemInit.THE_NETHERWORLD_KATANA.get(), itemProps);
+        setItemClientExtension(ItemInit.GUARDIAN_AXE.get(), itemProps);
+        setItemClientExtension(ItemInit.BUSTER_GAUNTLET.get(), itemProps);
+
+        ModArmorStackRenderProperties armorProps = new ModArmorStackRenderProperties();
+        setItemClientExtension(ItemInit.GHOST_WARRIOR_HELMET.get(), armorProps);
+        setItemClientExtension(ItemInit.GHOST_WARRIOR_CHESTPLATE.get(), armorProps);
+        setItemClientExtension(ItemInit.GHOST_WARRIOR_LEGGINGS.get(), armorProps);
+        setItemClientExtension(ItemInit.GHOST_WARRIOR_BOOTS.get(), armorProps);
     }
 
     @Override
@@ -211,7 +216,7 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
                 Vec3 camera = event.getCamera().getPosition();
                 poseStack.translate(-camera.x, -camera.y, -camera.z);
                 ClientEventHandler.renderWorld(
-                        event.getPartialTick().getGameTimeDeltaPartialTick(false),
+                        event.getPartialTick(),
                         poseStack,
                         Minecraft.getInstance().renderBuffers().bufferSource()
                 );

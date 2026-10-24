@@ -16,8 +16,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RenderSlidingDoor implements BlockEntityRenderer<EntitySlidingDoorBlock> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/block/sliding_door.png");
-    private static final ResourceLocation UNLOCK_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/block/sliding_door_unlock.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/block/sliding_door.png");
+    private static final ResourceLocation UNLOCK_TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/block/sliding_door_unlock.png");
     private final SlidingDoorModel model;
 
     public RenderSlidingDoor(BlockEntityRendererProvider.Context context) {
@@ -38,7 +38,7 @@ public class RenderSlidingDoor implements BlockEntityRenderer<EntitySlidingDoorB
             poseStack.mulPose(facing.getRotation());
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
             model.animate(be, partialTick);
-            model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(locked ? TEXTURE : UNLOCK_TEXTURE)), packedLight, packedOverlay, -1);
+            model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(locked ? TEXTURE : UNLOCK_TEXTURE)), packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
             poseStack.popPose();
         }
     }

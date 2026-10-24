@@ -26,12 +26,13 @@ public abstract class FlatTextureRenderer<T extends Entity> extends EntityRender
     }
 
     protected void drawVertex(Matrix4f matrix, PoseStack.Pose pose, VertexConsumer vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, float alpha, int packedLightIn) {
-        vertexBuilder.addVertex(matrix, offsetX, offsetY, offsetZ)
-                .setColor(1F, 1F, 1F, alpha)
-                .setUv(textureX, textureY)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(packedLightIn)
-                .setNormal(pose, 0F, 1F, 0F);
+        vertexBuilder.vertex(matrix, offsetX, offsetY, offsetZ)
+                .color(1F, 1F, 1F, alpha)
+                .uv(textureX, textureY)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(packedLightIn)
+                .normal(pose, 0F, 1F, 0F)
+                .endVertex();
     }
 
     protected void renderFlatQuad(PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn, float alpha, float minU, float minV, float maxU, float maxV, float size, @NotNull Quad quadType) {

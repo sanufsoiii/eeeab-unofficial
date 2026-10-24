@@ -83,16 +83,16 @@ public class EntitySurge extends EntityMagicEffects implements IEntity {
                 if (hitEntity.isInWaterRainOrBubble()) damage *= 2;
                 if (owner == null) {
                     net.minecraft.world.damagesource.DamageSource damageSource = ModDamageSource.surge(this, this);
-                    if (useItemStack != null && this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-                        damage = EnchantmentHelper.modifyDamage(serverLevel, this.useItemStack, hitEntity, damageSource, damage);
+                    if (useItemStack != null) {
+                        damage += EnchantmentHelper.getDamageBonus(this.useItemStack, hitEntity.getType());
                     }
                     hitEntity.hurt(damageSource, damage);
                 } else {
                     if (owner.isAlliedTo(hitEntity)) return;
                     if (owner instanceof IMob iMob) damage += iMob.getDamageAmountByTargetHealthPct(hitEntity);
                     net.minecraft.world.damagesource.DamageSource damageSource = ModDamageSource.surge(this, owner);
-                    if (useItemStack != null && this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-                        damage = EnchantmentHelper.modifyDamage(serverLevel, this.useItemStack, hitEntity, damageSource, damage);
+                    if (useItemStack != null) {
+                        damage += EnchantmentHelper.getDamageBonus(this.useItemStack, hitEntity.getType());
                     }
                     hitEntity.hurt(damageSource, damage);
                 }

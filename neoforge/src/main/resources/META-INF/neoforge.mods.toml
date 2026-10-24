@@ -27,13 +27,13 @@ side = "BOTH"
 [[dependencies.${mod_id}]]
 modId = "minecraft"
 type = "required"
-versionRange = "[${minecraft_version},1.21.2)"
+versionRange = "[${minecraft_version},1.21)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.${mod_id}]]
 modId = "architectury"
 type = "required"
-versionRange = "[13.0.11,)"
+versionRange = "[12.0.0,)"
 ordering = "AFTER"
 side = "BOTH"

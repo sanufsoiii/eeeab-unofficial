@@ -14,12 +14,12 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Map;
 
 public class RenderRelicObserver extends MobRenderer<EntityRelicObserver, ModelRelicObserver> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer.png");
-    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_eyes.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_observer.png");
+    private static final ResourceLocation GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_observer_eyes.png");
     private static final Map<CrackinessEntity.CrackinessType, ResourceLocation> RESOURCE_LOCATION_MAP = ImmutableMap.of(
-            CrackinessEntity.CrackinessType.HIGH, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_high.png"),
-            CrackinessEntity.CrackinessType.MEDIUM, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_medium.png"),
-            CrackinessEntity.CrackinessType.LOW, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_observer_low.png")
+            CrackinessEntity.CrackinessType.HIGH, new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_observer_high.png"),
+            CrackinessEntity.CrackinessType.MEDIUM, new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_observer_medium.png"),
+            CrackinessEntity.CrackinessType.LOW, new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_observer_low.png")
     );
 
     public RenderRelicObserver(EntityRendererProvider.Context context) {

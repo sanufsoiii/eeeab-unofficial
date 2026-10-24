@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 public class RenderAlienPortal extends FlatTextureRenderer<EntityAlienPortal> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/alien_portal.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/alien_portal.png");
     private static final float TEXTURE_WIDTH = 320;
     private static final float TEXTURE_HEIGHT = 64;
     private static final float SIZE = 1.9F;

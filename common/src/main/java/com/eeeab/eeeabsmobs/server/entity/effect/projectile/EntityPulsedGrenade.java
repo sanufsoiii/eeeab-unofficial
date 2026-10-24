@@ -115,7 +115,7 @@ public class EntityPulsedGrenade extends Projectile implements IEntity {
                         target.hurt(this.damageSources().explosion(this, owner), damage * percent);
                         double strength = (1.0D - dist) * percent;
                         if (target instanceof LivingEntity livingEntity) {
-                            strength = strength * (1.0D - livingEntity.getAttributeValue(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE));
+                            strength = strength * (1.0D - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
                         }
                         d0 /= d3;
                         d1 /= d3;

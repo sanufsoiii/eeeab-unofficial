@@ -34,7 +34,7 @@ import java.util.Optional;
 
 public class StructureBloodyAltar extends Structure {
     public static final MapCodec<StructureBloodyAltar> CODEC = simpleCodec(StructureBloodyAltar::new);
-    private static final ResourceLocation BLOODY_ALTAR = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "bloody_altar");
+    private static final ResourceLocation BLOODY_ALTAR = new ResourceLocation(EEEABMobs.MOD_ID, "bloody_altar");
     private static final Map<ResourceLocation, BlockPos> OFFSET = new ImmutableMap.Builder<ResourceLocation, BlockPos>()
             .put(BLOODY_ALTAR, new BlockPos(0, 1, 0))
             .build();

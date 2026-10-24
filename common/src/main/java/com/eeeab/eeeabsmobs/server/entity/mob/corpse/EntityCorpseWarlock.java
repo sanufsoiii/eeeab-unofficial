@@ -598,8 +598,8 @@ public class EntityCorpseWarlock extends EntityAbsCorpse implements RangedAttack
     }
 
     @Override
-    protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean pRecentlyHit) {
-        super.dropCustomDeathLoot(level, source, pRecentlyHit);
+    protected void dropCustomDeathLoot(DamageSource source, int looting, boolean pRecentlyHit) {
+        super.dropCustomDeathLoot(source, looting, pRecentlyHit);
         if (source.getEntity() != null || this.getTarget() != null) {
             ItemEntity itementity = this.spawnAtLocation(ItemInit.HEART_OF_PAGAN.get());
             ItemEntity itementity2 = this.spawnAtLocation(ItemInit.SOUL_SUMMON_NECKLACE.get());

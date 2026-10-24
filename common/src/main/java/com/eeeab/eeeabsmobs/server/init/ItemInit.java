@@ -78,9 +78,9 @@ public class ItemInit {
     // points at a data-driven JukeboxSong registry entry (src/main/resources/data/eeeabsmobs/jukebox_song/*.json).
     // SoundInit.NAMELESS_GUARDIAN_THEME etc. are no longer referenced directly here - the JSON's sound_event
     // field points at the same eeeabsmobs:music.* sound events instead.
-    public static final FabricDeferredRegister.Entry<Item> GUARDIANS_MUSIC_DISC = ITEMS.register("nameless_guardian_theme_music_disc", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant().jukeboxPlayable(ModResourceKey.NAMELESS_GUARDIAN_THEME_SONG)));
-    public static final FabricDeferredRegister.Entry<Item> THE_ONLY_EDICT_MUSIC_DISC = ITEMS.register("realm_warden_theme_music_disc", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant().jukeboxPlayable(ModResourceKey.REALM_WARDEN_THEME_SONG)));
-    public static final FabricDeferredRegister.Entry<Item> THE_ARMY_OF_MINOTAUR_MUSIC_DISC = ITEMS.register("the_immortal_theme_music_disc", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant().jukeboxPlayable(ModResourceKey.THE_IMMORTAL_THEME_SONG)));
+    public static final FabricDeferredRegister.Entry<Item> GUARDIANS_MUSIC_DISC = ITEMS.register("nameless_guardian_theme_music_disc", () -> new com.eeeab.eeeabsmobs.server.item.ModRecordItem(8, SoundInit.NAMELESS_GUARDIAN_THEME, new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant(), 182));
+    public static final FabricDeferredRegister.Entry<Item> THE_ONLY_EDICT_MUSIC_DISC = ITEMS.register("realm_warden_theme_music_disc", () -> new com.eeeab.eeeabsmobs.server.item.ModRecordItem(8, SoundInit.REALM_WARDEN_THEME_DISC, new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant(), 185));
+    public static final FabricDeferredRegister.Entry<Item> THE_ARMY_OF_MINOTAUR_MUSIC_DISC = ITEMS.register("the_immortal_theme_music_disc", () -> new com.eeeab.eeeabsmobs.server.item.ModRecordItem(8, SoundInit.THE_IMMORTAL_THEME, new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant(), 161));
 
     // NeoForge's DeferredSpawnEggItem lazily resolves its DeferredHolder<EntityType<?>,...> - vanilla's
     // SpawnEggItem just takes the EntityType directly (javap: SpawnEggItem(EntityType<? extends Mob>, int,

@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 
 public record UseAbilityMessage(int entityID, int index) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<UseAbilityMessage> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "use_ability"));
+            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "use_ability"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, UseAbilityMessage> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, UseAbilityMessage::entityID,

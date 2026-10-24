@@ -64,7 +64,7 @@ public class LayerGlow<T extends LivingEntity & GlowEntity, M extends EntityMode
 
     protected void renderLayer(T entity, PoseStack stack, VertexConsumer vertexConsumer, int packedLightIn, float r, float g, float b, float alpha) {
         int i = overlayTexture ? LivingEntityRenderer.getOverlayCoords(entity, 0F) : OverlayTexture.NO_OVERLAY;
-        this.getParentModel().renderToBuffer(stack, vertexConsumer, packedLightIn, i, FastColor.ARGB32.color(FastColor.as8BitChannel(alpha), FastColor.as8BitChannel(r), FastColor.as8BitChannel(g), FastColor.as8BitChannel(b)));
+        this.getParentModel().renderToBuffer(stack, vertexConsumer, packedLightIn, i, r, g, b, alpha);
     }
 
     /**

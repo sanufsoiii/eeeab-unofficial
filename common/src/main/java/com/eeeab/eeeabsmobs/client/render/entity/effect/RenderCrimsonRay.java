@@ -17,7 +17,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
 public class RenderCrimsonRay extends RenderAbsBeam<EntityCrimsonRay> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/crimson_ray.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/crimson_ray.png");
     private static final float TEXTURE_WIDTH = 256;
     private static final float TEXTURE_HEIGHT = 32;
     private static final float START_RADIUS = 1.2f;
@@ -87,7 +87,7 @@ public class RenderCrimsonRay extends RenderAbsBeam<EntityCrimsonRay> {
     }
 
     public static class RenderPreAttack extends FlatTextureRenderer<EntityCrimsonRay.PreAttack> {
-        private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/crimson_ray_pre.png");
+        private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/crimson_ray_pre.png");
         private static final float TEXTURE_WIDTH = 256;
         private static final float TEXTURE_HEIGHT = 32;
         private static final float SIZE = 1.2F;
@@ -119,6 +119,6 @@ public class RenderCrimsonRay extends RenderAbsBeam<EntityCrimsonRay> {
 
     @Override
     protected void drawVertex(Matrix4f matrix, PoseStack.Pose pose, VertexConsumer vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, int packedLightIn) {
-        vertexBuilder.addVertex(matrix, offsetX, offsetY, offsetZ).setColor(1F, 1F, 1F, 1F).setUv(textureX, textureY).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLightIn).setNormal(pose, 1F, 0F, 1F);
+        vertexBuilder.vertex(matrix, offsetX, offsetY, offsetZ).color(1F, 1F, 1F, 1F).uv(textureX, textureY).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLightIn).normal(pose, 1F, 0F, 1F).endVertex();
     }
 }

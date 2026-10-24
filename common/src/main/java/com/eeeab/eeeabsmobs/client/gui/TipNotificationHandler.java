@@ -24,7 +24,7 @@ public class TipNotificationHandler {
     private static int targetY = 30;
 
     public static void init() {
-        icons = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/msg_levels.png");
+        icons = new ResourceLocation(EEEABMobs.MOD_ID, "textures/gui/msg_levels.png");
         alphaAControlled = new ControlledAnimation(ModConfigHandler.CLIENT.tipNotification.displayDuration.get());
     }
 

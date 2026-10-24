@@ -194,7 +194,7 @@ public abstract class EntityAbsImmortalSkeleton extends EntityAbsImmortal implem
     }
 
     protected AbstractArrow getArrow(ItemStack arrowStack, float distanceFactor, @Nullable ItemStack weaponStack) {
-        return ProjectileUtil.getMobArrow(this, arrowStack, distanceFactor, weaponStack);
+        return ProjectileUtil.getMobArrow(this, arrowStack, distanceFactor);
     }
 
     @Nullable
@@ -203,7 +203,7 @@ public abstract class EntityAbsImmortalSkeleton extends EntityAbsImmortal implem
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         RandomSource inRandom = worldIn.getRandom();
         this.populateDefaultEquipmentSlots(inRandom, difficultyIn);
-        this.populateDefaultEquipmentEnchantments(worldIn, inRandom, difficultyIn);
+        this.populateDefaultEquipmentEnchantments(inRandom, difficultyIn);
         return spawnDataIn;
     }
 

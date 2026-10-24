@@ -21,12 +21,17 @@ public abstract class ModHierarchicalModel<E extends Entity> extends EntityModel
 
     public abstract ModelPart root();
 
-    // In 1.21+ the four trailing float RGBA components were replaced by a single packed
-    // FastColor.ARGB32 int (alpha << 24 | red << 16 | green << 8 | blue), default -1 (opaque white).
-    // See net.minecraft.client.model.Model#renderToBuffer / ModelPart#render in the NeoForge sources jar.
     @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        float a = ((color >> 24) & 255) / 255.0F;
+        float r = ((color >> 16) & 255) / 255.0F;
+        float g = ((color >> 8) & 255) / 255.0F;
+        float b = (color & 255) / 255.0F;
+        this.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, r, g, b, a);
     }
 
     @Override

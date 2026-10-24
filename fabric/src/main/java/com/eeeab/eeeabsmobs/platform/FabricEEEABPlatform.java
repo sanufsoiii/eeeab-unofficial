@@ -71,7 +71,7 @@ public class FabricEEEABPlatform implements EEEABPlatform {
     private static final AttachmentType<ThreatMemoryCapability.IThreatMemoryCapability> THREAT_MEMORY_CAPABILITY =
             AttachmentRegistry.<ThreatMemoryCapability.IThreatMemoryCapability>builder()
                     .initializer(ThreatMemoryCapability.IThreatMemoryCapabilityImpl::new)
-                    .buildAndRegister(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "threat_memory"));
+                    .buildAndRegister(new ResourceLocation(EEEABMobs.MOD_ID, "threat_memory"));
 
     private static final AttachmentType<?>[] ATTACHMENTS = new AttachmentType<?>[]{
             STUN_CAPABILITY,
@@ -92,7 +92,7 @@ public class FabricEEEABPlatform implements EEEABPlatform {
         return AttachmentRegistry.<T>builder()
                 .initializer(initializer)
                 .persistent(codec)
-                .buildAndRegister(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name));
+                .buildAndRegister(new ResourceLocation(EEEABMobs.MOD_ID, name));
     }
 
     private static AttachmentType<AbilityCapability.IAbilityCapability> registerAbilityAttachment() {
@@ -104,7 +104,7 @@ public class FabricEEEABPlatform implements EEEABPlatform {
         return AttachmentRegistry.<AbilityCapability.IAbilityCapability>builder()
                 .initializer(AbilityCapability.AbilityCapabilityImp::new)
                 .persistent(codec)
-                .buildAndRegister(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "ability"));
+                .buildAndRegister(new ResourceLocation(EEEABMobs.MOD_ID, "ability"));
     }
 
     @SuppressWarnings("unchecked")
@@ -180,14 +180,14 @@ public class FabricEEEABPlatform implements EEEABPlatform {
 
     @Override
     public ModelResourceLocation getModelHandId(String item) {
-        return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"), "fabric_resource");
+        return new ModelResourceLocation(new ResourceLocation(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"), "fabric_resource");
     }
 
     @Override
     public void registerSpecialModels() {
         ModelLoadingPlugin.register(context -> {
             ResourceLocation[] ids = java.util.Arrays.stream(ModItemModels.HAND_MODEL_ITEMS)
-                    .map(item -> ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"))
+                    .map(item -> new ResourceLocation(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"))
                     .toArray(ResourceLocation[]::new);
             context.addModels(ids);
         });
@@ -214,7 +214,7 @@ public class FabricEEEABPlatform implements EEEABPlatform {
             poseStack.pushPose();
             Vec3 camera = context.camera().getPosition();
             poseStack.translate(-camera.x, -camera.y, -camera.z);
-            ClientEventHandler.renderWorld(context.tickCounter().getGameTimeDeltaPartialTick(false), poseStack, Minecraft.getInstance().renderBuffers().bufferSource());
+            ClientEventHandler.renderWorld(context.tickDelta(), poseStack, Minecraft.getInstance().renderBuffers().bufferSource());
             poseStack.popPose();
         });
     }
@@ -225,7 +225,7 @@ public class FabricEEEABPlatform implements EEEABPlatform {
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new IdentifiableResourceReloadListener() {
             @Override
             public ResourceLocation getFabricId() {
-                return ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "boss_bar_textures");
+                return new ResourceLocation(EEEABMobs.MOD_ID, "boss_bar_textures");
             }
 
             @Override

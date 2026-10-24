@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 public class RenderImmortalShuriken extends EntityRenderer<EntityImmortalShuriken> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_shuriken.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_shuriken.png");
     private final ModelImmortalShuriken model;
 
     public RenderImmortalShuriken(EntityRendererProvider.Context context) {
@@ -31,7 +31,7 @@ public class RenderImmortalShuriken extends EntityRenderer<EntityImmortalShurike
         float f1 = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
         VertexConsumer buffer = bufferIn.getBuffer(ModRenderType.getGlowingCutOutEffect(getTextureLocation(entity), false));
         this.model.setupAnim(entity, 0.0F, 0.0F, partialTicks, f, f1);
-        this.model.renderToBuffer(poseStack, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
+        this.model.renderToBuffer(poseStack, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, bufferIn, packedLightIn);
     }

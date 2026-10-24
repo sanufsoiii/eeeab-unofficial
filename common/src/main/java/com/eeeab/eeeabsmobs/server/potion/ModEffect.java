@@ -38,6 +38,10 @@ public class ModEffect extends MobEffect {
     protected boolean canApplyEffect(int remainingTicks, int level) {
         return false;
     }
+
+    public MobEffect addAttributeModifier(net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute, net.minecraft.resources.ResourceLocation id, double amount, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation operation) {
+        return super.addAttributeModifier(attribute, java.util.UUID.nameUUIDFromBytes(id.toString().getBytes()).toString(), amount, operation);
+    }
 }
 
 

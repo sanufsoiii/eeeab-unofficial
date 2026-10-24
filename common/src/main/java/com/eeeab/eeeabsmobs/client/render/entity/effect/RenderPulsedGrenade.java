@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 public class RenderPulsedGrenade extends EntityRenderer<EntityPulsedGrenade> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/pulsed_grenade.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/pulsed_grenade.png");
     private final ModelPulsedGrenade model;
 
     public RenderPulsedGrenade(EntityRendererProvider.Context context) {
@@ -28,7 +28,7 @@ public class RenderPulsedGrenade extends EntityRenderer<EntityPulsedGrenade> {
         poseStack.scale(0.5F, 0.5F, 0.5F);
         poseStack.translate(0F, 0.5F, 0F);
         this.model.setupAnim(entity, 0, 0, 0, rotationY, f);
-        this.model.renderToBuffer(poseStack, bufferIn.getBuffer(ModRenderType.getGlowingEffect(getTextureLocation(entity))), packedLightIn, OverlayTexture.NO_OVERLAY, -1);
+        this.model.renderToBuffer(poseStack, bufferIn.getBuffer(ModRenderType.getGlowingEffect(getTextureLocation(entity))), packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, bufferIn, packedLightIn);
     }

@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 public class RenderMagicGolem extends MobRenderer<EntityMagicGolem, ModelMagicGolem> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_golem.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_golem.png");
 
     public RenderMagicGolem(EntityRendererProvider.Context context) {
         super(context, new ModelMagicGolem(context.bakeLayer(ModModelLayer.MAGIC_GOLEM)), 0.3f);

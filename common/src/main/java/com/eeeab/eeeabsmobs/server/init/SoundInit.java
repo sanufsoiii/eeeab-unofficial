@@ -169,6 +169,6 @@ public class SoundInit {
     }
 
     public static FabricDeferredRegister.Entry<SoundEvent> create(String name) {
-        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name)));
+        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(EEEABMobs.MOD_ID, name)));
     }
 }

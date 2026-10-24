@@ -16,10 +16,10 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 
 public class ClientEventHandler {
-    private static final ResourceLocation FRENZY_OUTLINE_LOCATION = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/misc/frenzy_outline.png");
+    private static final ResourceLocation FRENZY_OUTLINE_LOCATION = new ResourceLocation(EEEABMobs.MOD_ID, "textures/misc/frenzy_outline.png");
 
     public static void register() {
-        ClientGuiEvent.RENDER_HUD.register((guiGraphics, deltaTracker) -> {
+        ClientGuiEvent.RENDER_HUD.register((guiGraphics, partialTick) -> {
             LocalPlayer player = Minecraft.getInstance().player;
             if (player != null) {
                 FrenzyCapability.IFrenzyCapability capability = CapabilityHandler.getCapability(player, CapabilityHandler.FRENZY_CAPABILITY);
@@ -29,7 +29,7 @@ public class ClientEventHandler {
                     guiGraphics.blit(FRENZY_OUTLINE_LOCATION, 0, 0, 0, 0, res.getGuiScaledWidth(), res.getGuiScaledHeight(), res.getGuiScaledWidth(), res.getGuiScaledHeight());
                 }
             }
-            TipNotificationHandler.renderOverlay(guiGraphics, deltaTracker.getGameTimeDeltaPartialTick(false));
+            TipNotificationHandler.renderOverlay(guiGraphics, partialTick);
         });
 
         ClientTickEvent.CLIENT_POST.register(client -> {

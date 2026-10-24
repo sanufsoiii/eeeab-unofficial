@@ -47,11 +47,6 @@ public class SlidingDoorModel extends ModHierarchicalModel<Entity> {
         return this.root;
     }
 
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-    }
-
     public static final AnimationDefinition OPEN = AnimationDefinition.Builder.withLength(0.5f)
             .addAnimation("left_part1",
                     new AnimationChannel(AnimationChannel.Targets.POSITION,

@@ -11,11 +11,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 public class RenderImmortalMagicCircle extends FlatTextureRenderer<EntityImmortalMagicCircle> {
-    private static final ResourceLocation NONE_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/none.png");
-    private static final ResourceLocation SPEED_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/speed.png");
-    private static final ResourceLocation POWER_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/power.png");
-    private static final ResourceLocation HARMFUL_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/harmful.png");
-    private static final ResourceLocation BENEFICIAL_TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/beneficial.png");
+    private static final ResourceLocation NONE_TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/none.png");
+    private static final ResourceLocation SPEED_TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/speed.png");
+    private static final ResourceLocation POWER_TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/power.png");
+    private static final ResourceLocation HARMFUL_TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/harmful.png");
+    private static final ResourceLocation BENEFICIAL_TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_magic_circle/beneficial.png");
 
     public RenderImmortalMagicCircle(EntityRendererProvider.Context context) {
         super(context);

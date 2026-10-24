@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.joml.Quaternionf;
 
 public class RenderCrimsonCrack extends FlatTextureRenderer<EntityCrimsonCrack> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/crimson_crack.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/crimson_crack.png");
     private static final float TEXTURE_WIDTH = 256;
     private static final float TEXTURE_HEIGHT = 32;
 

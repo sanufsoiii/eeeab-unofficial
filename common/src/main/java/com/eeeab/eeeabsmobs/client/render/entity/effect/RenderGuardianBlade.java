@@ -24,7 +24,7 @@ public class RenderGuardianBlade extends EntityRenderer<EntityGuardianBlade> {
         this.model = new ModelGuardianBlade(context.bakeLayer(ModModelLayer.GUARDIAN_BLADE));
         //初始化文件地址
         for (int i = 0; i < TEXTURES.length; i++) {
-            TEXTURES[i] = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/guardian_blade/index_" + (i + 1) + ".png");
+            TEXTURES[i] = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/guardian_blade/index_" + (i + 1) + ".png");
         }
     }
 
@@ -41,7 +41,7 @@ public class RenderGuardianBlade extends EntityRenderer<EntityGuardianBlade> {
             f = 1.0F;
         }
         pPoseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
-        model.renderToBuffer(pPoseStack, pBuffer.getBuffer(ModRenderType.getGlowingCutOutEffect(getTextureLocation(entity))), pPackedLight, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color(FastColor.as8BitChannel(f), FastColor.as8BitChannel(f), FastColor.as8BitChannel(f), FastColor.as8BitChannel(f)));
+        model.renderToBuffer(pPoseStack, pBuffer.getBuffer(ModRenderType.getGlowingCutOutEffect(getTextureLocation(entity))), pPackedLight, OverlayTexture.NO_OVERLAY, f, f, f, f);
         pPoseStack.popPose();
         super.render(entity, pEntityYaw, pPartialTick, pPoseStack, pBuffer, pPackedLight);
     }

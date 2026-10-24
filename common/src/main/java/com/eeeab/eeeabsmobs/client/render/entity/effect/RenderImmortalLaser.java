@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.joml.Quaternionf;
 
 public class RenderImmortalLaser extends RenderAbsBeam<EntityImmortalLaser> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_laser.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/immortal_laser.png");
 
     public RenderImmortalLaser(EntityRendererProvider.Context mgr) {
         super(mgr, 1F, 0.6F);

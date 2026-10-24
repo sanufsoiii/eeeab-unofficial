@@ -68,7 +68,7 @@ public class LightningManager {
         BoltOwnerData data = boltOwners.computeIfAbsent(owner, k -> new BoltOwnerData());
         data.lastBolt = newBolt;
         long renderTicks = minecraft.level.getGameTime();
-        double now = renderTicks + minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        double now = renderTicks + minecraft.getFrameTime();
 
         if ((!newBolt.isConsecutive() || data.bolts.isEmpty()) && now - data.lastBoltTimestamp >= data.lastBoltDelay) {
             data.addBolt(new BoltInstance(newBolt, now), now);
@@ -109,8 +109,9 @@ public class LightningManager {
             Pair<Integer, Integer> bounds = bolt.getFadeFunction().getRenderBounds(renderQuads.size(), lifeScale);
             for (int i = bounds.getLeft(); i < bounds.getRight(); i++) {
                 for (Vec3 v : renderQuads.get(i).getVecs()) {
-                    buffer.addVertex(matrix, (float) v.x, (float) v.y, (float) v.z)
-                            .setColor(bolt.getColor().x(), bolt.getColor().y(), bolt.getColor().z(), bolt.getColor().w());
+                    buffer.vertex(matrix, (float) v.x, (float) v.y, (float) v.z)
+                            .color(bolt.getColor().x(), bolt.getColor().y(), bolt.getColor().z(), bolt.getColor().w())
+                            .endVertex();
                 }
             }
         }

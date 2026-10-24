@@ -16,8 +16,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 
 public class RenderTester extends MobRenderer<EntityTester, ModelTester> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/tester.png");
-    private static final ResourceLocation LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/tester_plains.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/tester.png");
+    private static final ResourceLocation LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/tester_plains.png");
 
     public RenderTester(EntityRendererProvider.Context context) {
         super(context, new ModelTester(context.bakeLayer(ModModelLayer.TESTER)), 0.3F);

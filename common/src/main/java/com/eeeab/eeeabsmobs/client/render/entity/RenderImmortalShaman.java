@@ -13,10 +13,10 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 public class RenderImmortalShaman extends MobRenderer<EntityImmortalShaman, ModelImmortalShaman> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman.png");
-    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_decoration.png");
-    private static final ResourceLocation OUTER_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_outer.png");
-    public static final ResourceLocation EYES_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_eyes.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman.png");
+    private static final ResourceLocation GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_decoration.png");
+    private static final ResourceLocation OUTER_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_outer.png");
+    public static final ResourceLocation EYES_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_shaman_eyes.png");
 
     public RenderImmortalShaman(EntityRendererProvider.Context context) {
         super(context, new ModelImmortalShaman(context.bakeLayer(ModModelLayer.IMMORTAL_SHAMAN)), 0.45F);

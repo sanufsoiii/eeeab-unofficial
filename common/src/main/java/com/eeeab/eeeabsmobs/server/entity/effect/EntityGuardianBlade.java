@@ -32,8 +32,8 @@ public class EntityGuardianBlade extends EntityMagicEffects {
     public EntityGuardianBlade(Level level, LivingEntity caster, double x, double y, double z, float yRot, boolean moveOffset) {
         this(EntityInit.GUARDIAN_BLADE.get(), level);
         float baseDamage = caster instanceof Player ? (float) caster.getAttributeValue(Attributes.ATTACK_DAMAGE) : this.getDamage();
-        if (caster instanceof Player && level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            baseDamage = EnchantmentHelper.modifyDamage(serverLevel, caster.getMainHandItem(), caster, this.damageSources().indirectMagic(caster, caster), baseDamage);
+        if (caster instanceof Player) {
+            baseDamage += EnchantmentHelper.getDamageBonus(caster.getMainHandItem(), caster.getType());
         }
         this.damage = baseDamage;
         this.setYRot((yRot * (180F / (float) Math.PI)) - 90F);

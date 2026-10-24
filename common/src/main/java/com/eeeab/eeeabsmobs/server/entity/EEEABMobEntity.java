@@ -36,15 +36,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
  * <b>EEEABMobEntity</b><br/>
  */
 public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
-    private static final ResourceLocation HEALTH_MODIFIER_ID = ResourceLocation.fromNamespaceAndPath("eeeabsmobs", "reset_health_by_config");
-    private static final ResourceLocation ATTACK_MODIFIER_ID = ResourceLocation.fromNamespaceAndPath("eeeabsmobs", "reset_attack_by_config");
+    private static final UUID HEALTH_MODIFIER_UUID = UUID.nameUUIDFromBytes("eeeabsmobs:reset_health_by_config".getBytes(StandardCharsets.UTF_8));
+    private static final UUID ATTACK_MODIFIER_UUID = UUID.nameUUIDFromBytes("eeeabsmobs:reset_attack_by_config".getBytes(StandardCharsets.UTF_8));
     private static final byte MAKE_POOF_ID = 60;
     private static final byte PLAY_BOSS_MUSIC_ID = 77;
     private static final byte STOP_BOSS_MUSIC_ID = 78;
@@ -71,13 +73,13 @@ public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
             AttributeInstance healthAttribute = this.getAttribute(Attributes.MAX_HEALTH);
             if (healthAttribute != null) {
                 double finalValue = healthAttribute.getBaseValue() * config.healthMultiplier.get() - healthAttribute.getBaseValue();
-                healthAttribute.addTransientModifier(new AttributeModifier(HEALTH_MODIFIER_ID, finalValue, AttributeModifier.Operation.ADD_VALUE));
+                healthAttribute.addTransientModifier(new AttributeModifier(HEALTH_MODIFIER_UUID, "Reset health by config", finalValue, AttributeModifier.Operation.ADD_VALUE));
                 this.setHealth(this.getMaxHealth());
             }
             AttributeInstance attackAttribute = this.getAttribute(Attributes.ATTACK_DAMAGE);
             if (attackAttribute != null) {
                 double finalValue = attackAttribute.getBaseValue() * config.attackMultiplier.get() - attackAttribute.getBaseValue();
-                attackAttribute.addTransientModifier(new AttributeModifier(ATTACK_MODIFIER_ID, finalValue, AttributeModifier.Operation.ADD_VALUE));
+                attackAttribute.addTransientModifier(new AttributeModifier(ATTACK_MODIFIER_UUID, "Reset attack by config", finalValue, AttributeModifier.Operation.ADD_VALUE));
             }
         }
     }
@@ -157,7 +159,7 @@ public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
     }
 
     protected boolean checkAttackDistance(DamageSource source, double distSqr, Entity entity) {
-        return (ModEntityUtils.isProjectileSource(source) || !source.isDirect()) && this.distanceToSqr(entity) >= distSqr;
+        return (ModEntityUtils.isProjectileSource(source) || source.getDirectEntity() != source.getEntity()) && this.distanceToSqr(entity) >= distSqr;
     }
 
     @Override
@@ -169,7 +171,7 @@ public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
             lastHurtByPlayer = killDataAttackingPlayer;
             lastHurtByPlayerTime = killDataRecentlyHit;
             if (dropAfterDeathAnim && killDataCause != null) {
-                this.dropAllDeathLoot((ServerLevel) this.level(), killDataCause);
+                this.dropAllDeathLoot(killDataCause);
             }
             this.level().broadcastEntityEvent(this, (byte) 60);
             this.remove(Entity.RemovalReason.KILLED);
@@ -177,9 +179,9 @@ public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
     }
 
     @Override
-    protected void dropAllDeathLoot(ServerLevel level, DamageSource source) {
+    protected void dropAllDeathLoot(DamageSource source) {
         if (!dropAfterDeathAnim || deathTime > 0) {
-            super.dropAllDeathLoot(level, source);
+            super.dropAllDeathLoot(source);
         }
     }
 
@@ -220,30 +222,29 @@ public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
         return doHurtTarget(this.damageSources().mobAttack(this), entity, damageMultiplier, knockBackMultiplier, canDisableShield ? 100 : 0);
     }
 
-    //基于自: net.minecraft.world.entity.Mob.doHurtTarget(Entity entity) — 1.21.1 使用 EnchantmentHelper 的附魔数据组件处理伤害/击退/附魔攻击特效
+    //基于自: net.minecraft.world.entity.Mob.doHurtTarget(Entity entity) (1.20.6)
     public boolean doHurtTarget(DamageSource damageSource, Entity entity, float damageMultiplier, float knockBackMultiplier, int disableShieldTime) {
         float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damageMultiplier;
-        if (this.level() instanceof ServerLevel serverLevel) {
-            f = EnchantmentHelper.modifyDamage(serverLevel, this.getWeaponItem(), entity, damageSource, f);
-        }
+        float f1 = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK) * knockBackMultiplier;
         if (entity instanceof LivingEntity livingEntity) {
+            f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), livingEntity.getType());
+            f1 += EnchantmentHelper.getKnockbackBonus(this);
             f += getDamageAmountByTargetHealthPct(livingEntity);
+        }
+
+        int fireAspect = EnchantmentHelper.getFireAspect(this);
+        if (fireAspect > 0) {
+            entity.igniteForSeconds(fireAspect * 4);
         }
 
         boolean flag = entity.hurt(damageSource, f);
         if (flag) {
-            float f1 = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK) * knockBackMultiplier;
-            if (this.level() instanceof ServerLevel serverLevel) {
-                f1 = EnchantmentHelper.modifyKnockback(serverLevel, this.getWeaponItem(), entity, damageSource, f1);
-            }
             if (f1 > 0.0F && entity instanceof LivingEntity livingEntity) {
                 livingEntity.knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
             }
 
-            if (this.level() instanceof ServerLevel serverLevel) {
-                EnchantmentHelper.doPostAttackEffects(serverLevel, entity, damageSource);
-            }
+            this.doEnchantDamageEffects(this, entity);
             this.setLastHurtMob(entity);
         } else if (disableShieldTime > 0 && entity instanceof Player player && player.isBlocking()) {
             player.getCooldowns().addCooldown(player.getUseItem().getItem(), disableShieldTime);

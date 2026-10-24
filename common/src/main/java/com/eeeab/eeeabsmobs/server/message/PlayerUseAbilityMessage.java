@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public record PlayerUseAbilityMessage(int index) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<PlayerUseAbilityMessage> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "player_use_ability"));
+            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "player_use_ability"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PlayerUseAbilityMessage> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, PlayerUseAbilityMessage::index,

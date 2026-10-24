@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
 public class ElectricityCapability {
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "electricity_cap");
+    public static final ResourceLocation ID = new ResourceLocation(EEEABMobs.MOD_ID, "electricity_cap");
 
     public interface IElectricityCapability extends GeneralCapability, NbtCapability {
     }

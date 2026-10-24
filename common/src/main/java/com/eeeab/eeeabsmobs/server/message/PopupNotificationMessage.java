@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record PopupNotificationMessage(ResourceLocation id, int level) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<PopupNotificationMessage> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "popup_notification"));
+            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "popup_notification"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PopupNotificationMessage> STREAM_CODEC = StreamCodec.composite(
             ResourceLocation.STREAM_CODEC, PopupNotificationMessage::id,

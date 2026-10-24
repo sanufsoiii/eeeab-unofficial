@@ -12,8 +12,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 public class RenderRelicRipper extends MobRenderer<EntityRelicRipper, ModelRelicRipper> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_ripper.png");
-    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_ripper_glow.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_ripper.png");
+    private static final ResourceLocation GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_ripper_glow.png");
     private static final String[] SAW = new String[]{"upper", "rightArm", "rightArmJoint", "rightHand", "sawJoint", "saw"};
 
     public RenderRelicRipper(EntityRendererProvider.Context context) {

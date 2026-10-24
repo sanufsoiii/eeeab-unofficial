@@ -60,7 +60,7 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
     // pickup ItemStack and the (nullable) weapon ItemStack it was fired from - pass the axe stack for both,
     // since this isn't fired "from" a separate weapon item.
     public EntityThrownDoomboltAxe(Level pLevel, LivingEntity shooter, ItemStack stack) {
-        super(EntityInit.DOOMBOLT_AXE.get(), shooter, pLevel, stack, null);
+        super(EntityInit.DOOMBOLT_AXE.get(), shooter, pLevel, stack);
         this.doomboltAxeItem = stack.copy();
         this.entityData.set(ID_FOIL, stack.hasFoil());
     }
@@ -158,8 +158,8 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
         Entity owner = this.getOwner();
         if (entity == owner) return;
         float damage = (float) ModConfigHandler.COMMON.items.doomboltAxe.attackDamageValue;
-        if (entity instanceof LivingEntity livingentity && this.level() instanceof ServerLevel serverLevel) {
-            damage = EnchantmentHelper.modifyDamage(serverLevel, this.doomboltAxeItem, livingentity, this.damageSources().trident(this, owner == null ? this : owner), damage);
+        if (entity instanceof LivingEntity livingentity) {
+            damage += EnchantmentHelper.getDamageBonus(this.doomboltAxeItem, livingentity.getType());
         }
         this.dealtDamage = true;
         DamageSource damagesource = this.damageSources().trident(this, owner == null ? this : owner);
@@ -194,8 +194,9 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
             }
             if (entity instanceof LivingEntity target) {
                 target.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true), owner);
-                if (owner instanceof LivingEntity && this.level() instanceof ServerLevel serverLevel) {
-                    EnchantmentHelper.doPostAttackEffectsWithItemSource(serverLevel, target, damagesource, this.doomboltAxeItem);
+                if (owner instanceof LivingEntity livingOwner) {
+                    EnchantmentHelper.doPostHurtEffects(target, livingOwner);
+                    EnchantmentHelper.doPostDamageEffects(livingOwner, target);
                 }
                 this.doPostHurtEffects(target);
             }
@@ -222,8 +223,9 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
                 if (entity.hurt(this.damageSources().indirectMagic(this, owner == null ? this : owner), damage * percent)) {
                     if (entity instanceof LivingEntity target) {
                         target.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true), owner);
-                        if (owner instanceof LivingEntity && this.level() instanceof ServerLevel serverLevel) {
-                            EnchantmentHelper.doPostAttackEffectsWithItemSource(serverLevel, target, this.damageSources().indirectMagic(this, owner), this.doomboltAxeItem);
+                        if (owner instanceof LivingEntity livingOwner) {
+                            EnchantmentHelper.doPostHurtEffects(target, livingOwner);
+                            EnchantmentHelper.doPostDamageEffects(livingOwner, target);
                         }
                     }
                 }

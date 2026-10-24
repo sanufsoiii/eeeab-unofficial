@@ -46,7 +46,7 @@ public class LayerOuter<T extends LivingEntity, M extends EntityModel<T>> extend
     protected void renderLayer(PoseStack stack, VertexConsumer vertexConsumer, int packedLightIn, float partialTicks, T entity, boolean overlayTexture) {
         int i = overlayTexture ? LivingEntityRenderer.getOverlayCoords(entity, 0F) : OverlayTexture.NO_OVERLAY;
         float alpha = getAlpha(entity, partialTicks);
-        getParentModel().renderToBuffer(stack, vertexConsumer, packedLightIn, i, FastColor.ARGB32.color(FastColor.as8BitChannel(alpha), FastColor.as8BitChannel(alpha), FastColor.as8BitChannel(alpha), FastColor.as8BitChannel(alpha)));
+        getParentModel().renderToBuffer(stack, vertexConsumer, packedLightIn, i, 1.0F, 1.0F, 1.0F, alpha);
     }
 
     /**

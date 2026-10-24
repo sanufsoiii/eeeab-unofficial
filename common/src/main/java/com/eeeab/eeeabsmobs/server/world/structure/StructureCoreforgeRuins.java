@@ -31,10 +31,10 @@ import java.util.Optional;
 
 public class StructureCoreforgeRuins extends Structure {
     public static final MapCodec<StructureCoreforgeRuins> CODEC = simpleCodec(StructureCoreforgeRuins::new);
-    private static final ResourceLocation ANCIENT_TOMB_1 = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins1");
-    private static final ResourceLocation ANCIENT_TOMB_2 = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins2");
-    private static final ResourceLocation ANCIENT_TOMB_3 = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins3");
-    private static final ResourceLocation ANCIENT_TOMB_4 = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "coreforge_ruins4");
+    private static final ResourceLocation ANCIENT_TOMB_1 = new ResourceLocation(EEEABMobs.MOD_ID, "coreforge_ruins1");
+    private static final ResourceLocation ANCIENT_TOMB_2 = new ResourceLocation(EEEABMobs.MOD_ID, "coreforge_ruins2");
+    private static final ResourceLocation ANCIENT_TOMB_3 = new ResourceLocation(EEEABMobs.MOD_ID, "coreforge_ruins3");
+    private static final ResourceLocation ANCIENT_TOMB_4 = new ResourceLocation(EEEABMobs.MOD_ID, "coreforge_ruins4");
     private static final Map<ResourceLocation, BlockPos> OFFSET = new ImmutableMap.Builder<ResourceLocation, BlockPos>()
             .put(ANCIENT_TOMB_1, new BlockPos(0, 1, 0))
             .put(ANCIENT_TOMB_2, new BlockPos(0, 1, 0))
@@ -108,7 +108,7 @@ public class StructureCoreforgeRuins extends Structure {
             BlockIgnoreProcessor blockignoreprocessor = BlockIgnoreProcessor.STRUCTURE_BLOCK;
             // setKeepLiquids(boolean) was replaced by setLiquidSettings(LiquidSettings); false ("don't keep
             // liquids") is LiquidSettings.IGNORE_WATERLOGGING.
-            return (new StructurePlaceSettings()).setRotation(rotation).setMirror(Mirror.NONE).addProcessor(blockignoreprocessor).addProcessor(new ProtectedBlockProcessor(BlockTags.FEATURES_CANNOT_REPLACE)).setLiquidSettings(net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings.IGNORE_WATERLOGGING);
+            return (new StructurePlaceSettings()).setRotation(rotation).setMirror(Mirror.NONE).addProcessor(blockignoreprocessor).addProcessor(new ProtectedBlockProcessor(BlockTags.FEATURES_CANNOT_REPLACE)).setKeepLiquids(false);
         }
 
         private static BlockPos makePosition(ResourceLocation location, BlockPos blockPos) {

@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 public record MessageStopAnimation(int entityID, boolean onlyStopOverlapAnimation) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<MessageStopAnimation> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "stop_animation"));
+            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "stop_animation"));
 
     public static final StreamCodec<net.minecraft.network.FriendlyByteBuf, MessageStopAnimation> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, MessageStopAnimation::entityID,

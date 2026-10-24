@@ -222,7 +222,7 @@ public class ModEntityUtils {
      */
     public static float actualDamageIsCalculatedBasedOnArmor(LivingEntity target, DamageSource damageSource, float damage, float armor, float toughness, float armorReductionMultiplier) {
         float adjustedArmor = armor * armorReductionMultiplier;
-        return CombatRules.getDamageAfterAbsorb(target, damage, damageSource, adjustedArmor, toughness);
+        return CombatRules.getDamageAfterAbsorb(damage, damageSource, adjustedArmor, toughness);
     }
 
     public static float getTargetRelativeAngle(LivingEntity entity, LivingEntity target) {

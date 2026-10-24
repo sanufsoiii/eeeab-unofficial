@@ -40,7 +40,7 @@ public class LayerVariantHolder<V, T extends Entity & VariantHolder<V>, M extend
             }
             VertexConsumer vertexconsumer = bufferSource.getBuffer(this.getRenderType(resourcelocation));
             int overlay = entity instanceof LivingEntity livingEntity ? LivingEntityRenderer.getOverlayCoords(livingEntity, 0.0F) : OverlayTexture.NO_OVERLAY;
-            this.getParentModel().renderToBuffer(stack, vertexconsumer, packedLightIn, overlay, -1);
+            this.getParentModel().renderToBuffer(stack, vertexconsumer, packedLightIn, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 

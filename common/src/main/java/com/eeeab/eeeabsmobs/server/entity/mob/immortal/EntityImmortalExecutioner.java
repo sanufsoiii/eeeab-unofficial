@@ -304,7 +304,7 @@ public class EntityImmortalExecutioner extends EntityAbsImmortal {
                 AABB attackRange = ModEntityUtils.makeAABBWithSize(this.getX(), this.getY(), this.getZ(), 0F, 6F, 12F, 6F);
                 for (LivingEntity hitEntity : this.level().getEntitiesOfClass(LivingEntity.class, attackRange, e -> !this.isAlliedTo(e))) {
                     if (this.executionerHurtTarget(hitEntity)) {
-                        hitEntity.igniteForSeconds((float) (2.5 * this.getFlameStrength()));
+                        hitEntity.igniteForSeconds((int) Math.round(2.5 * this.getFlameStrength()));
                     }
                 }
             }

@@ -119,7 +119,7 @@ public class EntityGuardianLaser extends EntityAbsBeam {
                         if (owner instanceof IMob mob) finalDamage += mob.getDamageAmountByTargetHealthPct(target);
                         hitFlag = target.hurt(ModDamageSource.laser(this, owner, getUserType().id > 1, false), finalDamage);
                     }
-                    if (hitFlag) target.igniteForSeconds((float) type.fireDuration);
+                    if (hitFlag) target.igniteForSeconds((int) Math.round(type.fireDuration));
                 }
             } else this.spawnExplosionParticles();
         }

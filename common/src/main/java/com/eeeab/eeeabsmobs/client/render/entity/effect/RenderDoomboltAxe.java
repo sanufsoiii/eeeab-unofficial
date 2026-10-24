@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 public class RenderDoomboltAxe extends EntityRenderer<EntityThrownDoomboltAxe> {
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/item/doombolt_battleaxe.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/item/doombolt_battleaxe.png");
     private final ModelDoomboltAxe model;
 
     public RenderDoomboltAxe(EntityRendererProvider.Context pContext) {
@@ -29,7 +29,7 @@ public class RenderDoomboltAxe extends EntityRenderer<EntityThrownDoomboltAxe> {
         pMatrixStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
         pMatrixStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(pPartialTicks, entity.xRotO, entity.getXRot()) + 90.0F));
         VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(pBuffer, this.model.renderType(this.getTextureLocation(entity)), false, entity.isFoil());
-        this.model.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, -1);
+        this.model.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         pMatrixStack.popPose();
         super.render(entity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
     }

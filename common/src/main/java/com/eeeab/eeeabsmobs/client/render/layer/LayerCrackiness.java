@@ -39,7 +39,7 @@ public class LayerCrackiness<T extends LivingEntity & CrackinessEntity<T>, M ext
                     return;
                 }
                 VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.entityTranslucent(resourcelocation));
-                this.getParentModel().renderToBuffer(stack, vertexconsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), -1);
+                this.getParentModel().renderToBuffer(stack, vertexconsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
             }
         }
     }

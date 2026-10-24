@@ -21,10 +21,10 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.stream.Collectors;
 
 public class RenderRelicAnnihilator extends MobRenderer<EntityRelicAnnihilator, ModelRelicAnnihilator> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator.png");
-    private static final ResourceLocation EYE_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_eye.png");
-    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_glow.png");
-    private static final ResourceLocation FLAME_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_exhaust.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator.png");
+    private static final ResourceLocation EYE_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_eye.png");
+    private static final ResourceLocation GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_glow.png");
+    private static final ResourceLocation FLAME_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/relic_annihilator_exhaust.png");
     private static final String[] MUZZLE = new String[]{"upper", "leftArm", "leftHand", "muzzle"};
     private final EntityAfterImageHelper<EntityRelicAnnihilator> afterImageHelper;
 

@@ -42,7 +42,7 @@ public class ItemBusterGauntlet extends SwordItem implements ConfigurableItem {
 
     private static ItemAttributeModifiers buildOffHandModifiers() {
         return ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "buster_gauntlet_offhand_attack_speed"), 0.1D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.OFFHAND)
+                .add(Attributes.ATTACK_SPEED, new AttributeModifier(java.util.UUID.nameUUIDFromBytes("eeeabsmobs:buster_gauntlet_offhand_attack_speed".getBytes()), "Weapon modifier", 0.1D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.OFFHAND)
                 .build();
     }
 
@@ -89,7 +89,7 @@ public class ItemBusterGauntlet extends SwordItem implements ConfigurableItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+    public int getUseDuration(ItemStack stack) {
         return 72000;
     }
 
@@ -102,8 +102,8 @@ public class ItemBusterGauntlet extends SwordItem implements ConfigurableItem {
 
     private static ItemAttributeModifiers buildDefaultAttributes() {
         return ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, ModConfigHandler.COMMON.items.busterGauntlet.attackDamageValue - 1D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, ModConfigHandler.COMMON.items.busterGauntlet.attackSpeedValue - 4D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", ModConfigHandler.COMMON.items.busterGauntlet.attackDamageValue - 1D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_UUID, "Weapon modifier", ModConfigHandler.COMMON.items.busterGauntlet.attackSpeedValue - 4D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .build();
     }
 

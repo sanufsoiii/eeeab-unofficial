@@ -109,7 +109,7 @@ public class EntityAfterImageHelper<T extends Entity> {
             ResourceLocation texture = textureProvider.apply(entity);
             RenderType renderType = RenderType.entityTranslucent(texture);
             VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
-            rootPart.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color(FastColor.as8BitChannel(alpha), 255, 255, 255));
+            rootPart.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
             poseStack.popPose();
         }
 

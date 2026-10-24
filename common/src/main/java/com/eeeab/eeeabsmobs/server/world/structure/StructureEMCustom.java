@@ -87,12 +87,7 @@ public class StructureEMCustom extends Structure {
                         // Set this to false for structure to be place only at the passed in blockpos's Y value instead.
                         // Definitely keep this false when placing structures in the nether as otherwise, heightmap placing will put the structure on the Bedrock roof.
                         this.maxDistanceFromCenter, // Maximum limit for how far pieces can spawn from center. You cannot set this bigger than 128 or else pieces gets cutoff.
-                        // 1.21 added three more trailing parameters to JigsawPlacement.addPieces: pool aliasing,
-                        // per-dimension height padding, and waterlogging behaviour. None of those are things this
-                        // structure customizes, so the vanilla no-op defaults are used.
-                        net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup.EMPTY,
-                        net.minecraft.world.level.levelgen.structure.pools.DimensionPadding.ZERO,
-                        net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings.APPLY_WATERLOGGING);
+                        net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup.EMPTY);
 
 //        if (structurePiecesGenerator.isPresent()) {
 //            EEEABMobs.LOGGER.log(org.apache.logging.log4j.Level.DEBUG, "Test:Configuration structure type at{}", blockPos);

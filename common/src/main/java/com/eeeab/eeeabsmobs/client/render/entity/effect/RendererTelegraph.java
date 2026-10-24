@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 
 public class RendererTelegraph extends EntityRenderer<EntityTelegraph> {
-    private static final ResourceLocation WHITE_TEXTURE = ResourceLocation.parse("minecraft:textures/block/white_concrete.png");
+    private static final ResourceLocation WHITE_TEXTURE = new ResourceLocation("minecraft:textures/block/white_concrete.png");
     private static final float GROUND_LEVEL = 0.05F;
     private static final float OUTER_BOTTOM_ALPHA = 0.4F;
     private static final float INNER_BOTTOM_ALPHA = 0.3F;
@@ -85,14 +85,14 @@ public class RendererTelegraph extends EntityRenderer<EntityTelegraph> {
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix = pose.pose();
         float nx = 0, ny = 1, nz = 0;
-        consumer.addVertex(matrix, -size, y, -size).setColor(red, green, blue, alpha).setUv(0, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
-        consumer.addVertex(matrix, -size, y, size).setColor(red, green, blue, alpha).setUv(0, 1)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
-        consumer.addVertex(matrix, size, y, size).setColor(red, green, blue, alpha).setUv(1, 1)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
-        consumer.addVertex(matrix, size, y, -size).setColor(red, green, blue, alpha).setUv(1, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
+        consumer.vertex(matrix, -size, y, -size).color(red, green, blue, alpha).uv(0, 0)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, -size, y, size).color(red, green, blue, alpha).uv(0, 1)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, size, y, size).color(red, green, blue, alpha).uv(1, 1)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, size, y, -size).color(red, green, blue, alpha).uv(1, 0)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
     }
 
 
@@ -147,14 +147,14 @@ public class RendererTelegraph extends EntityRenderer<EntityTelegraph> {
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix = pose.pose();
         float alphaTop = 0F;
-        consumer.addVertex(matrix, x1, yBase, z1).setColor(red, green, blue, alphaBottom).setUv(0, 1)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
-        consumer.addVertex(matrix, x2, yBase, z2).setColor(red, green, blue, alphaBottom).setUv(1, 1)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
-        consumer.addVertex(matrix, x2, yBase + height, z2).setColor(red, green, blue, alphaTop).setUv(1, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
-        consumer.addVertex(matrix, x1, yBase + height, z1).setColor(red, green, blue, alphaTop).setUv(0, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
+        consumer.vertex(matrix, x1, yBase, z1).color(red, green, blue, alphaBottom).uv(0, 1)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, x2, yBase, z2).color(red, green, blue, alphaBottom).uv(1, 1)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, x2, yBase + height, z2).color(red, green, blue, alphaTop).uv(1, 0)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+        consumer.vertex(matrix, x1, yBase + height, z1).color(red, green, blue, alphaTop).uv(0, 0)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
     }
 
     @Override

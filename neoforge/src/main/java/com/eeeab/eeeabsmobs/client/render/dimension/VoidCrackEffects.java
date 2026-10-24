@@ -22,7 +22,7 @@ import org.joml.Matrix4f;
 @OnlyIn(Dist.CLIENT)
 public class VoidCrackEffects extends DimensionSpecialEffects {
     private VertexBuffer starBuffer;
-    public static final ResourceLocation VOID_CRACK_EFFECTS = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "crack_dimension");
+    public static final ResourceLocation VOID_CRACK_EFFECTS = new ResourceLocation(EEEABMobs.MOD_ID, "crack_dimension");
 
     public VoidCrackEffects() {
         super(Float.NaN, false, SkyType.NONE, false, false);
@@ -78,6 +78,7 @@ public class VoidCrackEffects extends DimensionSpecialEffects {
         //绘制天空盒
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferbuilder = tesselator.getBuilder();
         final int DARKNESS = 10;
         for(int i = 0; i < 6; ++i) {
             poseStack.pushPose();
@@ -89,12 +90,12 @@ public class VoidCrackEffects extends DimensionSpecialEffects {
                 case 5 -> poseStack.mulPose(Axis.ZP.rotationDegrees(-90.0F));
             }
             Matrix4f matrix4f = poseStack.last().pose();
-            BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-            bufferbuilder.addVertex(matrix4f, -300.0F, -300.0F, -300.0F).setColor(DARKNESS, DARKNESS, DARKNESS, 255);
-            bufferbuilder.addVertex(matrix4f, -300.0F, -300.0F, 300.0F).setColor(DARKNESS, DARKNESS, DARKNESS, 255);
-            bufferbuilder.addVertex(matrix4f, 300.0F, -300.0F, 300.0F).setColor(DARKNESS, DARKNESS, DARKNESS, 255);
-            bufferbuilder.addVertex(matrix4f, 300.0F, -300.0F, -300.0F).setColor(DARKNESS, DARKNESS, DARKNESS, 255);
-            BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+            bufferbuilder.vertex(matrix4f, -300.0F, -300.0F, -300.0F).color(DARKNESS, DARKNESS, DARKNESS, 255).endVertex();
+            bufferbuilder.vertex(matrix4f, -300.0F, -300.0F, 300.0F).color(DARKNESS, DARKNESS, DARKNESS, 255).endVertex();
+            bufferbuilder.vertex(matrix4f, 300.0F, -300.0F, 300.0F).color(DARKNESS, DARKNESS, DARKNESS, 255).endVertex();
+            bufferbuilder.vertex(matrix4f, 300.0F, -300.0F, -300.0F).color(DARKNESS, DARKNESS, DARKNESS, 255).endVertex();
+            BufferUploader.drawWithShader(bufferbuilder.end());
             poseStack.popPose();
         }
         //绘制星星
@@ -110,19 +111,22 @@ public class VoidCrackEffects extends DimensionSpecialEffects {
     }
 
     private void createStars() {
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferbuilder = tesselator.getBuilder();
         RenderSystem.setShader(GameRenderer::getPositionShader);
         if (this.starBuffer != null) {
             this.starBuffer.close();
         }
         this.starBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
-        MeshData meshData = this.drawStars(Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION));
+        BufferBuilder.RenderedBuffer renderedBuffer = this.drawStars(bufferbuilder);
         this.starBuffer.bind();
-        this.starBuffer.upload(meshData);
+        this.starBuffer.upload(renderedBuffer);
         VertexBuffer.unbind();
     }
 
-    private MeshData drawStars(BufferBuilder pBuilder) {
+    private BufferBuilder.RenderedBuffer drawStars(BufferBuilder pBuilder) {
         RandomSource randomsource = RandomSource.create(10842L);
+        pBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
 
         for (int i = 0; i < 1500; ++i) {
             double d0 = randomsource.nextFloat() * 2.0F - 1.0F;
@@ -157,10 +161,10 @@ public class VoidCrackEffects extends DimensionSpecialEffects {
                     double d24 = 0.0D * d12 - d21 * d13;
                     double d25 = d24 * d9 - d22 * d10;
                     double d26 = d22 * d9 + d24 * d10;
-                    pBuilder.addVertex((float) (d5 + d25), (float) (d6 + d23), (float) (d7 + d26));
+                    pBuilder.vertex((float) (d5 + d25), (float) (d6 + d23), (float) (d7 + d26)).endVertex();
                 }
             }
         }
-        return pBuilder.buildOrThrow();
+        return pBuilder.end();
     }
 }

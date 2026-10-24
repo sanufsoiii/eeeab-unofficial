@@ -12,8 +12,8 @@ import net.minecraft.world.item.Rarity;
 //旧Forge的getArmorTexture(stack, entity, slot, type)钩子已被移除，贴图选择迁移到client侧，
 //这两个常量保留供客户端代码引用，但物品类本身不再实现该覆写方法。
 public class ItemGhostWarriorArmor extends ArmorItem implements IUnbreakableItem {
-    public static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/armor/ghost_warrior_armor.png");
-    public static final ResourceLocation LEGS_LOCATION = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/armor/ghost_warrior_armor_legs.png");
+    public static final ResourceLocation LOCATION = new ResourceLocation(EEEABMobs.MOD_ID, "textures/armor/ghost_warrior_armor.png");
+    public static final ResourceLocation LEGS_LOCATION = new ResourceLocation(EEEABMobs.MOD_ID, "textures/armor/ghost_warrior_armor_legs.png");
 
     public ItemGhostWarriorArmor(Type type) {
         super(ModArmorMaterial.GHOST_WARRIOR_MATERIAL, type,

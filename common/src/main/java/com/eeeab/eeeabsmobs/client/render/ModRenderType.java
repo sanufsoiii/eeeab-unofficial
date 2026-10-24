@@ -56,7 +56,7 @@ public class ModRenderType extends RenderType {
 
     public static ParticleRenderType PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH = new ParticleRenderType() {
         @Override
-        public BufferBuilder begin(Tesselator tesselator, TextureManager manager) {
+        public void begin(BufferBuilder builder, TextureManager manager) {
             Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
             RenderSystem.enableDepthTest();
             RenderSystem.depthMask(false);
@@ -64,7 +64,12 @@ public class ModRenderType extends RenderType {
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            return tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+            builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+        }
+
+        @Override
+        public void end(Tesselator tesselator) {
+            tesselator.end();
         }
 
         public String toString() {

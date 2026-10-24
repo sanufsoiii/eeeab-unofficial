@@ -9,10 +9,10 @@ group = project.maven_group
 version = "${project.minecraft_version}-${project.mod_version}"
 
 repositories {
-	maven { url = 'https://maven.curseforge.com' }
+	mavenCentral()
+	maven { url = 'https://www.cursemaven.com' }
 	maven { url = 'https://maven.blamejared.com' }
 	maven { url = 'https://maven.architectury.dev/' }
-	mavenCentral()
 	maven { url = 'https://maven.neoforged.net/releases/' }
 }
 

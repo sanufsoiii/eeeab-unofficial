@@ -47,8 +47,8 @@ public class ModArmorMaterial {
     private static Holder<ArmorMaterial> register(String name, EnumMap<ArmorItem.Type, Integer> defense, int enchantmentValue,
                                                     Holder<net.minecraft.sounds.SoundEvent> equipSound, float toughness, float knockbackResistance,
                                                     java.util.function.Supplier<Ingredient> repairIngredient) {
-        List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name)));
+        List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(new ResourceLocation(EEEABMobs.MOD_ID, name)));
         ArmorMaterial material = new ArmorMaterial(defense, enchantmentValue, equipSound, repairIngredient, layers, toughness, knockbackResistance);
-        return Registry.registerForHolder(BuiltInRegistries.ARMOR_MATERIAL, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, name), material);
+        return Registry.registerForHolder(BuiltInRegistries.ARMOR_MATERIAL, new ResourceLocation(EEEABMobs.MOD_ID, name), material);
     }
 }

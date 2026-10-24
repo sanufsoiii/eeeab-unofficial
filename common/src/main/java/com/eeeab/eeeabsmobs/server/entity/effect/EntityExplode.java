@@ -130,7 +130,7 @@ public class EntityExplode extends EntityMagicEffects {
     protected void doKnockbackEntity(Entity hitEntity, double strength, double x, double y, double z) {
         double d0;
         if (hitEntity instanceof LivingEntity livingEntity) {
-            d0 = strength * (1.0D - livingEntity.getAttributeValue(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE));
+            d0 = strength * (1.0D - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
         } else {
             d0 = strength;
         }

@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class ThreatMemoryCapability {
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "threat_memory_cap");
+    public static final ResourceLocation ID = new ResourceLocation(EEEABMobs.MOD_ID, "threat_memory_cap");
 
     public interface IThreatMemoryCapability {
         void recordDamage(LivingEntity self, LivingEntity attacker, float amount);

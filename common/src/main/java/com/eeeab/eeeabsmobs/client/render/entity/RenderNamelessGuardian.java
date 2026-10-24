@@ -15,9 +15,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 public class RenderNamelessGuardian extends MobRenderer<EntityNamelessGuardian, ModelNamelessGuardian> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian.png");
-    private static final ResourceLocation SHOOT_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian_shoot.png");
-    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian_glow.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian.png");
+    private static final ResourceLocation SHOOT_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian_shoot.png");
+    private static final ResourceLocation GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian_glow.png");
 
     public RenderNamelessGuardian(EntityRendererProvider.Context context) {
         super(context, new ModelNamelessGuardian(context.bakeLayer(ModModelLayer.NAMELESS_GUARDIAN)), 1.5F);
@@ -26,7 +26,7 @@ public class RenderNamelessGuardian extends MobRenderer<EntityNamelessGuardian, 
             public void render(PoseStack stack, MultiBufferSource bufferSource, int packedLightIn, EntityNamelessGuardian entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
                 float coefficient = entity.getExplodeCoefficient(partialTicks);
                 if (coefficient > 0) {
-                    this.getParentModel().renderToBuffer(stack, bufferSource.getBuffer(RenderType.entityTranslucentEmissive(TEXTURE)), packedLightIn, OverlayTexture.pack(OverlayTexture.u(Mth.clamp(coefficient, 0F, 1F)), OverlayTexture.v(false)), net.minecraft.util.FastColor.ARGB32.color(net.minecraft.util.FastColor.as8BitChannel(coefficient), net.minecraft.util.FastColor.as8BitChannel(coefficient), net.minecraft.util.FastColor.as8BitChannel(coefficient), net.minecraft.util.FastColor.as8BitChannel(coefficient)));
+                    this.getParentModel().renderToBuffer(stack, bufferSource.getBuffer(RenderType.entityTranslucentEmissive(TEXTURE)), packedLightIn, OverlayTexture.pack(OverlayTexture.u(Mth.clamp(coefficient, 0F, 1F)), OverlayTexture.v(false)), coefficient, coefficient, coefficient, coefficient);
                 }
             }
         });

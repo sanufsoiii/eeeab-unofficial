@@ -14,8 +14,8 @@ public class BossBarRegistry {
     private static final Map<ResourceLocation, BossBarConfig> RESOURCEPACK_OVERRIDES = new ConcurrentHashMap<>();
     private static final Set<ResourceLocation> SCANNED_ENTITIES = ConcurrentHashMap.newKeySet();
     private static final BossBarConfig DEFAULT_CONFIG = new BossBarConfig(
-            ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/boss_bar/default_base.png"),
-            ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/boss_bar/default_overlay.png"),
+            new ResourceLocation(EEEABMobs.MOD_ID, "textures/gui/boss_bar/default_base.png"),
+            new ResourceLocation(EEEABMobs.MOD_ID, "textures/gui/boss_bar/default_overlay.png"),
             6, 12, 3, -4, -5, 256, 16, 23, ChatFormatting.WHITE);
 
     /**
@@ -27,13 +27,13 @@ public class BossBarRegistry {
         // (8d31a03) and there never was a Java entity class for it, only these two boss-bar textures. Left
         // unregistered rather than fabricating an entity type; wire this up if/when that entity gets added.
         // BossBarConfig deathpactHierophantConfig = new BossBarConfig(
-        //         ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/boss_bar/deathpact_hierophant_base.png"),
-        //         ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/boss_bar/deathpact_hierophant_overlay.png"),
+        //         new ResourceLocation(EEEABMobs.MOD_ID, "textures/gui/boss_bar/deathpact_hierophant_base.png"),
+        //         new ResourceLocation(EEEABMobs.MOD_ID, "textures/gui/boss_bar/deathpact_hierophant_overlay.png"),
         //         6, 12, 3, -4, -5, 256, 16, 23, ChatFormatting.RED);
         // registerSpecialBoss(EntityInit.DEATHPACT_HIEROPHANT.getId(), deathpactHierophantConfig);
         BossBarConfig relicronConfig = new BossBarConfig(
-                ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/boss_bar/relicron_base.png"),
-                ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/gui/boss_bar/relicron_overlay.png"),
+                new ResourceLocation(EEEABMobs.MOD_ID, "textures/gui/boss_bar/relicron_base.png"),
+                new ResourceLocation(EEEABMobs.MOD_ID, "textures/gui/boss_bar/relicron_overlay.png"),
                 4, 8, 4, -8, -6, 256, 16, 23, ChatFormatting.WHITE);
         registerSpecialBoss(EntityInit.RELIC_ANNIHILATOR.getId(), relicronConfig);
         registerSpecialBoss(EntityInit.REALM_WARDEN.getId(), relicronConfig);
@@ -97,7 +97,7 @@ public class BossBarRegistry {
      */
     private static ResourceLocation findTextureInResourcePacks(ResourceLocation entityId, String suffix) {
         String texturePath = String.format("textures/gui/boss_bar/%s_%s.png", entityId.getPath(), suffix);
-        ResourceLocation targetLocation = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, texturePath);
+        ResourceLocation targetLocation = new ResourceLocation(EEEABMobs.MOD_ID, texturePath);
         try {
             var resourceManager = Minecraft.getInstance().getResourceManager();
             if (resourceManager.getResource(targetLocation).isPresent()) return targetLocation;

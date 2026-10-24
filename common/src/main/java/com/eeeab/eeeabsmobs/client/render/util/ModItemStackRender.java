@@ -21,9 +21,9 @@ public class ModItemStackRender extends BlockEntityWithoutLevelRenderer {
     private static ModelBusterGauntlet BUSTER_GAUNTLET;
     private static ModelGuardianBattleaxe THE_GUARDIAN_BATTLEAXE;
     private static ModelTheNetherworldKatana THE_NETHERWORLD_KATANA;
-    private static final ResourceLocation BUSTER_GAUNTLET_TEX = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/item/buster_gauntlet.png");
-    private static final ResourceLocation THE_GUARDIAN_BATTLEAXE_TEX = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian.png");
-    private static final ResourceLocation THE_NETHERWORLD_KATANA_TEX = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png");
+    private static final ResourceLocation BUSTER_GAUNTLET_TEX = new ResourceLocation(EEEABMobs.MOD_ID, "textures/item/buster_gauntlet.png");
+    private static final ResourceLocation THE_GUARDIAN_BATTLEAXE_TEX = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/nameless_guardian.png");
+    private static final ResourceLocation THE_NETHERWORLD_KATANA_TEX = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png");
 
     public static void initStaticModel() {
         init = true;
@@ -42,20 +42,20 @@ public class ModItemStackRender extends BlockEntityWithoutLevelRenderer {
         if (!init) {
             initStaticModel();
         }
-        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = Minecraft.getInstance().getFrameTime();
         if (itemStackIn.is(ItemInit.THE_NETHERWORLD_KATANA.get())) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.5F, 0.5F);
             matrixStackIn.scale(0.5F, -0.5F, -0.5F);
-            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(THE_NETHERWORLD_KATANA_TEX), itemStackIn.hasFoil());
-            THE_NETHERWORLD_KATANA.renderToBuffer(matrixStackIn, vertexConsumer, combinedLightIn, combinedOverlayIn, -1);
+            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(THE_NETHERWORLD_KATANA_TEX), true, itemStackIn.hasFoil());
+            THE_NETHERWORLD_KATANA.renderToBuffer(matrixStackIn, vertexConsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         } else if (itemStackIn.is(ItemInit.GUARDIAN_AXE.get())) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.5F, 0.5F);
             matrixStackIn.scale(0.5F, -0.5F, -0.5F);
-            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(THE_GUARDIAN_BATTLEAXE_TEX), itemStackIn.hasFoil());
-            THE_GUARDIAN_BATTLEAXE.renderToBuffer(matrixStackIn, vertexConsumer, combinedLightIn, combinedOverlayIn, -1);
+            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(THE_GUARDIAN_BATTLEAXE_TEX), true, itemStackIn.hasFoil());
+            THE_GUARDIAN_BATTLEAXE.renderToBuffer(matrixStackIn, vertexConsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         } else if (itemStackIn.is(ItemInit.BUSTER_GAUNTLET.get())) {
             float ageInTicks = Minecraft.getInstance().player == null ? 0F : Minecraft.getInstance().player.tickCount + partialTick;
@@ -63,8 +63,8 @@ public class ModItemStackRender extends BlockEntityWithoutLevelRenderer {
             matrixStackIn.translate(0.5F, 1F, 0.5F);
             matrixStackIn.scale(-1F, -1F, 1F);
             BUSTER_GAUNTLET.setupAnim(itemStackIn, ageInTicks);
-            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(BUSTER_GAUNTLET_TEX), itemStackIn.hasFoil());
-            BUSTER_GAUNTLET.renderToBuffer(matrixStackIn, vertexConsumer, combinedLightIn, combinedOverlayIn, -1);
+            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(BUSTER_GAUNTLET_TEX), true, itemStackIn.hasFoil());
+            BUSTER_GAUNTLET.renderToBuffer(matrixStackIn, vertexConsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
     }

@@ -22,7 +22,7 @@ import java.util.function.BiConsumer;
 public class FabricEEEABNetwork implements EEEABNetwork {
 
     private static final NetworkChannel CHANNEL =
-            NetworkChannel.create(ResourceLocation.fromNamespaceAndPath("eeeabsmobs", "main"));
+            NetworkChannel.create(new ResourceLocation("eeeabsmobs", "main"));
 
     private final Set<Class<?>> registered = new HashSet<>();
 

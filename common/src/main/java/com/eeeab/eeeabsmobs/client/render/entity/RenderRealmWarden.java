@@ -21,9 +21,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 public class RenderRealmWarden extends MobRenderer<EntityRealmWarden, ModelRealmWarden> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/realm_warden.png");
-    private static final ResourceLocation GLOW_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/realm_warden_glow.png");
-    private static final ResourceLocation FLAME_LAYER = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/realm_warden_exhaust.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/realm_warden.png");
+    private static final ResourceLocation GLOW_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/realm_warden_glow.png");
+    private static final ResourceLocation FLAME_LAYER = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/realm_warden_exhaust.png");
     private static final String[] LEFT_GLOVE = new String[]{"upper", "leftArm", "leftArmUnder", "leftGlove", "lGloveJoint"};
     private static final String[] RIGHT_GLOVE = new String[]{"upper", "rightArm", "rightArmUnder", "rightGlove", "rGloveJoint"};
     private static final String[] LEFT_BLADE = new String[]{"upper", "mainBooster", "axe_back", "leftSocket", "leftBlade"};
@@ -102,8 +102,7 @@ public class RenderRealmWarden extends MobRenderer<EntityRealmWarden, ModelRealm
         this.model.prepareMobModel(entity, 0, 0, partialTicks);
         this.model.setupAnim(entity, 0, 0, f7, f2, f6);
         VertexConsumer vertexconsumer = buffer.getBuffer(ModRenderType.entityTranslucentCull(TEXTURE));
-        int packedColor = FastColor.ARGB32.color(FastColor.as8BitChannel(alpha), FastColor.as8BitChannel(alpha), FastColor.as8BitChannel(alpha), FastColor.as8BitChannel(alpha));
-        this.model.renderToBuffer(matrixStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, packedColor);
+        this.model.renderToBuffer(matrixStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, alpha, alpha, alpha, alpha);
         matrixStack.popPose();
         // Was NeoForge.EVENT_BUS.post(new RenderLivingEvent.Post<>(...)) - pure notification event, no Fabric
         // equivalent and no listener, so dropped.

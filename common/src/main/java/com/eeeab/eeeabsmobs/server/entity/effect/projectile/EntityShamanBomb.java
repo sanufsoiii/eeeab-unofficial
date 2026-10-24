@@ -44,7 +44,7 @@ public class EntityShamanBomb extends AbstractHurtingProjectile implements IEnti
     // AbstractHurtingProjectile's (LivingEntity,double,double,double,Level) constructor was replaced by one
     // taking the acceleration as a single Vec3 instead of three doubles.
     public EntityShamanBomb(Level level, LivingEntity shooterEntity, double accelX, double accelY, double accelZ) {
-        super(EntityInit.SHAMAN_BOMB.get(), shooterEntity, new net.minecraft.world.phys.Vec3(accelX, accelY, accelZ), level);
+        super(EntityInit.SHAMAN_BOMB.get(), shooterEntity, accelX, accelY, accelZ, level);
     }
 
     @Override
@@ -76,8 +76,9 @@ public class EntityShamanBomb extends AbstractHurtingProjectile implements IEnti
                 if (owner instanceof IMob mob) finalDamage += mob.getDamageAmountByTargetHealthPct(target);
                 net.minecraft.world.damagesource.DamageSource damageSource = ownerEntity.damageSources().mobProjectile(this, owner);
                 flag = resultEntity.hurt(damageSource, finalDamage);
-                if (flag && resultEntity.isAlive() && this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-                    net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffects(serverLevel, resultEntity, damageSource);
+                if (flag && resultEntity.isAlive()) {
+                    net.minecraft.world.item.enchantment.EnchantmentHelper.doPostHurtEffects(target, owner);
+                    net.minecraft.world.item.enchantment.EnchantmentHelper.doPostDamageEffects(owner, target);
                 }
             } else {
                 flag = resultEntity.hurt(this.damageSources().magic(), getDamage());

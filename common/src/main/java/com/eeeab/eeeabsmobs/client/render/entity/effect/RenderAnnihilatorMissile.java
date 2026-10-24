@@ -14,7 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 public class RenderAnnihilatorMissile extends EntityRenderer<EntityAnnihilatorMissile> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/effect/annihilator_missile.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EEEABMobs.MOD_ID, "textures/entity/effect/annihilator_missile.png");
     private final ModelAnnihilatorMissile model;
 
     public RenderAnnihilatorMissile(EntityRendererProvider.Context context) {
@@ -39,7 +39,7 @@ public class RenderAnnihilatorMissile extends EntityRenderer<EntityAnnihilatorMi
         poseStack.translate(0.0F, -1.501F, 0.0F);
         this.model.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot()), Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()));
         VertexConsumer vertexconsumer = bufferIn.getBuffer(this.model.renderType(this.getTextureLocation(entity)));
-        this.model.renderToBuffer(poseStack, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
+        this.model.renderToBuffer(poseStack, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, bufferIn, packedLightIn);
     }

@@ -10,7 +10,7 @@ import net.minecraft.world.entity.ai.attributes.*;
 public class ArmorLowerEffect extends ModEffect {
     public ArmorLowerEffect() {
         super(MobEffectCategory.HARMFUL, 7004023, false);
-        this.addAttributeModifier(Attributes.ARMOR, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "armor_lower_armor"), -0.2D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-        this.addAttributeModifier(Attributes.ARMOR_TOUGHNESS, ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "armor_lower_toughness"), -0.2D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        this.addAttributeModifier(Attributes.ARMOR, new ResourceLocation(EEEABMobs.MOD_ID, "armor_lower_armor"), -0.2D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        this.addAttributeModifier(Attributes.ARMOR_TOUGHNESS, new ResourceLocation(EEEABMobs.MOD_ID, "armor_lower_toughness"), -0.2D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 }

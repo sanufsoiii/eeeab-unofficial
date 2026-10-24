@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class StunCapability {
-    public static ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "stun_processor_cap");
+    public static ResourceLocation ID = new ResourceLocation(EEEABMobs.MOD_ID, "stun_processor_cap");
 
     public interface IStunCapability extends GeneralCapability, NbtCapability {
     }
