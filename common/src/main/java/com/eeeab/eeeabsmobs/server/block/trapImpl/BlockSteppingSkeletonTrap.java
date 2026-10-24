@@ -22,7 +22,7 @@ public class BlockSteppingSkeletonTrap extends BlockStepOnTrap {
         if (!state.getValue(OPEN) && checkStepOnEntity(entity)) {
             EntityMagicGolem golem = EntityInit.MAGIC_GOLEM.get().create(level);
             if (level instanceof ServerLevel server && golem != null) {
-                golem.finalizeSpawn(server, level.getCurrentDifficultyAt(BlockPos.containing(pos.getX(), pos.getY(), pos.getZ())), MobSpawnType.TRIGGERED, null);
+                golem.finalizeSpawn(server, level.getCurrentDifficultyAt(BlockPos.containing(pos.getX(), pos.getY(), pos.getZ())), MobSpawnType.TRIGGERED, null, null);
                 golem.setDangerous(level.random.nextBoolean());
                 golem.moveTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0.0F, 0.0F);
                 server.addFreshEntity(golem);

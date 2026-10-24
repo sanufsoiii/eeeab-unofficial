@@ -24,7 +24,7 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
+import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistry;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
@@ -136,12 +136,11 @@ public class FabricEEEABPlatform implements EEEABPlatform {
 
     @Override
     public void initBrewing() {
-        FabricBrewingRecipeRegistryBuilder.BUILD.register(builder ->
-                builder.registerPotionRecipe(
-                        Potions.STRONG_STRENGTH,
-                        Ingredient.of(ItemInit.HEART_OF_PAGAN.get()),
-                        PotionInit.FRENZY_POTION.holder()
-                ));
+        FabricBrewingRecipeRegistry.registerPotionRecipe(
+                Potions.STRONG_STRENGTH,
+                Ingredient.of(ItemInit.HEART_OF_PAGAN.get()),
+                PotionInit.FRENZY_POTION.get()
+        );
     }
 
     @SuppressWarnings("unchecked")
@@ -159,17 +158,17 @@ public class FabricEEEABPlatform implements EEEABPlatform {
                 throw new NoSuchFieldException("no Map field on AttributeSupplier");
             }
             instancesField.setAccessible(true);
-            Holder<Attribute> critChance = AttributeInit.CRIT_CHANCE.holder();
+            Attribute critChance = AttributeInit.CRIT_CHANCE.get();
             for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
                 if (!DefaultAttributes.hasSupplier(type)) continue;
                 EntityType<? extends LivingEntity> livingType = (EntityType<? extends LivingEntity>) type;
                 AttributeSupplier supplier = DefaultAttributes.getSupplier(livingType);
-                Map<Holder<Attribute>, AttributeInstance> instances =
-                        (Map<Holder<Attribute>, AttributeInstance>) instancesField.get(supplier);
+                Map<Attribute, AttributeInstance> instances =
+                        (Map<Attribute, AttributeInstance>) instancesField.get(supplier);
                 if (instances != null && !instances.containsKey(critChance)) {
-                    ImmutableMap.Builder<Holder<Attribute>, AttributeInstance> builder = ImmutableMap.builder();
+                    ImmutableMap.Builder<Attribute, AttributeInstance> builder = ImmutableMap.builder();
                     builder.putAll(instances);
-                    builder.put(critChance, new AttributeInstance(critChance, AttributeInstance::getAttribute));
+                    builder.put(critChance, new AttributeInstance(critChance, inst -> {}));
                     instancesField.set(supplier, builder.build());
                 }
             }

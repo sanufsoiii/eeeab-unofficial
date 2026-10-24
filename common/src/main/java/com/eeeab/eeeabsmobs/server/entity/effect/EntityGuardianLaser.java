@@ -119,7 +119,7 @@ public class EntityGuardianLaser extends EntityAbsBeam {
                         if (owner instanceof IMob mob) finalDamage += mob.getDamageAmountByTargetHealthPct(target);
                         hitFlag = target.hurt(ModDamageSource.laser(this, owner, getUserType().id > 1, false), finalDamage);
                     }
-                    if (hitFlag) target.igniteForSeconds((int) Math.round(type.fireDuration));
+                    if (hitFlag) target.setSecondsOnFire((int) Math.round(type.fireDuration));
                 }
             } else this.spawnExplosionParticles();
         }
@@ -143,10 +143,10 @@ public class EntityGuardianLaser extends EntityAbsBeam {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_IS_PLAYER, false);
-        builder.define(DATA_USER, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_IS_PLAYER, false);
+        this.entityData.define(DATA_USER, 0);
     }
 
     @Override

@@ -136,7 +136,7 @@ public class EntityPulsedGrenade extends Projectile implements IEntity {
     protected void onHitEntity(EntityHitResult result) {
         LivingEntity owner = getLivingOwner();
         if (result.getEntity() instanceof LivingEntity entityHit && entityHit != owner) {
-            entityHit.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true), this);
+            entityHit.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 200, 0, false, false, true), this);
         }
     }
 
@@ -155,7 +155,7 @@ public class EntityPulsedGrenade extends Projectile implements IEntity {
         super.handleEntityEvent(id);
         if (id == 4) {
             Vec3 pos = this.position();
-            this.level().playLocalSound(pos.x, pos.y, pos.z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 1.5F, (1.0F + (this.level().random.nextFloat() - this.level().random.nextFloat()) * 0.2F) * 0.7F, false);
+            this.level().playLocalSound(pos.x, pos.y, pos.z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.5F, (1.0F + (this.level().random.nextFloat() - this.level().random.nextFloat()) * 0.2F) * 0.7F, false);
             float radius = this.getRadius();
             if (radius >= 2.0F) {
                 this.level().addParticle(ParticleInit.VOLT_EXPLOSION_EMITTER.get(), pos.x, pos.y, pos.z, radius, radius, 0.0D);
@@ -166,8 +166,8 @@ public class EntityPulsedGrenade extends Projectile implements IEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_RADIUS, 1F);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_RADIUS, 1F);
     }
 
     @Override

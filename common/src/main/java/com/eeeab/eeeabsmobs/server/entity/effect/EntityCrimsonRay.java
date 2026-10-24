@@ -71,9 +71,9 @@ public class EntityCrimsonRay extends EntityAbsBeam {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_ATTACK_HEIGHT, 16);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_ATTACK_HEIGHT, 16);
     }
 
     public int getAttackHeight() {
@@ -125,9 +125,9 @@ public class EntityCrimsonRay extends EntityAbsBeam {
         }
 
         @Override
-        protected void defineSynchedData(SynchedEntityData.Builder builder) {
-            super.defineSynchedData(builder);
-            builder.define(DATA_PHASE, 0);
+        protected void defineSynchedData() {
+            super.defineSynchedData();
+            this.entityData.define(DATA_PHASE, 0);
         }
 
         @Override

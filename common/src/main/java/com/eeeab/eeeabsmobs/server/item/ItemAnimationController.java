@@ -4,7 +4,6 @@ import com.eeeab.animate.server.animation.AnimatedEntity;
 import com.eeeab.animate.server.inventory.AnimationControllerMenu;
 import com.eeeab.eeeabsmobs.server.item.util.ModItemStackUtils;
 import com.eeeab.eeeabsmobs.server.util.TranslateUtils;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -65,15 +64,15 @@ public class ItemAnimationController extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         tooltip.add(TranslateUtils.simpleItemText(this.getDescriptionId()));
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
-        if (level instanceof ServerLevel serverLevel && itemStack.has(DataComponents.CUSTOM_DATA)) {
+        if (level instanceof ServerLevel serverLevel && itemStack.hasTag()) {
             Entity entity = serverLevel.getEntity(ModItemStackUtils.getNBT(itemStack, NBT_ENTITY_UUID).getUUID(NBT_ENTITY_UUID));
             if (player instanceof ServerPlayer serverPlayer && entity instanceof LivingEntity livingEntity && entity instanceof AnimatedEntity && entity.isAlive()) {
                 dev.architectury.registry.menu.MenuRegistry.openExtendedMenu(serverPlayer, new net.minecraft.world.MenuProvider() {

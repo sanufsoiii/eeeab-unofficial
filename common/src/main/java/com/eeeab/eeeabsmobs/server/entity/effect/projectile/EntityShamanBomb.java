@@ -96,7 +96,7 @@ public class EntityShamanBomb extends AbstractHurtingProjectile implements IEnti
                 if (!isDangerous()) {
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20 * duration, amplifier));
                 } else {
-                    livingEntity.addEffect(new MobEffectInstance(EffectInit.ERODE_EFFECT.holder(), 20 * duration, amplifier));
+                    livingEntity.addEffect(new MobEffectInstance(EffectInit.ERODE_EFFECT.get(), 20 * duration, amplifier));
                 }
 
             }
@@ -166,9 +166,9 @@ public class EntityShamanBomb extends AbstractHurtingProjectile implements IEnti
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DANGEROUS, false);
-        builder.define(IS_PLAYER, false);
+    protected void defineSynchedData() {
+        this.entityData.define(DANGEROUS, false);
+        this.entityData.define(IS_PLAYER, false);
     }
 
     @Override

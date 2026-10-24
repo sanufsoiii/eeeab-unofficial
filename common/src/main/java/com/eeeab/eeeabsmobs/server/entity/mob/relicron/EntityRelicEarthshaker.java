@@ -59,7 +59,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -97,7 +97,8 @@ public class EntityRelicEarthshaker extends AbstractRelicron implements RangedAt
         super(type, level);
         this.active = false;
         this.dropAfterDeathAnim = false;
-        this.setPathfindingMalus(PathType.UNPASSABLE_RAIL, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
+        this.setMaxUpStep(1.5F);
         if (this.level().isClientSide) {
             this.hand = new Vec3[]{new Vec3(0, 0, 0), new Vec3(0, 0, 0)};
         }
@@ -135,12 +136,9 @@ public class EntityRelicEarthshaker extends AbstractRelicron implements RangedAt
         }
     }
 
-    // Entity#getEyeHeight is now final in 1.21.1; eye height is derived from getDimensions(pose)
-    // instead, so the old getStandingEyeHeight(Pose, EntityDimensions) hook is replaced with this.
     @Override
-    protected EntityDimensions getDefaultDimensions(Pose poseIn) {
-        EntityDimensions sizeIn = super.getDefaultDimensions(poseIn);
-        return sizeIn.withEyeHeight(sizeIn.height() * 0.9F);
+    protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
+        return sizeIn.height * 0.9F;
     }
 
     @Override
@@ -165,7 +163,7 @@ public class EntityRelicEarthshaker extends AbstractRelicron implements RangedAt
         super.onAnimationStart(animation);
         if (!this.level().isClientSide) {
             if (animation == ELECTROMAGNETIC_ANIMATION) {
-                this.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 170, 0, false, false));
+                this.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 170, 0, false, false));
             }
         }
     }
@@ -201,7 +199,7 @@ public class EntityRelicEarthshaker extends AbstractRelicron implements RangedAt
 
             @Override
             protected void onHit(LivingEntity entity) {
-                if (!this.entity.hotControlled.isStop() && !this.entity.isAlliedTo(entity)) entity.igniteForSeconds(3);
+                if (!this.entity.hotControlled.isStop() && !this.entity.isAlliedTo(entity)) entity.setSecondsOnFire(3);
             }
         });
         this.goalSelector.addGoal(2, new AnimationMeleePlusAI<>(this, 1.0, 25, ATTACK_LEFT_ANIMATION, ATTACK_RIGHT_ANIMATION));
@@ -364,7 +362,7 @@ public class EntityRelicEarthshaker extends AbstractRelicron implements RangedAt
                         ModParticleUtils.blockParticlesAround(entity.level(), pos.x, entity.getY(), pos.z, 25, 1, 2.5, 0.1, 0.15, 0.2, 0.45, -0.2, 0.1);
                         entity.spawnFireEffectWhenHot(pos);
                     }
-                    entity.playSound(SoundEvents.GENERIC_EXPLODE.value(), 1.25F, 1F + entity.random.nextFloat() * 0.1F);
+                    entity.playSound(SoundEvents.GENERIC_EXPLODE, 1.25F, 1F + entity.random.nextFloat() * 0.1F);
                     EntityCameraShake.cameraShake(entity.level(), entity.position(), 16, 0.15F, 4, 6);
                 });
         builder.forAnimation(RANGE_ATTACK_ANIMATION)
@@ -441,7 +439,7 @@ public class EntityRelicEarthshaker extends AbstractRelicron implements RangedAt
                     EntityCameraShake.cameraShake(entity.level(), entity.position(), 16, 0.15F, 3, 7);
                     entity.rangeAttack(4.5, entity.getBbHeight() * 0.6, 4.5, 4.5, 120F, 120F, hitEntity -> {
                         if (entity.doHurtTarget(hitEntity, 2.5F, 0F, true) && entity.getHandHeat()) {
-                            hitEntity.igniteForSeconds(3);
+                            hitEntity.setSecondsOnFire(3);
                         }
                         double ratioX = Math.sin(entity.getYRot() * ((float) Math.PI / 180F));
                         double ratioZ = (-Math.cos(entity.getYRot() * ((float) Math.PI / 180F)));
@@ -466,7 +464,7 @@ public class EntityRelicEarthshaker extends AbstractRelicron implements RangedAt
                 if (tick == 11 && isServer) {
                     entity.rangeAttack(4, 4.25, 4, 4.25, 35F, 35F, hitEntity -> {
                         if (entity.doHurtTarget(hitEntity, 1F, 0F) && entity.getHandHeat()) {
-                            hitEntity.igniteForSeconds(3);
+                            hitEntity.setSecondsOnFire(3);
                         }
                         double ratioX = -Math.sin(entity.yBodyRot * ((float) Math.PI / 180F));
                         double ratioZ = Math.cos(entity.yBodyRot * ((float) Math.PI / 180F));
@@ -478,7 +476,7 @@ public class EntityRelicEarthshaker extends AbstractRelicron implements RangedAt
                     else leftArc = 90F;
                     entity.rangeAttack(3.5, 4, 3.5, 4, leftArc, rightArc, hitEntity -> {
                         if (entity.doHurtTarget(hitEntity, 1.25F, 0F) && entity.getHandHeat()) {
-                            hitEntity.igniteForSeconds(3);
+                            hitEntity.setSecondsOnFire(3);
                         }
                         ModEntityUtils.forceKnockBack(entity, hitEntity, 0.5F, entity.getX() - hitEntity.getX(), entity.getZ() - hitEntity.getZ(), true);
                     });
@@ -593,9 +591,7 @@ public class EntityRelicEarthshaker extends AbstractRelicron implements RangedAt
                 .add(Attributes.ATTACK_DAMAGE, 10.0D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.28D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
-                .add(Attributes.GRAVITY, 0.125D)
-                .add(Attributes.STEP_HEIGHT, 1.5D);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
 
     public boolean getHandHeat() {

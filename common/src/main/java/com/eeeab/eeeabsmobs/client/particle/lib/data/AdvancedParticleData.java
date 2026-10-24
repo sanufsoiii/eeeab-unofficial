@@ -2,27 +2,27 @@ package com.eeeab.eeeabsmobs.client.particle.lib.data;
 
 import com.eeeab.eeeabsmobs.client.particle.lib.component.ParticleComponent;
 import com.eeeab.eeeabsmobs.client.particle.lib.ParticleRotation;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import java.util.Locale;
 import net.minecraft.world.phys.Vec3;
 //参考自: https://github.com/BobMowzie/MowziesMobs/blob/master/src/main/java/com/bobmowzie/mowziesmobs/client/particle/util/AdvancedParticleData.java
 public class AdvancedParticleData implements ParticleOptions {
-    private final ParticleType<? extends AdvancedParticleData> type;
-    private final float airDiffusionSpeed;
-    private final float red, green, blue, alpha;
-    private final ParticleRotation rotation;
-    private final float scale;
-    private final boolean emissive;
-    private final float duration;
-    private final boolean canCollide;
-    private final boolean isAnimation;
+    protected final ParticleType<? extends AdvancedParticleData> type;
+    protected final float airDiffusionSpeed;
+    protected final float red, green, blue, alpha;
+    protected final ParticleRotation rotation;
+    protected final float scale;
+    protected final boolean emissive;
+    protected final float duration;
+    protected final boolean canCollide;
+    protected final boolean isAnimation;
 
     private final ParticleComponent[] components;
 
@@ -99,12 +99,71 @@ public class AdvancedParticleData implements ParticleOptions {
         return this.isAnimation;
     }
 
-    // ParticleOptions lost writeToNetwork/writeToString/Deserializer entirely in 1.21 (it is now just
-    // getType() - see net.minecraft.core.particles.ParticleOptions in the sources jar). Serialization moved
-    // onto ParticleType via codec()/streamCodec(); rotation is not round-tripped (matches the old codec, which
-    // never serialized it either - only writeToNetwork did, and only as a face-camera angle).
-    public static MapCodec<AdvancedParticleData> codec(ParticleType<AdvancedParticleData> particleType) {
-        return RecordCodecBuilder.mapCodec((codecBuilder) -> codecBuilder.group(
+    @Override
+    public void writeToNetwork(FriendlyByteBuf buffer) {
+        buffer.writeFloat((float) this.scale);
+        buffer.writeFloat((float) this.red);
+        buffer.writeFloat((float) this.green);
+        buffer.writeFloat((float) this.blue);
+        buffer.writeFloat((float) this.alpha);
+        buffer.writeFloat((float) this.airDiffusionSpeed);
+        buffer.writeFloat((float) this.duration);
+        buffer.writeBoolean(this.emissive);
+        buffer.writeBoolean(this.canCollide);
+        buffer.writeBoolean(this.isAnimation);
+    }
+
+    @Override
+    public String writeToString() {
+        return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %.2f %.2f %.2f %b %b %b",
+                BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()), this.scale, this.red, this.green, this.blue, this.alpha,
+                this.airDiffusionSpeed, this.duration, this.emissive, this.canCollide, this.isAnimation);
+    }
+
+    public static final ParticleOptions.Deserializer<AdvancedParticleData> DESERIALIZER = new ParticleOptions.Deserializer<AdvancedParticleData>() {
+        @Override
+        public AdvancedParticleData fromCommand(ParticleType<AdvancedParticleData> type, StringReader reader) throws CommandSyntaxException {
+            reader.expect(' ');
+            float scale = reader.readFloat();
+            reader.expect(' ');
+            float r = reader.readFloat();
+            reader.expect(' ');
+            float g = reader.readFloat();
+            reader.expect(' ');
+            float b = reader.readFloat();
+            reader.expect(' ');
+            float a = reader.readFloat();
+            reader.expect(' ');
+            float airDiffusionSpeed = reader.readFloat();
+            reader.expect(' ');
+            float duration = reader.readFloat();
+            reader.expect(' ');
+            boolean emissive = reader.readBoolean();
+            reader.expect(' ');
+            boolean canCollide = reader.readBoolean();
+            reader.expect(' ');
+            boolean isAnimation = reader.readBoolean();
+            return new AdvancedParticleData(type, new ParticleRotation.FaceCamera(0), scale, r, g, b, a, airDiffusionSpeed, duration, emissive, canCollide, new ParticleComponent[]{}, isAnimation);
+        }
+
+        @Override
+        public AdvancedParticleData fromNetwork(ParticleType<AdvancedParticleData> type, FriendlyByteBuf buffer) {
+            float scale = buffer.readFloat();
+            float r = buffer.readFloat();
+            float g = buffer.readFloat();
+            float b = buffer.readFloat();
+            float a = buffer.readFloat();
+            float airDiffusionSpeed = buffer.readFloat();
+            float duration = buffer.readFloat();
+            boolean emissive = buffer.readBoolean();
+            boolean canCollide = buffer.readBoolean();
+            boolean isAnimation = buffer.readBoolean();
+            return new AdvancedParticleData(type, new ParticleRotation.FaceCamera(0), scale, r, g, b, a, airDiffusionSpeed, duration, emissive, canCollide, new ParticleComponent[]{}, isAnimation);
+        }
+    };
+
+    public static Codec<AdvancedParticleData> codec(ParticleType<AdvancedParticleData> particleType) {
+        return RecordCodecBuilder.create((codecBuilder) -> codecBuilder.group(
                 Codec.DOUBLE.fieldOf("scale").forGetter(AdvancedParticleData::getScale),
                 Codec.DOUBLE.fieldOf("r").forGetter(AdvancedParticleData::getRed),
                 Codec.DOUBLE.fieldOf("g").forGetter(AdvancedParticleData::getGreen),
@@ -117,38 +176,6 @@ public class AdvancedParticleData implements ParticleOptions {
                 Codec.BOOL.fieldOf("isAnimation").forGetter(AdvancedParticleData::isAnimation)
                 ).apply(codecBuilder, (scale, r, g, b, a, airDiffusionSpeed, duration, emissive, canCollide, isAnimation) ->
                         new AdvancedParticleData(particleType, new ParticleRotation.FaceCamera(0), scale, r, g, b, a, airDiffusionSpeed, duration, emissive, canCollide, new ParticleComponent[]{}, isAnimation))
-        );
-    }
-
-    // StreamCodec.composite tops out at 6 fields; AdvancedParticleData carries 10, split into two groups of 5.
-    private record Head(float scale, float red, float green, float blue, float alpha) {
-        static final StreamCodec<ByteBuf, Head> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.FLOAT, Head::scale,
-                ByteBufCodecs.FLOAT, Head::red,
-                ByteBufCodecs.FLOAT, Head::green,
-                ByteBufCodecs.FLOAT, Head::blue,
-                ByteBufCodecs.FLOAT, Head::alpha,
-                Head::new
-        );
-    }
-
-    private record Tail(float airDiffusionSpeed, float duration, boolean emissive, boolean canCollide, boolean isAnimation) {
-        static final StreamCodec<ByteBuf, Tail> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.FLOAT, Tail::airDiffusionSpeed,
-                ByteBufCodecs.FLOAT, Tail::duration,
-                ByteBufCodecs.BOOL, Tail::emissive,
-                ByteBufCodecs.BOOL, Tail::canCollide,
-                ByteBufCodecs.BOOL, Tail::isAnimation,
-                Tail::new
-        );
-    }
-
-    public static StreamCodec<RegistryFriendlyByteBuf, AdvancedParticleData> streamCodec(ParticleType<AdvancedParticleData> particleType) {
-        return StreamCodec.composite(
-                Head.STREAM_CODEC, data -> new Head((float) data.getScale(), (float) data.getRed(), (float) data.getGreen(), (float) data.getBlue(), (float) data.getAlpha()),
-                Tail.STREAM_CODEC, data -> new Tail((float) data.getAirDiffusionSpeed(), (float) data.getDuration(), data.isEmissive(), data.getCanCollide(), data.isAnimation()),
-                (head, tail) -> new AdvancedParticleData(particleType, new ParticleRotation.FaceCamera(0), head.scale(), head.red(), head.green(), head.blue(), head.alpha(),
-                        tail.airDiffusionSpeed(), tail.duration(), tail.emissive(), tail.canCollide(), new ParticleComponent[]{}, tail.isAnimation())
         );
     }
 }

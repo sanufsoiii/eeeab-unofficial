@@ -42,7 +42,7 @@ public class SkyfallHammerAbility extends Ability<Player> {
         Player player = getUser();
         this.startY = player.getY();
         this.accumulatedAcceleration = 0;
-        this.gravity = player.getAttributeValue(Attributes.GRAVITY);
+        this.gravity = 0.08D;
     }
 
     @Override

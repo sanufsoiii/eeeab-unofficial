@@ -17,9 +17,9 @@ import com.eeeab.eeeabsmobs.server.init.AttributeInit;
 public class FrenzyEffect extends ModEffect {
     public FrenzyEffect() {
         super(MobEffectCategory.NEUTRAL, 16711680, false);
-        this.addAttributeModifier(Attributes.ATTACK_DAMAGE, new ResourceLocation(EEEABMobs.MOD_ID, "frenzy_attack_damage"), 1, AttributeModifier.Operation.ADD_VALUE);
-        this.addAttributeModifier(Attributes.ARMOR, new ResourceLocation(EEEABMobs.MOD_ID, "frenzy_armor"), 1, AttributeModifier.Operation.ADD_VALUE);
-        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, new ResourceLocation(EEEABMobs.MOD_ID, "frenzy_movement_speed"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-        this.addAttributeModifier(AttributeInit.SWIM_SPEED.holder(), new ResourceLocation(EEEABMobs.MOD_ID, "frenzy_swim_speed"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        this.addAttributeModifier(Attributes.ATTACK_DAMAGE, new ResourceLocation(EEEABMobs.MOD_ID, "frenzy_attack_damage"), 1, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier(Attributes.ARMOR, new ResourceLocation(EEEABMobs.MOD_ID, "frenzy_armor"), 1, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, new ResourceLocation(EEEABMobs.MOD_ID, "frenzy_movement_speed"), 0.1, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        this.addAttributeModifier(AttributeInit.SWIM_SPEED.get(), new ResourceLocation(EEEABMobs.MOD_ID, "frenzy_swim_speed"), 0.1, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 }

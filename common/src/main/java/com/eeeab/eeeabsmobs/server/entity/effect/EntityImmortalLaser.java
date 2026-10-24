@@ -80,13 +80,13 @@ public class EntityImmortalLaser extends EntityAbsBeam {
                         damage = ModConfigHandler.COMMON.mobs.immortals.immortal.immortalLaser.damage.get().floatValue();
                         damage *= 1F + Mth.clamp(immortal.getCacheTargets().size() - 1, 0, 5) * 0.1F;
                     }
-                    MobEffectInstance instance = target.getEffect(EffectInit.ERODE_EFFECT.holder());
+                    MobEffectInstance instance = target.getEffect(EffectInit.ERODE_EFFECT.get());
                     if (instance != null) damage *= 1F + Mth.clamp(instance.getAmplifier() + 1, 0, 5) * 0.1F;
                     if (owner instanceof IMob iMob) {
                         damage += iMob.getDamageAmountByTargetHealthPct(target);
                     }
                     DamageSource source = ModDamageSource.laser(this, owner, true, true);
-                    if (target.hurt(source, damage)) ModEntityUtils.addEffectStackingAmplifier(this, target, EffectInit.ERODE_EFFECT.holder(), 300, 5, true, true, true, false);
+                    if (target.hurt(source, damage)) ModEntityUtils.addEffectStackingAmplifier(this, target, EffectInit.ERODE_EFFECT.get(), 300, 5, true, true, true, false);
                 }
             } else if (this.tickCount > this.getCountDown()) {
                 this.spawnExplosionParticles();
@@ -111,9 +111,9 @@ public class EntityImmortalLaser extends EntityAbsBeam {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_PLAY_SOUND, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_PLAY_SOUND, false);
     }
 
     @Override

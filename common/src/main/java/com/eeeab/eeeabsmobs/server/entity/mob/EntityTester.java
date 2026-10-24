@@ -183,10 +183,10 @@ public class EntityTester extends EEEABMobLibrary {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(ACTIVE, true);
-        builder.define(DAMAGE, Optional.<Component>of(Component.keybind("0.0")));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(ACTIVE, true);
+        this.entityData.define(DAMAGE, Optional.<Component>of(Component.keybind("0.0")));
     }
 
     public void setActive(boolean isActive) {

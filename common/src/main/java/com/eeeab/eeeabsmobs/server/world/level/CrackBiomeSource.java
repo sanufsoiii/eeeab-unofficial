@@ -2,7 +2,7 @@ package com.eeeab.eeeabsmobs.server.world.level;
 
 import com.eeeab.eeeabsmobs.server.util.ModResourceKey;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import java.util.stream.Stream;
 
 public class CrackBiomeSource extends BiomeSource {
-    public static final MapCodec<CrackBiomeSource> CODEC = RecordCodecBuilder.mapCodec((p_255555_) ->
+    public static final Codec<CrackBiomeSource> CODEC = RecordCodecBuilder.create((p_255555_) ->
             p_255555_.group(RegistryOps.retrieveElement(ModResourceKey.PRINCIPAL_ISLAND_BIOME),
                             RegistryOps.retrieveElement(Biomes.END_HIGHLANDS),
                             RegistryOps.retrieveElement(Biomes.END_MIDLANDS),
@@ -51,7 +51,7 @@ public class CrackBiomeSource extends BiomeSource {
     }
 
     @Override
-    protected MapCodec<? extends BiomeSource> codec() {
+    protected Codec<? extends BiomeSource> codec() {
         return CODEC;
     }
 

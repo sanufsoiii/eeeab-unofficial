@@ -80,7 +80,7 @@ public class GuardianPounceAttackGoal extends AnimationAI<EntityNamelessGuardian
             int tick = entity.getAnimationTick();
             int keyFrame = isPowered ? 24 : 28;
             if (tick < keyFrame && pounceVec.length() != 0) {
-                entity.setDeltaMovement(pounceVec.x * moveSpeed * madnessSpeedMultiplier, -entity.getAttributeValue(Attributes.GRAVITY) * 5.0F, pounceVec.z * moveSpeed * speedMultiplier);
+                entity.setDeltaMovement(pounceVec.x * moveSpeed * madnessSpeedMultiplier, -0.5F, pounceVec.z * moveSpeed * speedMultiplier);
                 ModEntityUtils.breakBlocksByEntityAABB(entity, 2F, 0.75F, 0F, 0.15F, tick % 3 == 0);
                 if (tick % 2 == 0) {
                     double width = entity.getBbWidth() * 1.2;
@@ -101,7 +101,7 @@ public class GuardianPounceAttackGoal extends AnimationAI<EntityNamelessGuardian
             entity.setDeltaMovement(0, entity.getDeltaMovement().y(), 0);
             int maxExtraConsecutive = 2;
             if (consecutive < maxExtraConsecutive && entity.getTarget() != null && entity.getAnimationTick() <= 6 && entity.getAnimationTick() > 1 && checkModeOrPreventTimeouts() && entity.targetDistance < 16 && entity.targetDistance > 4
-                    && ((entity.hasEffect(EffectInit.STUN_EFFECT.holder()) && entity.getRandom().nextInt(3 - consecutive) == 0) || entity.getRandom().nextInt(10) == 0)) {
+                    && ((entity.hasEffect(EffectInit.STUN_EFFECT.get()) && entity.getRandom().nextInt(3 - consecutive) == 0) || entity.getRandom().nextInt(10) == 0)) {
                 consecutive++;
                 entity.playAnimation(EntityNamelessGuardian.POUNCE_ATTACK_ANIMATION1);
             }

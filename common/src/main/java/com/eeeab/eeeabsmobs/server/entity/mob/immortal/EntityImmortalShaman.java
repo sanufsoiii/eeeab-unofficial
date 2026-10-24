@@ -80,6 +80,7 @@ public class EntityImmortalShaman extends EntityAbsImmortal implements RangedAtt
     public EntityImmortalShaman(EntityType<? extends EntityImmortalShaman> type, Level level) {
         super(type, level);
         this.active = true;
+        this.setMaxUpStep(1.0F);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class EntityImmortalShaman extends EntityAbsImmortal implements RangedAtt
         this.goalSelector.addGoal(1, new AnimationRepel<>(this, SPELLCASTING_FR_ANIMATION, 2.5F, 9, 2F, 0.625F, true) {
             @Override
             public void onHit(LivingEntity entity) {
-                ModEntityUtils.addEffectStackingAmplifier(null, entity, EffectInit.ERODE_EFFECT.holder(), 200, 5, true, true, true, false);
+                ModEntityUtils.addEffectStackingAmplifier(null, entity, EffectInit.ERODE_EFFECT.get(), 200, 5, true, true, true, false);
             }
         });
         this.goalSelector.addGoal(2, new ShamanSummonGoal(this));
@@ -136,9 +137,8 @@ public class EntityImmortalShaman extends EntityAbsImmortal implements RangedAtt
     }
 
     @Override
-    protected EntityDimensions getDefaultDimensions(Pose pose) {
-        EntityDimensions dimensions = super.getDefaultDimensions(pose);
-        return dimensions.withEyeHeight(dimensions.height() * 0.8F);
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.8F;
     }
 
     @Override
@@ -277,7 +277,7 @@ public class EntityImmortalShaman extends EntityAbsImmortal implements RangedAtt
     @Nullable
     @Override
     //在初始生成时调用
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable net.minecraft.nbt.CompoundTag dataTag) {
         RandomSource randomsource = worldIn.getRandom();
         this.populateDefaultEquipmentSlots(randomsource, difficultyIn);
         return spawnDataIn;
@@ -305,8 +305,7 @@ public class EntityImmortalShaman extends EntityAbsImmortal implements RangedAtt
                 .add(Attributes.MOVEMENT_SPEED, 0.35D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.LUCK, 1.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
-                .add(Attributes.STEP_HEIGHT, 1D);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
     }
 
     private void spawnExplosionParticles(int amount, ParticleOptions[] particles, float velocity) {
@@ -416,7 +415,7 @@ public class EntityImmortalShaman extends EntityAbsImmortal implements RangedAtt
                 }
                 if (skeleton != null) {
                     skeleton.setYRot(skeleton.yHeadRot = skeleton.yHeadRotO = skeleton.yRotO = this.spellCaster.getYRot());
-                    skeleton.finalizeSpawn((ServerLevel) this.spellCaster.level(), this.spellCaster.level().getCurrentDifficultyAt(BlockPos.containing(vec3.x, vec3.y, vec3.z)), MobSpawnType.MOB_SUMMONED, null);
+                    skeleton.finalizeSpawn((ServerLevel) this.spellCaster.level(), this.spellCaster.level().getCurrentDifficultyAt(BlockPos.containing(vec3.x, vec3.y, vec3.z)), MobSpawnType.MOB_SUMMONED, null, null);
                     skeleton.setOwner(this.spellCaster);
                     skeleton.setPos(vec3);
                     this.spellCaster.level().addFreshEntity(skeleton);

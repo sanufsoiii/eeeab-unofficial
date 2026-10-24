@@ -154,9 +154,9 @@ public class EntityCorpse extends EntityAbsCorpse {
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_FLAGS_ID, (byte) 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_FLAGS_ID, (byte) 0);
     }
 
     @Override
@@ -192,7 +192,7 @@ public class EntityCorpse extends EntityAbsCorpse {
     private <T extends EntityAbsCorpse> boolean convertToCorpse(ServerLevel level, EntityType<T> entityType, Mob sourceEntity) {
         T convertEntity = sourceEntity.convertTo(entityType, false);
         if (convertEntity != null) {
-            convertEntity.finalizeSpawn(level, level.getCurrentDifficultyAt(convertEntity.blockPosition()), MobSpawnType.CONVERSION, null);
+            convertEntity.finalizeSpawn(level, level.getCurrentDifficultyAt(convertEntity.blockPosition()), MobSpawnType.CONVERSION, null, null);
             // Was EventHooks.onLivingConvert - a pure notification event for other mods with no vanilla behaviour
             // of its own and no Fabric equivalent, so it is simply dropped.
             if (!this.isSilent()) {

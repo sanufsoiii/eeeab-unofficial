@@ -20,7 +20,7 @@ public abstract class MobMixin extends LivingEntity {
     @Override
     public boolean canAttack(LivingEntity target) {
         if (super.canAttack(target)){
-            return !this.hasEffect(EffectInit.STUN_EFFECT.holder());
+            return !this.hasEffect(EffectInit.STUN_EFFECT.get());
         }
         return false;
     }

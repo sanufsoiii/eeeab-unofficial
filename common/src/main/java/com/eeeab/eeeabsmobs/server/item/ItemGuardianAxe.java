@@ -20,13 +20,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
@@ -41,13 +40,10 @@ import java.util.Objects;
 //附魔不再是可继承子类(SweepingEdgeEnchantment已移除)，扫荡伤害比例公式(1-1/(level+1))直接内联；
 //ToolAction/ToolActions重命名为ItemAbility/ItemAbilities；getEnchantmentLevel参数改为Holder<Enchantment>
 public class ItemGuardianAxe extends AxeItem implements ConfigurableItem, IUnbreakableItem {
-    private ItemAttributeModifiers defaultModifiers;
+    private com.google.common.collect.Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public ItemGuardianAxe(Tier tier, Properties properties) {
-        // getDefaultAttributeModifiers(ItemStack) has no vanilla equivalent (NeoForge-only, dynamically
-        // re-queried per stack); DataComponents.ATTRIBUTE_MODIFIERS is baked into the default template once
-        // here instead, same approach as ItemChainsword/ItemImmortalSword elsewhere in this package.
-        super(tier, properties.component(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, buildDefaultAttributes()));
+        super(tier, 6.0F, -3.1F, properties);
         this.defaultModifiers = this.creatAttributesFromConfig();
     }
 
@@ -60,7 +56,7 @@ public class ItemGuardianAxe extends AxeItem implements ConfigurableItem, IUnbre
         BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
         if (Objects.equals(hand, InteractionHand.MAIN_HAND) && HitResult.Type.BLOCK == result.getType() && Direction.UP == result.getDirection()) {
             player.swing(hand, true);
-            player.playSound(SoundEvents.GENERIC_EXPLODE.value(), 1.5F, 1F + player.getRandom().nextFloat() * 0.1F);
+            player.playSound(SoundEvents.GENERIC_EXPLODE, 1.5F, 1F + player.getRandom().nextFloat() * 0.1F);
             EntityCameraShake.cameraShake(level, player.position(), 8, 0.125F, 0, 20);
             double x, y, z;
             BlockPos blockPos = result.getBlockPos();
@@ -114,8 +110,8 @@ public class ItemGuardianAxe extends AxeItem implements ConfigurableItem, IUnbre
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (TranslateUtils.SHOW_ITEM_CD) tooltip.add(TranslateUtils.itemCoolTime(ModConfigHandler.COMMON.items.doomboltAxeConfig.get()));
         //int i = (int) (SweepingEdgeEnchantment.getSweepingDamageRatio(ModConfigHandler.COMMON.items.judgmentAxeConfig1.get()) * 100);
         //扫荡边缘附魔的伤害比例公式：1 - 1/(level+1)，SweepingEdgeEnchantment类在1.21.1中已移除(附魔不再是可继承子类)，故内联该公式
@@ -131,17 +127,18 @@ public class ItemGuardianAxe extends AxeItem implements ConfigurableItem, IUnbre
     // is a NeoForge-only IItemExtension hook (used to gate enchantment applicability such as Sweeping Edge);
     // vanilla/Fabric has no such per-item ability query and nothing calls it, so it was dead code here.
 
-    private static ItemAttributeModifiers buildDefaultAttributes() {
-        return ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", ModConfigHandler.COMMON.items.doomboltAxe.attackDamageValue - 1D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_UUID, "Weapon modifier", ModConfigHandler.COMMON.items.doomboltAxe.attackSpeedValue - 4D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(java.util.UUID.nameUUIDFromBytes("eeeabsmobs:guardian_axe_knockback_resistance".getBytes()), "Weapon modifier", 0.1D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .build();
+    @Override
+    public com.google.common.collect.Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(net.minecraft.world.entity.EquipmentSlot slot) {
+        return slot == net.minecraft.world.entity.EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
     }
 
     @Override
-    public ItemAttributeModifiers creatAttributesFromConfig() {
-        return buildDefaultAttributes();
+    public com.google.common.collect.Multimap<Attribute, AttributeModifier> creatAttributesFromConfig() {
+        com.google.common.collect.ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = com.google.common.collect.ImmutableMultimap.builder();
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", ModConfigHandler.COMMON.items.doomboltAxe.attackDamageValue - 1D, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", ModConfigHandler.COMMON.items.doomboltAxe.attackSpeedValue - 4D, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(java.util.UUID.nameUUIDFromBytes("guardian_axe_knockback_resistance".getBytes()), "Weapon modifier", 0.1D, AttributeModifier.Operation.ADDITION));
+        return builder.build();
     }
 
     @Override

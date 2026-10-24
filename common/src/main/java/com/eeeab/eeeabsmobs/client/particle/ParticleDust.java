@@ -2,19 +2,19 @@ package com.eeeab.eeeabsmobs.client.particle;
 
 import com.eeeab.eeeabsmobs.client.render.ModRenderType;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
+import java.util.Locale;
 public class ParticleDust extends TextureSheetParticle {
     private final float scale, airDiffusionSpeed, maxAlpha;
     private final boolean emissive;
@@ -174,10 +174,62 @@ public class ParticleDust extends TextureSheetParticle {
             return this.emissive;
         }
 
-        // See ParticleOrb.OrbData for why writeToNetwork/writeToString/Deserializer are gone and codec()/
-        // streamCodec() replace them (ParticleOptions/ParticleType redesign in 1.21).
-        public static MapCodec<DustData> codec(ParticleType<DustData> particleType) {
-            return RecordCodecBuilder.mapCodec((codecBuilder) -> codecBuilder.group(
+        @Override
+        public void writeToNetwork(FriendlyByteBuf buffer) {
+            buffer.writeFloat(this.r);
+            buffer.writeFloat(this.g);
+            buffer.writeFloat(this.b);
+            buffer.writeFloat(this.scale);
+            buffer.writeInt(this.duration);
+            buffer.writeEnum(this.behavior);
+            buffer.writeFloat(this.airDiffusionSpeed);
+            buffer.writeBoolean(this.emissive);
+        }
+
+        @Override
+        public String writeToString() {
+            return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %d %s %.2f %b",
+                    BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()), this.r, this.g, this.b, this.scale, this.duration, this.behavior.name(), this.airDiffusionSpeed, this.emissive);
+        }
+
+        public static final ParticleOptions.Deserializer<DustData> DESERIALIZER = new ParticleOptions.Deserializer<DustData>() {
+            @Override
+            public DustData fromCommand(ParticleType<DustData> type, StringReader reader) throws CommandSyntaxException {
+                reader.expect(' ');
+                float r = reader.readFloat();
+                reader.expect(' ');
+                float g = reader.readFloat();
+                reader.expect(' ');
+                float b = reader.readFloat();
+                reader.expect(' ');
+                float scale = reader.readFloat();
+                reader.expect(' ');
+                int duration = reader.readInt();
+                reader.expect(' ');
+                String behaviorStr = reader.readString();
+                reader.expect(' ');
+                float airDiffusionSpeed = reader.readFloat();
+                reader.expect(' ');
+                boolean emissive = reader.readBoolean();
+                return new DustData(type, r, g, b, scale, duration, EnumDustBehavior.valueOf(behaviorStr), airDiffusionSpeed, emissive);
+            }
+
+            @Override
+            public DustData fromNetwork(ParticleType<DustData> type, FriendlyByteBuf buffer) {
+                float r = buffer.readFloat();
+                float g = buffer.readFloat();
+                float b = buffer.readFloat();
+                float scale = buffer.readFloat();
+                int duration = buffer.readInt();
+                EnumDustBehavior behavior = buffer.readEnum(EnumDustBehavior.class);
+                float airDiffusionSpeed = buffer.readFloat();
+                boolean emissive = buffer.readBoolean();
+                return new DustData(type, r, g, b, scale, duration, behavior, airDiffusionSpeed, emissive);
+            }
+        };
+
+        public static Codec<DustData> codec(ParticleType<DustData> particleType) {
+            return RecordCodecBuilder.create((codecBuilder) -> codecBuilder.group(
                             Codec.FLOAT.fieldOf("r").forGetter(DustData::getR),
                             Codec.FLOAT.fieldOf("g").forGetter(DustData::getG),
                             Codec.FLOAT.fieldOf("b").forGetter(DustData::getB),
@@ -188,29 +240,6 @@ public class ParticleDust extends TextureSheetParticle {
                             Codec.BOOL.fieldOf("emissive").forGetter(DustData::getEmissive)
                     ).apply(codecBuilder, (r, g, b, scale, behavior, duration, airDiffusionSpeed, emissive) ->
                             new DustData(particleType, r, g, b, scale, duration, EnumDustBehavior.valueOf(behavior), airDiffusionSpeed, emissive))
-            );
-        }
-
-        // StreamCodec.composite tops out at 6 fields; the trailing three (duration, airDiffusionSpeed,
-        // emissive) are grouped into one sub-codec first to stay within that limit.
-        private record Tail(int duration, float airDiffusionSpeed, boolean emissive) {
-            static final StreamCodec<ByteBuf, Tail> STREAM_CODEC = StreamCodec.composite(
-                    ByteBufCodecs.VAR_INT, Tail::duration,
-                    ByteBufCodecs.FLOAT, Tail::airDiffusionSpeed,
-                    ByteBufCodecs.BOOL, Tail::emissive,
-                    Tail::new
-            );
-        }
-
-        public static StreamCodec<RegistryFriendlyByteBuf, DustData> streamCodec(ParticleType<DustData> particleType) {
-            return StreamCodec.composite(
-                    ByteBufCodecs.FLOAT, DustData::getR,
-                    ByteBufCodecs.FLOAT, DustData::getG,
-                    ByteBufCodecs.FLOAT, DustData::getB,
-                    ByteBufCodecs.FLOAT, DustData::getScale,
-                    Tail.STREAM_CODEC, dustData -> new Tail(dustData.getDuration(), dustData.getAirDiffusionSpeed(), dustData.getEmissive()),
-                    (r, g, b, scale, tail) ->
-                            new DustData(particleType, r, g, b, scale, tail.duration(), EnumDustBehavior.CONSTANT, tail.airDiffusionSpeed(), tail.emissive())
             );
         }
     }

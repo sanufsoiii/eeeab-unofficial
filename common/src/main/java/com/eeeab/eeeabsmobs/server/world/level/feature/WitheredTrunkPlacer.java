@@ -3,7 +3,6 @@ package com.eeeab.eeeabsmobs.server.world.level.feature;
 import com.eeeab.eeeabsmobs.server.init.WorldGenInit;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,9 +18,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class WitheredTrunkPlacer extends TrunkPlacer {
-    // RecordCodecBuilder.create(...) -> Codec was replaced by .mapCodec(...) -> MapCodec for feature-type
-    // codecs in 1.21 (vanilla change, not NeoForge); TrunkPlacerType now stores a MapCodec<P>.
-    public static final MapCodec<WitheredTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec((placerInstance) -> trunkPlacerParts(placerInstance).and(placerInstance.group(
+    public static final Codec<WitheredTrunkPlacer> CODEC = RecordCodecBuilder.create((placerInstance) -> trunkPlacerParts(placerInstance).and(placerInstance.group(
             Codec.floatRange(0.0F, 1.0F).fieldOf("top_branch_chance").forGetter((placer) -> placer.topBranchChance),
             Codec.intRange(1, 5).fieldOf("max_top_branches").forGetter((placer) -> placer.maxTopBranches),
             Codec.intRange(1, 5).fieldOf("base_top_branch_length").forGetter((placer) -> placer.baseTopBranchLength),

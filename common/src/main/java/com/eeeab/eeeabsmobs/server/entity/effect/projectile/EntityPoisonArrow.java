@@ -17,7 +17,7 @@ public class EntityPoisonArrow extends AbstractArrow implements IEntity {
     private int duration;
 
     public EntityPoisonArrow(EntityType<? extends EntityPoisonArrow> entityType, Level level) {
-        super(entityType, level);
+        super(entityType, level, new ItemStack(Items.ARROW));
     }
 
     // AbstractArrow dropped its (EntityType,double,double,double,Level) position constructor - only the
@@ -38,17 +38,6 @@ public class EntityPoisonArrow extends AbstractArrow implements IEntity {
 
     @Override
     protected ItemStack getPickupItem() {
-        // Must be non-empty: 1.21.1's AbstractArrow.addAdditionalSaveData encodes pickupItemStack
-        // unconditionally and ItemStack.save throws on an empty stack. Pickup is DISALLOWED, so this
-        // stack is never actually dropped/picked up - it only exists for NBT.
-        return new ItemStack(Items.ARROW);
-    }
-
-    @Override
-    protected ItemStack getDefaultPickupItem() {
-        // Must be non-empty: 1.21.1's AbstractArrow.addAdditionalSaveData encodes pickupItemStack
-        // unconditionally and ItemStack.save throws on an empty stack. Pickup is DISALLOWED, so this
-        // stack is never actually dropped/picked up - it only exists for NBT.
         return new ItemStack(Items.ARROW);
     }
 

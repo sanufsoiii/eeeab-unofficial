@@ -4,18 +4,18 @@ import com.eeeab.eeeabsmobs.server.init.ParticleInit;
 import com.eeeab.eeeabsmobs.server.util.ModMathUtils;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import java.util.Locale;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
@@ -237,10 +237,70 @@ public class ParticleRing extends TextureSheetParticle {
             return this.behavior;
         }
 
-        // See ParticleOrb.OrbData for why writeToNetwork/writeToString/Deserializer are gone and codec()/
-        // streamCodec() replace them (ParticleOptions/ParticleType redesign in 1.21).
-        public static MapCodec<RingData> codec(ParticleType<RingData> particleType) {
-            return RecordCodecBuilder.mapCodec((codecBuilder) -> codecBuilder.group(
+        @Override
+        public void writeToNetwork(FriendlyByteBuf buffer) {
+            buffer.writeFloat(this.yRot);
+            buffer.writeFloat(this.xRot);
+            buffer.writeFloat(this.red);
+            buffer.writeFloat(this.green);
+            buffer.writeFloat(this.blue);
+            buffer.writeFloat(this.alpha);
+            buffer.writeFloat(this.scale);
+            buffer.writeInt(this.duration);
+            buffer.writeBoolean(this.facesCamera);
+            buffer.writeEnum(this.behavior);
+        }
+
+        @Override
+        public String writeToString() {
+            return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %.2f %.2f %.2f %d %b %s",
+                    BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()), this.yRot, this.xRot, this.red, this.green, this.blue, this.alpha, this.scale, this.duration, this.facesCamera, this.behavior.name());
+        }
+
+        public static final ParticleOptions.Deserializer<RingData> DESERIALIZER = new ParticleOptions.Deserializer<RingData>() {
+            @Override
+            public RingData fromCommand(ParticleType<RingData> type, StringReader reader) throws CommandSyntaxException {
+                reader.expect(' ');
+                float yRot = reader.readFloat();
+                reader.expect(' ');
+                float xRot = reader.readFloat();
+                reader.expect(' ');
+                float red = reader.readFloat();
+                reader.expect(' ');
+                float green = reader.readFloat();
+                reader.expect(' ');
+                float blue = reader.readFloat();
+                reader.expect(' ');
+                float alpha = reader.readFloat();
+                reader.expect(' ');
+                float scale = reader.readFloat();
+                reader.expect(' ');
+                int duration = reader.readInt();
+                reader.expect(' ');
+                boolean facesCamera = reader.readBoolean();
+                reader.expect(' ');
+                String behaviorStr = reader.readString();
+                return new RingData(type, yRot, xRot, duration, red, green, blue, alpha, scale, facesCamera, EnumRingBehavior.valueOf(behaviorStr));
+            }
+
+            @Override
+            public RingData fromNetwork(ParticleType<RingData> type, FriendlyByteBuf buffer) {
+                float yRot = buffer.readFloat();
+                float xRot = buffer.readFloat();
+                float red = buffer.readFloat();
+                float green = buffer.readFloat();
+                float blue = buffer.readFloat();
+                float alpha = buffer.readFloat();
+                float scale = buffer.readFloat();
+                int duration = buffer.readInt();
+                boolean facesCamera = buffer.readBoolean();
+                EnumRingBehavior behavior = buffer.readEnum(EnumRingBehavior.class);
+                return new RingData(type, yRot, xRot, duration, red, green, blue, alpha, scale, facesCamera, behavior);
+            }
+        };
+
+        public static Codec<RingData> codec(ParticleType<RingData> particleType) {
+            return RecordCodecBuilder.create((codecBuilder) -> codecBuilder.group(
                             Codec.FLOAT.fieldOf("yRot").forGetter(RingData::getyRot),
                             Codec.FLOAT.fieldOf("xRot").forGetter(RingData::getxRot),
                             Codec.FLOAT.fieldOf("red").forGetter(RingData::getRed),
@@ -253,32 +313,6 @@ public class ParticleRing extends TextureSheetParticle {
                             Codec.STRING.fieldOf("behavior").forGetter((ringData) -> ringData.getBehavior().toString())
                     ).apply(codecBuilder, (yRot, xRot, red, green, blue, alpha, scale, duration, facesCamera, behavior) ->
                             new RingData(particleType, yRot, xRot, duration, red, green, blue, alpha, scale, facesCamera, EnumRingBehavior.valueOf(behavior)))
-            );
-        }
-
-        // StreamCodec.composite tops out at 6 fields; RingData has 9, so the trailing 5 (alpha, scale,
-        // duration, facesCamera, behavior) are grouped into one sub-codec first.
-        private record Tail(float alpha, float scale, int duration, boolean facesCamera, EnumRingBehavior behavior) {
-            static final StreamCodec<ByteBuf, Tail> STREAM_CODEC = StreamCodec.composite(
-                    ByteBufCodecs.FLOAT, Tail::alpha,
-                    ByteBufCodecs.FLOAT, Tail::scale,
-                    ByteBufCodecs.VAR_INT, Tail::duration,
-                    ByteBufCodecs.BOOL, Tail::facesCamera,
-                    ByteBufCodecs.STRING_UTF8.map(EnumRingBehavior::valueOf, EnumRingBehavior::toString), Tail::behavior,
-                    Tail::new
-            );
-        }
-
-        public static StreamCodec<RegistryFriendlyByteBuf, RingData> streamCodec(ParticleType<RingData> particleType) {
-            return StreamCodec.composite(
-                    ByteBufCodecs.FLOAT, RingData::getyRot,
-                    ByteBufCodecs.FLOAT, RingData::getxRot,
-                    ByteBufCodecs.FLOAT, RingData::getRed,
-                    ByteBufCodecs.FLOAT, RingData::getGreen,
-                    ByteBufCodecs.FLOAT, RingData::getBlue,
-                    Tail.STREAM_CODEC, ringData -> new Tail(ringData.getAlpha(), ringData.getScale(), ringData.getDuration(), ringData.getFacesCamera(), ringData.getBehavior()),
-                    (yRot, xRot, red, green, blue, tail) ->
-                            new RingData(particleType, yRot, xRot, tail.duration(), red, green, blue, tail.alpha(), tail.scale(), tail.facesCamera(), tail.behavior())
             );
         }
     }

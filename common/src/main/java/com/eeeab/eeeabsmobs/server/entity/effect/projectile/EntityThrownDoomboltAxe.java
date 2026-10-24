@@ -53,7 +53,7 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
     private boolean sentSpikeEvent;
 
     public EntityThrownDoomboltAxe(EntityType<? extends EntityThrownDoomboltAxe> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+        super(pEntityType, pLevel, new ItemStack(ItemInit.DOOMBOLT_AXE.get()));
     }
 
     // AbstractArrow's (EntityType,LivingEntity,Level) constructor was replaced by one that also takes the
@@ -66,9 +66,9 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(ID_FOIL, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(ID_FOIL, false);
     }
 
     @Override
@@ -127,20 +127,7 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
 
     @Override
     protected ItemStack getPickupItem() {
-        // Guarded for the same reason as getDefaultPickupItem below.
-        return this.doomboltAxeItem == null ? this.getDefaultPickupItem() : this.doomboltAxeItem.copy();
-    }
-
-    /**
-     * Must not read doomboltAxeItem. AbstractArrow's constructor calls this virtually on 1.21.1
-     * (AbstractArrow.<init> -> getDefaultPickupItem), which runs *before* this subclass's field
-     * initialisers, so the field is still null at that point. The resulting NullPointerException was
-     * swallowed by the server's packet handler -- no crash, no visible error, the axe simply never
-     * appeared when thrown.
-     */
-    @Override
-    protected ItemStack getDefaultPickupItem() {
-        return new ItemStack(ItemInit.DOOMBOLT_AXE.get());
+        return this.doomboltAxeItem == null ? new ItemStack(ItemInit.DOOMBOLT_AXE.get()) : this.doomboltAxeItem.copy();
     }
 
     public boolean isFoil() {
@@ -159,7 +146,7 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
         if (entity == owner) return;
         float damage = (float) ModConfigHandler.COMMON.items.doomboltAxe.attackDamageValue;
         if (entity instanceof LivingEntity livingentity) {
-            damage += EnchantmentHelper.getDamageBonus(this.doomboltAxeItem, livingentity.getType());
+            damage += EnchantmentHelper.getDamageBonus(this.doomboltAxeItem, livingentity.getMobType());
         }
         this.dealtDamage = true;
         DamageSource damagesource = this.damageSources().trident(this, owner == null ? this : owner);
@@ -193,7 +180,7 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
                 return;
             }
             if (entity instanceof LivingEntity target) {
-                target.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true), owner);
+                target.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 200, 0, false, false, true), owner);
                 if (owner instanceof LivingEntity livingOwner) {
                     EnchantmentHelper.doPostHurtEffects(target, livingOwner);
                     EnchantmentHelper.doPostDamageEffects(livingOwner, target);
@@ -222,7 +209,7 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
                 float percent = EntityExplode.getSeenPercent(center, entity);
                 if (entity.hurt(this.damageSources().indirectMagic(this, owner == null ? this : owner), damage * percent)) {
                     if (entity instanceof LivingEntity target) {
-                        target.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true), owner);
+                        target.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 200, 0, false, false, true), owner);
                         if (owner instanceof LivingEntity livingOwner) {
                             EnchantmentHelper.doPostHurtEffects(target, livingOwner);
                             EnchantmentHelper.doPostDamageEffects(livingOwner, target);
@@ -301,7 +288,7 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("doomboltAxe", 10)) {
-            this.doomboltAxeItem = ItemStack.parseOptional(this.level().registryAccess(), pCompound.getCompound("doomboltAxe"));
+            this.doomboltAxeItem = ItemStack.of(pCompound.getCompound("doomboltAxe"));
         }
         this.dealtDamage = pCompound.getBoolean("dealtDamage");
     }
@@ -309,7 +296,7 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.put("doomboltAxe", this.doomboltAxeItem.save(this.level().registryAccess()));
+        pCompound.put("doomboltAxe", this.doomboltAxeItem.save(new CompoundTag()));
         pCompound.putBoolean("dealtDamage", this.dealtDamage);
     }
 

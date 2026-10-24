@@ -25,11 +25,7 @@ public final class CombatTriggerEvent {
     public static final CombatTriggerEvent INSTANCE = new CombatTriggerEvent();
 
     public static void register() {
-        dev.architectury.event.events.common.PlayerEvent.PLAYER_QUIT.register(player -> {
-            if (player instanceof ServerPlayer serverPlayer) {
-                INSTANCE.onPlayerLogout(serverPlayer);
-            }
-        });
+        dev.architectury.event.events.common.PlayerEvent.PLAYER_QUIT.register(INSTANCE::onPlayerLogout);
     }
 
     //@SubscribeEvent

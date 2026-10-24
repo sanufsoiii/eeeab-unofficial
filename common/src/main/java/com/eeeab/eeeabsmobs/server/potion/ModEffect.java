@@ -23,11 +23,10 @@ public class ModEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+    public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (isInstantenous()) {
             applyInstantenousEffect(null, null, entity, amplifier, 1.0d);
         }
-        return true;
     }
 
     @Override
@@ -39,7 +38,7 @@ public class ModEffect extends MobEffect {
         return false;
     }
 
-    public MobEffect addAttributeModifier(net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute, net.minecraft.resources.ResourceLocation id, double amount, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation operation) {
+    public MobEffect addAttributeModifier(net.minecraft.world.entity.ai.attributes.Attribute attribute, net.minecraft.resources.ResourceLocation id, double amount, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation operation) {
         return super.addAttributeModifier(attribute, java.util.UUID.nameUUIDFromBytes(id.toString().getBytes()).toString(), amount, operation);
     }
 }

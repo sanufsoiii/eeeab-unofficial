@@ -18,14 +18,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -37,12 +36,10 @@ import java.util.List;
 //属性修饰符系统迁移到ItemAttributeModifiers数据组件，见ConfigurableItem注释；
 //ForgeMod.ENTITY_REACH -> vanilla的Attributes.ENTITY_INTERACTION_RANGE
 public class ItemDoomboltAxe extends AxeItem implements ConfigurableItem, SlidingDoorLockKey {
-    private ItemAttributeModifiers defaultModifiers;
+    private com.google.common.collect.Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public ItemDoomboltAxe(Tier tier, Properties properties) {
-        // getDefaultAttributeModifiers(ItemStack) has no vanilla equivalent; baked into the default template
-        // once here instead - see ItemChainsword for the full explanation.
-        super(tier, properties.component(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, buildDefaultAttributes()));
+        super(tier, 6.0F, -3.1F, properties);
         this.defaultModifiers = this.creatAttributesFromConfig();
     }
 
@@ -80,8 +77,8 @@ public class ItemDoomboltAxe extends AxeItem implements ConfigurableItem, Slidin
                         }
                     }
                 }
-                itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
-                player.playSound(SoundEvents.GENERIC_EXPLODE.value(), 1F, 1F + player.getRandom().nextFloat() * 0.1F);
+                itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+                player.playSound(SoundEvents.GENERIC_EXPLODE, 1F, 1F + player.getRandom().nextFloat() * 0.1F);
                 EntityCameraShake.cameraShake(level, player.position(), 6, 0.15F, 3, 12);
                 return InteractionResultHolder.consume(player.getItemInHand(hand));
             }
@@ -99,7 +96,7 @@ public class ItemDoomboltAxe extends AxeItem implements ConfigurableItem, Slidin
             if (i >= 10) {
                 if (!level.isClientSide) {
                     if (stack.getDamageValue() >= stack.getMaxDamage() - 1) return;
-                    stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
+                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(entity.getUsedItemHand()));
                     EntityThrownDoomboltAxe doomboltAxe = new EntityThrownDoomboltAxe(level, player, stack);
                     doomboltAxe.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 4F, 1.0F);
                     if (player.getAbilities().instabuild) {
@@ -135,22 +132,22 @@ public class ItemDoomboltAxe extends AxeItem implements ConfigurableItem, Slidin
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.Level level, List<Component> tooltip, TooltipFlag flagIn) {
         if (TranslateUtils.SHOW_ITEM_CD) tooltip.add(TranslateUtils.itemCoolTime(ModConfigHandler.COMMON.items.doomboltAxeConfig.get()));
         tooltip.addAll(TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 2, ChatFormatting.GRAY, this.getDescriptionId()));
     }
 
-    private static ItemAttributeModifiers buildDefaultAttributes() {
-        return ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", ModConfigHandler.COMMON.items.doomboltAxe.attackDamageValue - 1D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_UUID, "Weapon modifier", ModConfigHandler.COMMON.items.doomboltAxe.attackSpeedValue - 4D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(java.util.UUID.nameUUIDFromBytes("eeeabsmobs:doombolt_axe_entity_reach".getBytes()), "Weapon modifier", 1D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .build();
+    @Override
+    public com.google.common.collect.Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+        return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
     }
 
     @Override
-    public ItemAttributeModifiers creatAttributesFromConfig() {
-        return buildDefaultAttributes();
+    public com.google.common.collect.Multimap<Attribute, AttributeModifier> creatAttributesFromConfig() {
+        com.google.common.collect.ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = com.google.common.collect.ImmutableMultimap.builder();
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", ModConfigHandler.COMMON.items.doomboltAxe.attackDamageValue - 1D, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", ModConfigHandler.COMMON.items.doomboltAxe.attackSpeedValue - 4D, AttributeModifier.Operation.ADDITION));
+        return builder.build();
     }
 
     @Override

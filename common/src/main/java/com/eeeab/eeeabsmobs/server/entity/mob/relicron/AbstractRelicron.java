@@ -58,7 +58,7 @@ public abstract class AbstractRelicron extends EEEABMobLibrary implements Enemy,
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
-        Holder<MobEffect> effect = effectInstance.getEffect();
+        MobEffect effect = effectInstance.getEffect();
         return MobEffects.POISON != effect && MobEffects.MOVEMENT_SLOWDOWN != effect && super.canBeAffected(effectInstance);
     }
 
@@ -153,15 +153,15 @@ public abstract class AbstractRelicron extends EEEABMobLibrary implements Enemy,
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable net.minecraft.nbt.CompoundTag dataTag) {
         return groupData;
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_ACTIVE, true);
-        builder.define(DATA_ALWAYS_ACTIVE, true);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_ACTIVE, true);
+        this.entityData.define(DATA_ALWAYS_ACTIVE, true);
     }
 
     @Override

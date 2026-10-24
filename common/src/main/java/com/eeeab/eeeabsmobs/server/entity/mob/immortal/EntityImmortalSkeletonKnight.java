@@ -124,7 +124,7 @@ public class EntityImmortalSkeletonKnight extends EntityAbsImmortalSkeleton impl
             return false;
         } else {
             if (entity instanceof LivingEntity targetEntity) {
-                targetEntity.addEffect(new MobEffectInstance(EffectInit.ERODE_EFFECT.holder(), 200), this);
+                targetEntity.addEffect(new MobEffectInstance(EffectInit.ERODE_EFFECT.get(), 200), this);
             }
         }
         return true;
@@ -139,7 +139,7 @@ public class EntityImmortalSkeletonKnight extends EntityAbsImmortalSkeleton impl
     protected AbstractArrow getArrow(ItemStack arrowStack, float distanceFactor, @Nullable ItemStack weaponStack) {
         AbstractArrow arrow = super.getArrow(arrowStack, distanceFactor, weaponStack);
         if (arrow instanceof Arrow) {
-            ((Arrow) arrow).addEffect(new MobEffectInstance(EffectInit.ERODE_EFFECT.holder(), 200));
+            ((Arrow) arrow).addEffect(new MobEffectInstance(EffectInit.ERODE_EFFECT.get(), 200));
         }
         return arrow;
     }

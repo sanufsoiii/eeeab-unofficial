@@ -97,12 +97,12 @@ public class EntityAbsBeam extends EntityMagicEffects {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_YAW, 0F);
-        builder.define(DATA_PITCH, 0F);
-        builder.define(DATA_DURATION, 0);
-        builder.define(DATA_COUNT_DOWN, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_YAW, 0F);
+        this.entityData.define(DATA_PITCH, 0F);
+        this.entityData.define(DATA_DURATION, 0);
+        this.entityData.define(DATA_COUNT_DOWN, 0);
     }
 
     protected boolean canBeInterrupted() {

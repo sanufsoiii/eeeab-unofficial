@@ -16,9 +16,8 @@ public class ItemGhostWarriorArmor extends ArmorItem implements IUnbreakableItem
     public static final ResourceLocation LEGS_LOCATION = new ResourceLocation(EEEABMobs.MOD_ID, "textures/armor/ghost_warrior_armor_legs.png");
 
     public ItemGhostWarriorArmor(Type type) {
-        super(ModArmorMaterial.GHOST_WARRIOR_MATERIAL, type,
-                new Item.Properties().rarity(Rarity.EPIC).fireResistant()
-                        .durability(type.getDurability(ModArmorMaterial.GHOST_WARRIOR_DURABILITY_MULTIPLIER)));
+        super(ModArmorMaterial.GHOST_WARRIOR, type,
+                new Item.Properties().rarity(Rarity.EPIC).fireResistant());
     }
 
     // initializeClient removed - the custom armor model is now registered directly in ClientProxy via

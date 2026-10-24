@@ -37,7 +37,7 @@ public class FrenzyCapability {
         public void tick(LivingEntity entity) {
             if (this.isFrenzy) {
                 if (!entity.level().isClientSide) {
-                    MobEffectInstance effect = entity.getEffect(EffectInit.FRENZY_EFFECT.holder());
+                    MobEffectInstance effect = entity.getEffect(EffectInit.FRENZY_EFFECT.get());
                     if (effect != null && effect.endsWithin(1)) {
                         //副作用：每一级增加6秒的持续时间
                         int amplifier = effect.getAmplifier();
@@ -55,7 +55,7 @@ public class FrenzyCapability {
                         }
                         entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, durationTick, 1, false, true, true));
                         entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, durationTick, amplifier, false, true, true));
-                        entity.addEffect(new MobEffectInstance(EffectInit.ARMOR_LOWER_EFFECT.holder(), durationTick, amplifier, false, true, true));
+                        entity.addEffect(new MobEffectInstance(EffectInit.ARMOR_LOWER_EFFECT.get(), durationTick, amplifier, false, true, true));
                     }
                 }
                 if (entity instanceof Player player) {

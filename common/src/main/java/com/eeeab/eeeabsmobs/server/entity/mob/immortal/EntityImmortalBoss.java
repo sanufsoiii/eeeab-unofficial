@@ -94,7 +94,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import org.jetbrains.annotations.NotNull;
@@ -213,13 +213,14 @@ public class EntityImmortalBoss extends EntityAbsImmortal {
         super(type, level);
         this.active = false;
         this.clearRedundantAnimationsOnDeath = true;
-        this.setPathfindingMalus(PathType.LAVA, 0.0F);
-        this.setPathfindingMalus(PathType.WATER, 0.0F);
-        this.setPathfindingMalus(PathType.DAMAGE_OTHER, 8.0F);
-        this.setPathfindingMalus(PathType.POWDER_SNOW, 8.0F);
-        this.setPathfindingMalus(PathType.DAMAGE_FIRE, 0.0F);
-        this.setPathfindingMalus(PathType.DANGER_FIRE, 0.0F);
-        this.setPathfindingMalus(PathType.UNPASSABLE_RAIL, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, 8.0F);
+        this.setPathfindingMalus(BlockPathTypes.POWDER_SNOW, 8.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
+        this.setMaxUpStep(4.0F);
         this.damageAdaptation = new DamageAdaptation(ModConfigHandler.COMMON.mobs.immortals.immortal.adaptConfig);
         this.smashDerivedSkillProb = new TickBasedProbabilityBooster(0F, 0.2F, 1F);
         this.hardpunchDerivedSkillProb = new TickBasedProbabilityBooster(0F, 0.05F, 1F);
@@ -318,7 +319,7 @@ public class EntityImmortalBoss extends EntityAbsImmortal {
     }
 
     @Override
-    public Map<Holder<MobEffect>, MobEffectInstance> getActiveEffectsMap() {
+    public Map<MobEffect, MobEffectInstance> getActiveEffectsMap() {
         if (StackTraceUtils.isNotMinecraftOrMyModInvoking()) return Map.of();
         return super.getActiveEffectsMap();
     }
@@ -682,12 +683,12 @@ public class EntityImmortalBoss extends EntityAbsImmortal {
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_STAGE, ImmortalStage.STAGE1.id);
-        builder.define(DATA_TELEPORT_TYPE, TeleportType.RANDOM.id);
-        builder.define(DATA_KATANA_HOLD, ImmortalStage.STAGE1.holdKatana);
-        builder.define(DATA_ALWAYS_ACTIVE, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_STAGE, ImmortalStage.STAGE1.id);
+        this.entityData.define(DATA_TELEPORT_TYPE, TeleportType.RANDOM.id);
+        this.entityData.define(DATA_KATANA_HOLD, ImmortalStage.STAGE1.holdKatana);
+        this.entityData.define(DATA_ALWAYS_ACTIVE, false);
     }
 
     @Override
@@ -734,7 +735,7 @@ public class EntityImmortalBoss extends EntityAbsImmortal {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @org.jetbrains.annotations.Nullable SpawnGroupData spawnDataIn) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @org.jetbrains.annotations.Nullable SpawnGroupData spawnDataIn, @org.jetbrains.annotations.Nullable net.minecraft.nbt.CompoundTag dataTag) {
         this.LRFlag = worldIn.getRandom().nextBoolean();
         //this.setActive(false);
         return spawnDataIn;
@@ -1168,7 +1169,7 @@ public class EntityImmortalBoss extends EntityAbsImmortal {
         boolean flag = target.hurt(source, (float) ((this.getAttributeValue(Attributes.ATTACK_DAMAGE) * baseDamageMultiplier) + getDamageAmountByTargetHealthPct(target)) * damageMultiplier);
         if (flag) {
             this.invalidAttackCount = 0;
-            if (addEffect) ModEntityUtils.addEffectStackingAmplifier(this, target, EffectInit.ERODE_EFFECT.holder(), 300, 5, true, true, true, false);
+            if (addEffect) ModEntityUtils.addEffectStackingAmplifier(this, target, EffectInit.ERODE_EFFECT.get(), 300, 5, true, true, true, false);
         } else if (disableShield) {
             this.disableShield(target, 100);
         }
@@ -1301,7 +1302,7 @@ public class EntityImmortalBoss extends EntityAbsImmortal {
     }
 
     private void reflectPotionEffect(MobEffectInstance effectInstance, Entity entity) {
-        if (entity != this && entity instanceof LivingEntity bouncer && !effectInstance.getEffect().value().isInstantenous()) {
+        if (entity != this && entity instanceof LivingEntity bouncer && !effectInstance.getEffect().isInstantenous()) {
             bouncer.addEffect(effectInstance, null);
         }
     }
@@ -1563,9 +1564,7 @@ public class EntityImmortalBoss extends EntityAbsImmortal {
                 .add(Attributes.MOVEMENT_SPEED, 0.36D)
                 .add(Attributes.FOLLOW_RANGE, 64.0D)
                 .add(Attributes.ATTACK_DAMAGE, 12.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
-                .add(Attributes.GRAVITY, 0.09D)
-                .add(Attributes.STEP_HEIGHT, 4D);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
 
     public int getStunCount() {

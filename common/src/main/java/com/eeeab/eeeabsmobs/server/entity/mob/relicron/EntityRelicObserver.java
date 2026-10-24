@@ -115,12 +115,13 @@ public class EntityRelicObserver extends AbstractRelicron implements CrackinessE
     // getStandingEyeHeight (0.65x eye height while active) and the old getDimensions (swap to
     // DEACTIVATE_SIZE while inactive) overrides are merged into this single hook.
     @Override
-    protected EntityDimensions getDefaultDimensions(Pose pose) {
-        if (!this.isActive()) {
-            return DEACTIVATE_SIZE.scale(this.getScale());
-        }
-        EntityDimensions size = super.getDefaultDimensions(pose);
-        return size.withEyeHeight(size.height() * 0.65F);
+    public EntityDimensions getDimensions(Pose pose) {
+        return this.isActive() ? super.getDimensions(pose) : DEACTIVATE_SIZE.scale(this.getScale());
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.65F;
     }
 
     @Override
@@ -138,7 +139,7 @@ public class EntityRelicObserver extends AbstractRelicron implements CrackinessE
         super.onAnimationStart(animation);
         if (!this.level().isClientSide) {
             if (animation == STORM_ANIMATION) {
-                this.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 120, 0, false, false), this);
+                this.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 120, 0, false, false), this);
             }
         }
     }
@@ -241,11 +242,11 @@ public class EntityRelicObserver extends AbstractRelicron implements CrackinessE
     }
 
     @Override
-    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData) {
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable net.minecraft.nbt.CompoundTag dataTag) {
         this.setYRot(0.0F);
         this.yHeadRot = this.getYRot();
         this.setOldPosAndRot();
-        return super.finalizeSpawn(level, instance, spawnType, groupData);
+        return super.finalizeSpawn(level, instance, spawnType, groupData, dataTag);
     }
 
     @Override
@@ -390,7 +391,7 @@ public class EntityRelicObserver extends AbstractRelicron implements CrackinessE
                     } else if (tick % 10 == 0) {
                         entity.rangeAttack(3, 3.5, 3, 3.5, e -> {
                             if (entity.doHurtTarget(e, 1F, 1F)) {
-                                e.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true), entity);
+                                e.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 200, 0, false, false, true), entity);
                             }
                         });
                     }

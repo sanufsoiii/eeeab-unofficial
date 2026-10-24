@@ -140,7 +140,7 @@ public class ImmortalPounceGoal extends AnimationAI<EntityImmortalBoss> {
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - entity.getZ()) * (entityHit.getZ() - entity.getZ()) + (entityHit.getX() - entity.getX()) * (entityHit.getX() - entity.getX())) - entityHit.getBbWidth() / 2f;
             if (entityHitDistance < 0.75 || (entityHitDistance <= hitDistance && ((entityRelativeAngle >= -attackArc / 2 && entityRelativeAngle <= attackArc / 2) || (entityRelativeAngle >= 360 - attackArc / 2F || entityRelativeAngle <= -360 + attackArc / 2F)))) {
                 if (stun) entity.stun(null, entityHit, 40, false);
-                entity.doHurtTarget(entityHit, true, heal && entityHit.hasEffect(EffectInit.ERODE_EFFECT.holder()), false, 1.0F, damageMultiplier);
+                entity.doHurtTarget(entityHit, true, heal && entityHit.hasEffect(EffectInit.ERODE_EFFECT.get()), false, 1.0F, damageMultiplier);
                 if (!hitFlag) {
                     hitFlag = true;
                     entity.playSound(SoundInit.IMMORTAL_PUNCH_HIT.get(), 1F, 1.1F);

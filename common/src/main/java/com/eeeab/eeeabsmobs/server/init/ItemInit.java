@@ -69,7 +69,7 @@ public class ItemInit {
     public static final FabricDeferredRegister.Entry<Item> GHOST_WARRIOR_BOOTS = ITEMS.register("ghost_warrior_boots", () -> new ItemGhostWarriorArmor(ArmorItem.Type.BOOTS));
     public static final FabricDeferredRegister.Entry<Item> GHOST_WARRIOR_LEGGINGS = ITEMS.register("ghost_warrior_leggings", () -> new ItemGhostWarriorArmor(ArmorItem.Type.LEGGINGS));
     public static final FabricDeferredRegister.Entry<Item> GHOST_WARRIOR_UPGRADE_SMITHING_TEMPLATE = ITEMS.register("ghost_warrior_upgrade_smithing_template", ModSmithingTemplate::createGhostWarriorUpgradeTemplate);
-    public static final FabricDeferredRegister.Entry<Item> IMMORTAL_AXE = ITEMS.register("immortal_axe", () -> new AxeItem(ModToolsTier.IMMORTAL_TIER, new Item.Properties().attributes(AxeItem.createAttributes(ModToolsTier.IMMORTAL_TIER, 6F, -3.1F))));
+    public static final FabricDeferredRegister.Entry<Item> IMMORTAL_AXE = ITEMS.register("immortal_axe", () -> new AxeItem(ModToolsTier.IMMORTAL_TIER, 6.0F, -3.1F, new Item.Properties()));
     public static final FabricDeferredRegister.Entry<Item> IMMORTAL_SWORD = ITEMS.register("immortal_sword", () -> new ItemImmortalSword(ModToolsTier.IMMORTAL_TIER, 4, -2.4F, new Item.Properties()));
     public static final FabricDeferredRegister.Entry<ItemNetherworldKatana> THE_NETHERWORLD_KATANA = ITEMS.register("netherworld_katana", () -> new ItemNetherworldKatana(ModToolsTier.GHOST_STEEL_TIER, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
 

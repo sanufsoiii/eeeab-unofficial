@@ -33,7 +33,7 @@ public class EntityGuardianBlade extends EntityMagicEffects {
         this(EntityInit.GUARDIAN_BLADE.get(), level);
         float baseDamage = caster instanceof Player ? (float) caster.getAttributeValue(Attributes.ATTACK_DAMAGE) : this.getDamage();
         if (caster instanceof Player) {
-            baseDamage += EnchantmentHelper.getDamageBonus(caster.getMainHandItem(), caster.getType());
+            baseDamage += EnchantmentHelper.getDamageBonus(caster.getMainHandItem(), caster.getMobType());
         }
         this.damage = baseDamage;
         this.setYRot((yRot * (180F / (float) Math.PI)) - 90F);
@@ -43,9 +43,8 @@ public class EntityGuardianBlade extends EntityMagicEffects {
     }
 
     @Override
-    public EntityDimensions getDimensions(Pose pose) {
-        EntityDimensions dimensions = super.getDimensions(pose);
-        return dimensions.withEyeHeight(dimensions.height() * 0.5F);
+    protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.5F;
     }
 
     @Override

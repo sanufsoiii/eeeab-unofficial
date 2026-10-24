@@ -73,13 +73,13 @@ public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
             AttributeInstance healthAttribute = this.getAttribute(Attributes.MAX_HEALTH);
             if (healthAttribute != null) {
                 double finalValue = healthAttribute.getBaseValue() * config.healthMultiplier.get() - healthAttribute.getBaseValue();
-                healthAttribute.addTransientModifier(new AttributeModifier(HEALTH_MODIFIER_UUID, "Reset health by config", finalValue, AttributeModifier.Operation.ADD_VALUE));
+                healthAttribute.addTransientModifier(new AttributeModifier(HEALTH_MODIFIER_UUID, "Reset health by config", finalValue, AttributeModifier.Operation.ADDITION));
                 this.setHealth(this.getMaxHealth());
             }
             AttributeInstance attackAttribute = this.getAttribute(Attributes.ATTACK_DAMAGE);
             if (attackAttribute != null) {
                 double finalValue = attackAttribute.getBaseValue() * config.attackMultiplier.get() - attackAttribute.getBaseValue();
-                attackAttribute.addTransientModifier(new AttributeModifier(ATTACK_MODIFIER_UUID, "Reset attack by config", finalValue, AttributeModifier.Operation.ADD_VALUE));
+                attackAttribute.addTransientModifier(new AttributeModifier(ATTACK_MODIFIER_UUID, "Reset attack by config", finalValue, AttributeModifier.Operation.ADDITION));
             }
         }
     }
@@ -227,14 +227,14 @@ public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
         float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damageMultiplier;
         float f1 = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK) * knockBackMultiplier;
         if (entity instanceof LivingEntity livingEntity) {
-            f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), livingEntity.getType());
+            f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), livingEntity.getMobType());
             f1 += EnchantmentHelper.getKnockbackBonus(this);
             f += getDamageAmountByTargetHealthPct(livingEntity);
         }
 
         int fireAspect = EnchantmentHelper.getFireAspect(this);
         if (fireAspect > 0) {
-            entity.igniteForSeconds(fireAspect * 4);
+            entity.setSecondsOnFire(fireAspect * 4);
         }
 
         boolean flag = entity.hurt(damageSource, f);
@@ -406,7 +406,7 @@ public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
      */
     public void stun(@Nullable LivingEntity source, LivingEntity target, int duration, boolean force) {
         if (target.isBlocking() || this.isAlliedTo(target) || target instanceof Player player && (player.isSpectator() || player.isCreative())) return;
-        ModEntityUtils.addEffectStackingAmplifier(source, target, EffectInit.STUN_EFFECT.holder(), duration, 1, false, true, true, force);
+        ModEntityUtils.addEffectStackingAmplifier(source, target, EffectInit.STUN_EFFECT.get(), duration, 1, false, true, true, force);
     }
 
     /**

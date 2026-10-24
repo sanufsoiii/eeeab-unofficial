@@ -86,13 +86,13 @@ public class RendererTelegraph extends EntityRenderer<EntityTelegraph> {
         Matrix4f matrix = pose.pose();
         float nx = 0, ny = 1, nz = 0;
         consumer.vertex(matrix, -size, y, -size).color(red, green, blue, alpha).uv(0, 0)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), nx, ny, nz).endVertex();
         consumer.vertex(matrix, -size, y, size).color(red, green, blue, alpha).uv(0, 1)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), nx, ny, nz).endVertex();
         consumer.vertex(matrix, size, y, size).color(red, green, blue, alpha).uv(1, 1)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), nx, ny, nz).endVertex();
         consumer.vertex(matrix, size, y, -size).color(red, green, blue, alpha).uv(1, 0)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), nx, ny, nz).endVertex();
     }
 
 
@@ -148,13 +148,13 @@ public class RendererTelegraph extends EntityRenderer<EntityTelegraph> {
         Matrix4f matrix = pose.pose();
         float alphaTop = 0F;
         consumer.vertex(matrix, x1, yBase, z1).color(red, green, blue, alphaBottom).uv(0, 1)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), nx, ny, nz).endVertex();
         consumer.vertex(matrix, x2, yBase, z2).color(red, green, blue, alphaBottom).uv(1, 1)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), nx, ny, nz).endVertex();
         consumer.vertex(matrix, x2, yBase + height, z2).color(red, green, blue, alphaTop).uv(1, 0)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), nx, ny, nz).endVertex();
         consumer.vertex(matrix, x1, yBase + height, z1).color(red, green, blue, alphaTop).uv(0, 0)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose, nx, ny, nz).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), nx, ny, nz).endVertex();
     }
 
     @Override

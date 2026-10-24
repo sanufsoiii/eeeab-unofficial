@@ -11,10 +11,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public enum AnimationHandler {
     INSTANCE;
 
-    // Was PacketDistributor.sendToPlayersTrackingEntityAndSelf; mirrors the tracking+self pattern used in
-    // ServerEventHandler#doCapabilityEffect and AbilityHandler (self isn't always in PlayerLookup#tracking
-    // when the entity itself is a player).
-    private static void sendToTrackingAndSelf(Entity entity, net.minecraft.network.protocol.common.custom.CustomPacketPayload message) {
+    private static <T> void sendToTrackingAndSelf(Entity entity, T message) {
         com.eeeab.eeeabsmobs.server.message.ModNetwork.sendToTracking(entity, message, true);
     }
 

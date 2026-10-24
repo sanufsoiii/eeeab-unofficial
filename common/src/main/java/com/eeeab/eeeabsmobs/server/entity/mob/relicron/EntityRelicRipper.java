@@ -217,7 +217,7 @@ public class EntityRelicRipper extends AbstractRelicron {
             return false;
         } else {
             if (entity instanceof LivingEntity target) {
-                target.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true), null);
+                target.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 200, 0, false, false, true), null);
             }
             return true;
         }

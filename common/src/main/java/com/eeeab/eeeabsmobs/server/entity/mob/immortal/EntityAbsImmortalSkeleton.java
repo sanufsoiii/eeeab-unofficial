@@ -35,9 +35,9 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.ChargedProjectiles;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
@@ -77,9 +77,8 @@ public abstract class EntityAbsImmortalSkeleton extends EntityAbsImmortal implem
     }
 
     @Override
-    protected EntityDimensions getDefaultDimensions(Pose pose) {
-        EntityDimensions dimensions = super.getDefaultDimensions(pose);
-        return dimensions.withEyeHeight(dimensions.height() * 0.92F);
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.92F;
     }
 
     @Override
@@ -200,7 +199,7 @@ public abstract class EntityAbsImmortalSkeleton extends EntityAbsImmortal implem
     @Nullable
     @Override
     //在初始生成时调用
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         RandomSource inRandom = worldIn.getRandom();
         this.populateDefaultEquipmentSlots(inRandom, difficultyIn);
         this.populateDefaultEquipmentEnchantments(inRandom, difficultyIn);
@@ -333,7 +332,14 @@ public abstract class EntityAbsImmortalSkeleton extends EntityAbsImmortal implem
                     boolean isLoaded = this.entity.isHolding(is -> is.getItem() instanceof CrossbowItem && CrossbowItem.isCharged(is));
                     if (tick == animation.getDuration() - 1 || isLoaded) {
                         if (!isLoaded && this.entity.isHolding(is -> is.getItem() instanceof CrossbowItem)) {
-                            this.entity.getUseItem().set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.of(new ItemStack(Items.ARROW)));
+                            ItemStack crossbow = this.entity.getUseItem();
+                            CrossbowItem.setCharged(crossbow, true);
+                            CompoundTag tag = crossbow.getOrCreateTag();
+                            ListTag listTag = new ListTag();
+                            CompoundTag arrowTag = new CompoundTag();
+                            new ItemStack(Items.ARROW).save(arrowTag);
+                            listTag.add(arrowTag);
+                            tag.put("ChargedProjectiles", listTag);
                         }
                         this.entity.playAnimation(CROSSBOW_HOLD_ANIMATION);
                     }
@@ -341,7 +347,12 @@ public abstract class EntityAbsImmortalSkeleton extends EntityAbsImmortal implem
                     if (tick == 9) {
                         this.entity.performRangedAttack(target, 0F);
                         if (this.entity.isHolding(is -> is.getItem() instanceof CrossbowItem)) {
-                            this.entity.getUseItem().set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);
+                            ItemStack crossbow = this.entity.getUseItem();
+                            CrossbowItem.setCharged(crossbow, false);
+                            CompoundTag tag = crossbow.getTag();
+                            if (tag != null) {
+                                tag.remove("ChargedProjectiles");
+                            }
                         }
                     }
                 }

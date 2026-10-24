@@ -12,7 +12,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 public class ErodeEffect extends ModEffect {
     public ErodeEffect() {
         super(MobEffectCategory.HARMFUL, 1648179, false);
-        this.addAttributeModifier(AttributeInit.CRIT_CHANCE.holder(), new ResourceLocation(EEEABMobs.MOD_ID, "erode_crit_chance"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        this.addAttributeModifier(AttributeInit.CRIT_CHANCE.get(), new ResourceLocation(EEEABMobs.MOD_ID, "erode_crit_chance"), 0.1, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     //@Override

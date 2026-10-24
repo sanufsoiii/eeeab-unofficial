@@ -178,7 +178,7 @@ public class EntityBloodBall extends Projectile implements IEntity {
             if (entity != null) {
                 Entity owner = getOwner();
                 if (owner instanceof LivingEntity livingEntity && this.distanceTo(owner) <= 6) {
-                    livingEntity.addEffect(new MobEffectInstance(EffectInit.STUN_EFFECT.holder(), 100, 0, false, false));
+                    livingEntity.addEffect(new MobEffectInstance(EffectInit.STUN_EFFECT.get(), 100, 0, false, false));
                 }
                 preDestroy(null);
                 return true;
@@ -207,9 +207,9 @@ public class EntityBloodBall extends Projectile implements IEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_TARGET_UUID, Optional.empty());
-        builder.define(DATA_POWER, 0);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_TARGET_UUID, Optional.empty());
+        this.entityData.define(DATA_POWER, 0);
     }
 
     @Override

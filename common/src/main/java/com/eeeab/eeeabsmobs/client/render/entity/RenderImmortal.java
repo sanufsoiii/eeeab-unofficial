@@ -116,7 +116,7 @@ public class RenderImmortal extends MobRenderer<EntityImmortalBoss, ModelImmorta
         float f2 = f1 - f;
         float f6 = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
         float f7 = this.getBob(entity, partialTicks);
-        this.setupRotations(entity, matrixStack, f7, f, partialTicks, entity.getScale());
+        this.setupRotations(entity, matrixStack, f7, f, partialTicks);
         matrixStack.scale(-1.0F, -1.0F, 1.0F);
         this.scale(entity, matrixStack, partialTicks);
         matrixStack.translate(0.0F, -1.501F, 0.0F);

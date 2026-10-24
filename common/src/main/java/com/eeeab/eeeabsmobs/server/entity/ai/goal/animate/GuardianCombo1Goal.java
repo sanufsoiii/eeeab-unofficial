@@ -110,7 +110,7 @@ public class GuardianCombo1Goal extends AnimationAI<EntityNamelessGuardian> {
                     double ratioZ = (-Math.cos(entity.getYRot() * ((float) Math.PI / 180F)));
                     ModEntityUtils.forceKnockBack(entity, hitEntity, 1.8F, ratioX, ratioZ, false);
                 });
-                entity.playSound(SoundEvents.GENERIC_EXPLODE.value(), 1.25F, 1F + entity.getRandom().nextFloat() * 0.1F);
+                entity.playSound(SoundEvents.GENERIC_EXPLODE, 1.25F, 1F + entity.getRandom().nextFloat() * 0.1F);
             } else if (tick > 15 && tick < 22) {
                 entity.shockAttack(entity.damageSources().mobAttack(entity), tick - 13, 1F, 1F, 1.5F, 0.5F, (isPowered ? 1.0F : 0.8F), true, false, false);
             }

@@ -1,26 +1,18 @@
 package com.eeeab.eeeabsmobs.server.message;
 
-import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.client.gui.TipNotificationHandler;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
-public record PopupNotificationMessage(ResourceLocation id, int level) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<PopupNotificationMessage> TYPE =
-            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "popup_notification"));
+public record PopupNotificationMessage(ResourceLocation id, int level) {
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, PopupNotificationMessage> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC, PopupNotificationMessage::id,
-            ByteBufCodecs.VAR_INT, PopupNotificationMessage::level,
-            PopupNotificationMessage::new
-    );
+    public void encode(FriendlyByteBuf buffer) {
+        buffer.writeResourceLocation(this.id);
+        buffer.writeVarInt(this.level);
+    }
 
-    @Override
-    public CustomPacketPayload.Type<PopupNotificationMessage> type() {
-        return TYPE;
+    public static PopupNotificationMessage decode(FriendlyByteBuf buffer) {
+        return new PopupNotificationMessage(buffer.readResourceLocation(), buffer.readVarInt());
     }
 
     public static void handleClient(PopupNotificationMessage msg) {

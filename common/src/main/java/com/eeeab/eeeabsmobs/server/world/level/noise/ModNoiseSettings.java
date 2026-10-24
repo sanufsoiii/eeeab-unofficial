@@ -4,14 +4,14 @@ import com.eeeab.eeeabsmobs.server.init.BlockInit;
 import com.eeeab.eeeabsmobs.server.world.level.ModSurfaceRuleData;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.*;
 
 import java.util.List;
 
 public class ModNoiseSettings {
-    public static NoiseGeneratorSettings voidCrack(BootstrapContext<?> context) {
+    public static NoiseGeneratorSettings voidCrack(BootstapContext<?> context) {
         HolderGetter<DensityFunction> densityFunction = context.lookup(Registries.DENSITY_FUNCTION);
         DensityFunction densityFunction1 = DensityFunctions.cache2d(new CrackIslandDensity(0L));
         //DensityFunction densityFunction2 = postProcess(slideEndLike(new DensityFunctions.HolderHolder(densityFunction.getOrThrow(ModResourceKey.SLOPED_CHEESE_VOID_CRACK)), 0, 128));

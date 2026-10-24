@@ -3,7 +3,6 @@ package com.eeeab.eeeabsmobs.server.entity.block;
 import com.eeeab.eeeabsmobs.server.init.BlockEntityInit;
 import com.eeeab.eeeabsmobs.server.init.ItemInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -96,28 +95,26 @@ public class EntityBlockTombstone extends BaseContainerBlockEntity {
         this.items.clear();
     }
 
-    @Override
     protected NonNullList<ItemStack> getItems() {
         return this.items;
     }
 
-    @Override
     protected void setItems(NonNullList<ItemStack> items) {
         this.items = items;
     }
 
     @Override
-    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        super.loadAdditional(compoundTag, provider);
+    public void load(CompoundTag compoundTag) {
+        super.load(compoundTag);
         this.tick = compoundTag.getInt("tickCount");
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(compoundTag, this.items, provider);
+        ContainerHelper.loadAllItems(compoundTag, this.items);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        super.saveAdditional(compoundTag, provider);
-        ContainerHelper.saveAllItems(compoundTag, this.items, provider);
+    protected void saveAdditional(CompoundTag compoundTag) {
+        super.saveAdditional(compoundTag);
+        ContainerHelper.saveAllItems(compoundTag, this.items);
         compoundTag.putInt("tickCount", this.tick);
     }
 
@@ -127,7 +124,9 @@ public class EntityBlockTombstone extends BaseContainerBlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
-        return this.saveCustomOnly(provider);
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        this.saveAdditional(tag);
+        return tag;
     }
 }

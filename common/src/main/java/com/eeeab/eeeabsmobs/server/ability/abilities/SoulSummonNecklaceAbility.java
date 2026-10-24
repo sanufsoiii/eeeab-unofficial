@@ -59,7 +59,7 @@ public class SoulSummonNecklaceAbility extends Ability<Player> {
                     Vec3 vec3 = player.position();
                     EntityCorpseToPlayer entity = EntityInit.CORPSE_TO_PLAYER.get().create(player.level());
                     if (entity != null) {
-                        entity.finalizeSpawn((ServerLevel) player.level(), player.level().getCurrentDifficultyAt(BlockPos.containing(vec3.x, vec3.y, vec3.z)), MobSpawnType.MOB_SUMMONED, null);
+                        entity.finalizeSpawn((ServerLevel) player.level(), player.level().getCurrentDifficultyAt(BlockPos.containing(vec3.x, vec3.y, vec3.z)), MobSpawnType.MOB_SUMMONED, null, null);
                         entity.moveTo(vec3);
                         entity.setOwner(player);
                         if (player != target && target instanceof LivingEntity livingEntity)

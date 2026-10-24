@@ -5,7 +5,7 @@ import com.eeeab.eeeabsmobs.server.entity.mob.relicron.AbstractRelicron;
 import com.eeeab.eeeabsmobs.server.init.EntityInit;
 import com.eeeab.eeeabsmobs.server.init.StructuresInit;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class StructureCoreforgeRuins extends Structure {
-    public static final MapCodec<StructureCoreforgeRuins> CODEC = simpleCodec(StructureCoreforgeRuins::new);
+    public static final Codec<StructureCoreforgeRuins> CODEC = simpleCodec(StructureCoreforgeRuins::new);
     private static final ResourceLocation ANCIENT_TOMB_1 = new ResourceLocation(EEEABMobs.MOD_ID, "coreforge_ruins1");
     private static final ResourceLocation ANCIENT_TOMB_2 = new ResourceLocation(EEEABMobs.MOD_ID, "coreforge_ruins2");
     private static final ResourceLocation ANCIENT_TOMB_3 = new ResourceLocation(EEEABMobs.MOD_ID, "coreforge_ruins3");
@@ -148,7 +148,7 @@ public class StructureCoreforgeRuins extends Structure {
             levelAccessor.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
             if (relicron != null) {
                 relicron.moveTo(blockPos, 0, 0);
-                relicron.finalizeSpawn(levelAccessor, levelAccessor.getCurrentDifficultyAt(blockPos), MobSpawnType.STRUCTURE, null);
+                relicron.finalizeSpawn(levelAccessor, levelAccessor.getCurrentDifficultyAt(blockPos), MobSpawnType.STRUCTURE, null, null);
                 relicron.setActive(false);
                 relicron.setAlwaysActive(false);
                 levelAccessor.addFreshEntity(relicron);

@@ -14,7 +14,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -109,7 +108,7 @@ public class BlockSlidingDoor extends BaseEntityBlock {
     }
 
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType type) {
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
         return false;
     }
 
@@ -125,21 +124,19 @@ public class BlockSlidingDoor extends BaseEntityBlock {
         return createTickerHelper(type, BlockEntityInit.SLIDING_DOOR_BE.get(), EntitySlidingDoorBlock::tick);
     }
 
-    // Block#use(BlockState,Level,BlockPos,Player,InteractionHand,BlockHitResult) was split; this override reads
-    // the held item (for the lock key check) so it belongs in useItemOn(...), which returns
-    // ItemInteractionResult rather than InteractionResult.
     @Override
-    public ItemInteractionResult useItemOn(ItemStack heldItem, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack heldItem = player.getItemInHand(hand);
         BlockPos basePos = getBasePos(state, pos);
         BlockState baseState = world.getBlockState(basePos);
-        if (!baseState.is(this)) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (!baseState.is(this)) return InteractionResult.PASS;
 
         if (baseState.getValue(LOCKED)) {
             int level = baseState.getValue(LEVEL);
             if (heldItem.getItem() instanceof SlidingDoorLockKey key) {
                 if (key.getKeyLevel() < level) {
                     doSendPopupToPlayer(world, player, level);
-                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    return InteractionResult.PASS;
                 }
                 if (!world.isClientSide) {
                     setOpenState(world, basePos, true);
@@ -148,9 +145,9 @@ public class BlockSlidingDoor extends BaseEntityBlock {
                     //world.scheduleTick(basePos, this, AUTO_CLOSE_TICKS);
                     world.playSound(null, basePos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.5F, world.random.nextFloat() * 0.25F + 0.55F);
                 }
-                return ItemInteractionResult.sidedSuccess(world.isClientSide);
+                return InteractionResult.sidedSuccess(world.isClientSide);
             } else doSendPopupToPlayer(world, player, level);
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         }
         if (!world.isClientSide) {
             boolean open = !baseState.getValue(LIT);
@@ -164,7 +161,7 @@ public class BlockSlidingDoor extends BaseEntityBlock {
                 world.playSound(null, basePos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.5F, world.random.nextFloat() * 0.25F + 0.55F);
             }
         }
-        return ItemInteractionResult.sidedSuccess(world.isClientSide);
+        return InteractionResult.sidedSuccess(world.isClientSide);
     }
 
     //@Override

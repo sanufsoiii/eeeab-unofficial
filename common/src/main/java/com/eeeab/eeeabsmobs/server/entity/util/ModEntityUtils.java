@@ -222,7 +222,7 @@ public class ModEntityUtils {
      */
     public static float actualDamageIsCalculatedBasedOnArmor(LivingEntity target, DamageSource damageSource, float damage, float armor, float toughness, float armorReductionMultiplier) {
         float adjustedArmor = armor * armorReductionMultiplier;
-        return CombatRules.getDamageAfterAbsorb(damage, damageSource, adjustedArmor, toughness);
+        return CombatRules.getDamageAfterAbsorb(damage, adjustedArmor, toughness);
     }
 
     public static float getTargetRelativeAngle(LivingEntity entity, LivingEntity target) {
@@ -281,7 +281,7 @@ public class ModEntityUtils {
      * @param refreshDuration 是否刷新持续时间
      * @param force           是否强制添加药水效果
      */
-    public static void addEffectStackingAmplifier(@Nullable Entity entity, LivingEntity target, Holder<MobEffect> mobEffect, int duration, int maxLevel, boolean visible, boolean showIcon, boolean refreshDuration, boolean force) {
+    public static void addEffectStackingAmplifier(@Nullable Entity entity, LivingEntity target, MobEffect mobEffect, int duration, int maxLevel, boolean visible, boolean showIcon, boolean refreshDuration, boolean force) {
         if (!target.hasEffect(mobEffect)) {
             target.addEffect(new MobEffectInstance(mobEffect, duration, 0, false, visible, showIcon));
         } else {

@@ -65,12 +65,12 @@ public class EntityFallingBlock extends Entity implements IEntity {
         this.setAnimVY(vy);
     }
 
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(BLOCK_STATE, Blocks.DIRT.defaultBlockState());
-        builder.define(MODE, FallingMoveType.RENDER_MOVE.toString());
-        builder.define(ANIM_V_Y, 1F);
-        builder.define(DURATION, 20);
-        builder.define(QUATERNION, new Quaternionf());
+    protected void defineSynchedData() {
+        this.entityData.define(BLOCK_STATE, Blocks.DIRT.defaultBlockState());
+        this.entityData.define(MODE, FallingMoveType.RENDER_MOVE.toString());
+        this.entityData.define(ANIM_V_Y, 1F);
+        this.entityData.define(DURATION, 20);
+        this.entityData.define(QUATERNION, new Quaternionf());
     }
 
 

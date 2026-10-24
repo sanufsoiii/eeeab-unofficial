@@ -190,7 +190,7 @@ public class EntityImmortalShuriken extends Projectile implements IEntity {
             damage *= 1F + Mth.clamp(immortal.getCacheTargets().size() - 1, 0, 5) * 0.1F;
         }
         if (entity instanceof LivingEntity hitEntity) {
-            MobEffectInstance instance = hitEntity.getEffect(EffectInit.ERODE_EFFECT.holder());
+            MobEffectInstance instance = hitEntity.getEffect(EffectInit.ERODE_EFFECT.get());
             if (instance != null) damage *= 1F + Mth.clamp(instance.getAmplifier() + 1, 0, 5) * 0.1F;
             if (owner instanceof IMob iMob) {
                 damage += iMob.getDamageAmountByTargetHealthPct(hitEntity);
@@ -198,7 +198,7 @@ public class EntityImmortalShuriken extends Projectile implements IEntity {
         }
         entity.hurt(ModDamageSource.immortalMagic(this, owner), damage);
         if (entity instanceof LivingEntity hitEntity) {
-            ModEntityUtils.addEffectStackingAmplifier(this, hitEntity, EffectInit.ERODE_EFFECT.holder(), 300, 5, true, true, true, false);
+            ModEntityUtils.addEffectStackingAmplifier(this, hitEntity, EffectInit.ERODE_EFFECT.get(), 300, 5, true, true, true, false);
         }
     }
 
@@ -213,8 +213,8 @@ public class EntityImmortalShuriken extends Projectile implements IEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_DURATION, 20);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_DURATION, 20);
     }
 
     @Override

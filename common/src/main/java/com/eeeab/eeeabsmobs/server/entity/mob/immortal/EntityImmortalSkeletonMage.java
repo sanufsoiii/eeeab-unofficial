@@ -48,7 +48,7 @@ public class EntityImmortalSkeletonMage extends EntityAbsImmortalSkeleton {
             private void summonEntity(Vec3 vec3) {
                 EntityMagicGolem entity = EntityInit.MAGIC_GOLEM.get().create(this.entity.level());
                 if (!this.entity.level().isClientSide && entity != null && vec3 != null) {
-                    entity.finalizeSpawn((ServerLevel) this.entity.level(), this.entity.level().getCurrentDifficultyAt(BlockPos.containing(vec3.x, vec3.y, vec3.z)), MobSpawnType.MOB_SUMMONED, null);
+                    entity.finalizeSpawn((ServerLevel) this.entity.level(), this.entity.level().getCurrentDifficultyAt(BlockPos.containing(vec3.x, vec3.y, vec3.z)), MobSpawnType.MOB_SUMMONED, null, null);
                     entity.setOwner(this.entity);
                     entity.setSummonAliveTime(20 * (15 + this.entity.random.nextInt(15)));
                     Difficulty difficulty = this.entity.level().getDifficulty();

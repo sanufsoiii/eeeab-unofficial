@@ -4,7 +4,7 @@ import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.server.world.structure.StructureCoreforgeRuins;
 import com.eeeab.eeeabsmobs.server.world.structure.StructureBloodyAltar;
 import com.eeeab.eeeabsmobs.server.world.structure.StructureEMCustom;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -24,7 +24,7 @@ public class StructuresInit {
      * some IDEs cannot resolve the typing correctly. This method explicitly states what the return type
      * is so that the IDE can put it into the DeferredRegistry properly.
      */
-    private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(MapCodec<T> structureCodec) {
+    private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(Codec<T> structureCodec) {
         return () -> structureCodec;
     }
 

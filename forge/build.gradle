@@ -1,0 +1,140 @@
+plugins {
+	id 'architectury-plugin'
+	id 'dev.architectury.loom'
+}
+
+evaluationDependsOn(':common')
+
+version = "${project.minecraft_version}-${project.mod_version}"
+group = project.maven_group
+
+architectury {
+	platformSetupLoomIde()
+	forge()
+}
+
+repositories {
+	maven { url = 'https://maven.blamejared.com' }
+	maven { url = 'https://www.cursemaven.com' }
+	maven { url = 'https://maven.architectury.dev/' }
+	maven { url = 'https://maven.minecraftforge.net/' }
+	mavenCentral()
+}
+
+loom {
+	accessWidenerPath = project(':common').file('src/main/resources/eeeabsmobs.accesswidener')
+
+	forge {
+		convertAccessWideners = true
+		extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+	}
+
+	mixin {
+		defaultRefmapName = 'eeeabsmobs-forge-refmap.json'
+		useLegacyMixinAp = false
+	}
+
+	mods {
+		"${project.mod_id}" {
+			sourceSet sourceSets.main
+		}
+	}
+}
+
+configurations {
+	common
+	compileClasspath.extendsFrom common
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.officialMojangMappings()
+	forge "net.minecraftforge:forge:${project.forge_version}"
+	modImplementation "dev.architectury:architectury-forge:${project.architectury_api_version}"
+
+	common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+	compileOnly "com.google.code.gson:gson:2.10.1"
+}
+
+def commonArtifactFile = project(':common').tasks.named('transformProductionForge').flatMap { it.archiveFile }
+
+processResources {
+	from(commonArtifactFile.map { zipTree(it) })
+	from(rootProject.file('LICENSE.txt')) { rename { "${it}_${project.mod_id}" } }
+}
+
+tasks.named('processResources') {
+	def props = [
+			version          : project.version,
+			mod_version      : project.mod_version,
+			mod_id           : project.mod_id,
+			mod_name         : project.mod_name,
+			mod_license      : project.mod_license,
+			mod_authors      : project.mod_authors,
+			minecraft_version: project.minecraft_version,
+			forge_version    : project.forge_version,
+	]
+	inputs.properties props
+	filesMatching('META-INF/mods.toml') { expand props }
+}
+
+['runClient', 'runServer'].each { runTask ->
+	tasks.named(runTask) {
+		it.jvmArgs '-Dmixin.debug=true', '-Dmixin.debug.verbose=true'
+	}
+}
+
+afterEvaluate {
+	tasks.named('runServer').configure {
+		classpath = classpath.filter { entry -> !entry.path.replace('\\', '/').contains('/org.lwjgl/') }
+	}
+}
+
+tasks.withType(Jar).configureEach {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	manifest {
+		attributes('MixinConfigs': 'eeeabsmobs.mixins.json')
+	}
+}
+
+tasks.register('distJar', Jar) {
+	group = 'build'
+	description = 'Assembles the distributable Forge jar (common + forge module, both SRG-named).'
+
+	archiveClassifier = 'forge'
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	dependsOn ':forge:remapJar'
+
+	from({
+		zipTree(tasks.named('remapJar').get().archiveFile.get().asFile)
+	})
+
+	manifest {
+		attributes(
+				'Implementation-Title': project.mod_name,
+				'Implementation-Version': project.mod_version,
+				'Implementation-Vendor': project.mod_authors,
+				'MixinConfigs': 'eeeabsmobs.mixins.json'
+		)
+	}
+}
+
+tasks.named('assemble') {
+	dependsOn 'distJar'
+}
+
+tasks.register('checkForgeArtifact') {
+	dependsOn 'distJar'
+	doLast {
+		def jarFile = tasks.named('distJar', Jar).get().archiveFile.get().asFile
+		if (!jarFile.exists()) {
+			throw new GradleException("Distributable Forge jar was not produced: ${jarFile}")
+		}
+	}
+}
+
+tasks.named('build') {
+	dependsOn 'checkForgeArtifact'
+}

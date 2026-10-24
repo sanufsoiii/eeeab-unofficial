@@ -5,7 +5,7 @@ import com.eeeab.eeeabsmobs.server.entity.mob.corpse.EntityCorpseWarlock;
 import com.eeeab.eeeabsmobs.server.init.EntityInit;
 import com.eeeab.eeeabsmobs.server.init.StructuresInit;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class StructureBloodyAltar extends Structure {
-    public static final MapCodec<StructureBloodyAltar> CODEC = simpleCodec(StructureBloodyAltar::new);
+    public static final Codec<StructureBloodyAltar> CODEC = simpleCodec(StructureBloodyAltar::new);
     private static final ResourceLocation BLOODY_ALTAR = new ResourceLocation(EEEABMobs.MOD_ID, "bloody_altar");
     private static final Map<ResourceLocation, BlockPos> OFFSET = new ImmutableMap.Builder<ResourceLocation, BlockPos>()
             .put(BLOODY_ALTAR, new BlockPos(0, 1, 0))
@@ -150,7 +150,7 @@ public class StructureBloodyAltar extends Structure {
                 EntityCorpseWarlock warlock = (EntityInit.CORPSE_WARLOCK.get()).create(levelAccessor.getLevel());
                 if (warlock != null) {
                     warlock.moveTo(blockPos, 0, 0);
-                    warlock.finalizeSpawn(levelAccessor, levelAccessor.getCurrentDifficultyAt(blockPos), MobSpawnType.STRUCTURE, null);
+                    warlock.finalizeSpawn(levelAccessor, levelAccessor.getCurrentDifficultyAt(blockPos), MobSpawnType.STRUCTURE, null, null);
                     warlock.setRestPos(blockPos);
                     levelAccessor.addFreshEntity(warlock);
                 }

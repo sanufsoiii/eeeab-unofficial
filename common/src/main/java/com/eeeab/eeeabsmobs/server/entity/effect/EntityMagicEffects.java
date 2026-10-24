@@ -33,8 +33,8 @@ public abstract class EntityMagicEffects extends Entity implements IEntity, Trac
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_CASTER_ID, -1);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_CASTER_ID, -1);
     }
 
     public void setCasterId(int id) {

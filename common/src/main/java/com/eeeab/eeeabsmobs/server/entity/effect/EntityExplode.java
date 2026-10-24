@@ -144,7 +144,7 @@ public class EntityExplode extends EntityMagicEffects {
     protected void doExplodeEffect() {
         if (this.level().isClientSide) {
             Vec3 pos = this.position();
-            this.level().playLocalSound(pos.x, pos.y, pos.z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 3.0F, (1.0F + (this.level().random.nextFloat() - this.level().random.nextFloat()) * 0.2F) * 0.7F, false);
+            this.level().playLocalSound(pos.x, pos.y, pos.z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 3.0F, (1.0F + (this.level().random.nextFloat() - this.level().random.nextFloat()) * 0.2F) * 0.7F, false);
             float radius = this.getRadius();
             if (radius >= 2.0F) {
                 this.level().addParticle(ParticleInit.BLAZE_EXPLOSION_EMITTER.get(), pos.x, pos.y, pos.z, radius, radius, 0.0D);
@@ -159,10 +159,10 @@ public class EntityExplode extends EntityMagicEffects {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_EXPLODE, false);
-        builder.define(DATA_RADIUS, 1F);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_EXPLODE, false);
+        this.entityData.define(DATA_RADIUS, 1F);
     }
 
     @Override

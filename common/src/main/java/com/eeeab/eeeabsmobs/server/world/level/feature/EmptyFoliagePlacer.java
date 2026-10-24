@@ -1,7 +1,7 @@
 package com.eeeab.eeeabsmobs.server.world.level.feature;
 
 import com.eeeab.eeeabsmobs.server.init.WorldGenInit;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -11,9 +11,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 public class EmptyFoliagePlacer extends FoliagePlacer {
-    // RecordCodecBuilder.create(...) -> Codec was replaced by .mapCodec(...) -> MapCodec for feature-type
-    // codecs in 1.21 (vanilla change, not NeoForge); FoliagePlacerType now stores a MapCodec<P>.
-    public static final MapCodec<EmptyFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) -> foliagePlacerParts(instance).apply(instance, (intProvider, intProvider2) -> new EmptyFoliagePlacer()));
+    public static final Codec<EmptyFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> foliagePlacerParts(instance).apply(instance, (intProvider, intProvider2) -> new EmptyFoliagePlacer()));
 
     public EmptyFoliagePlacer() {
         super(ConstantInt.ZERO, ConstantInt.ZERO);

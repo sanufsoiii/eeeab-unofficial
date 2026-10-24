@@ -45,7 +45,7 @@ public abstract class EntityAbsImmortal extends EEEABMobLibrary implements Enemy
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
-        return effectInstance.getEffect() != EffectInit.ERODE_EFFECT.holder() && super.canBeAffected(effectInstance);
+        return effectInstance.getEffect() != EffectInit.ERODE_EFFECT.get() && super.canBeAffected(effectInstance);
     }
 
     @Override
@@ -157,9 +157,9 @@ public abstract class EntityAbsImmortal extends EEEABMobLibrary implements Enemy
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_ACTIVE, true);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_ACTIVE, true);
     }
 
     public void setActive(boolean isActive) {

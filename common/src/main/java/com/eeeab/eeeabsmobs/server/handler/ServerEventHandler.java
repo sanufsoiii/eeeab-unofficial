@@ -50,7 +50,7 @@ import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
-import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
@@ -92,24 +92,24 @@ public final class ServerEventHandler {
         });
 
         InteractionEvent.RIGHT_CLICK_ITEM.register((player, hand) -> {
-            if (player.hasEffect(EffectInit.STUN_EFFECT.holder())) {
+            if (player.hasEffect(EffectInit.STUN_EFFECT.get())) {
                 return CompoundEventResult.interruptFalse(player.getItemInHand(hand));
             }
             return CompoundEventResult.pass();
         });
 
         InteractionEvent.RIGHT_CLICK_BLOCK.register((player, hand, pos, face) -> {
-            if (player.hasEffect(EffectInit.STUN_EFFECT.holder())) return EventResult.interruptFalse();
+            if (player.hasEffect(EffectInit.STUN_EFFECT.get())) return EventResult.interruptFalse();
             return EventResult.pass();
         });
 
         InteractionEvent.INTERACT_ENTITY.register((player, entity, hand) -> {
-            if (player.hasEffect(EffectInit.STUN_EFFECT.holder())) return EventResult.interruptFalse();
+            if (player.hasEffect(EffectInit.STUN_EFFECT.get())) return EventResult.interruptFalse();
             return EventResult.pass();
         });
 
         BlockEvent.BREAK.register((level, pos, state, player, xp) -> {
-            if (player != null && player.hasEffect(EffectInit.STUN_EFFECT.holder())) return EventResult.interruptFalse();
+            if (player != null && player.hasEffect(EffectInit.STUN_EFFECT.get())) return EventResult.interruptFalse();
             return EventResult.pass();
         });
     }
@@ -188,8 +188,8 @@ public final class ServerEventHandler {
     }
 
     // 玩家取消魔法效果时 (frenzy immunity to manual cure) - return true to cancel the removal.
-    public static boolean onRemoveEffectAttempt(LivingEntity entity, Holder<MobEffect> effect) {
-        if (effect.is(EffectInit.FRENZY_EFFECT.holder())) {
+    public static boolean onRemoveEffectAttempt(LivingEntity entity, MobEffect effect) {
+        if (effect == EffectInit.FRENZY_EFFECT.get()) {
             return true;
         }
         return false;
@@ -197,7 +197,7 @@ public final class ServerEventHandler {
 
     // 实体跳起来时 - stun cancels horizontal jump strafing (kept vertical jump impulse).
     public static void onLivingJump(LivingEntity entity) {
-        if (entity.hasEffect(EffectInit.STUN_EFFECT.holder())) {
+        if (entity.hasEffect(EffectInit.STUN_EFFECT.get())) {
             entity.setDeltaMovement(entity.getDeltaMovement().multiply(1, 0, 1));
         }
     }
@@ -218,7 +218,7 @@ public final class ServerEventHandler {
 
         if (directEntity instanceof EntityShamanBomb shamanBomb) {
             if (shamanBomb.reboundFlag) {
-                hurtEntity.addEffect(new MobEffectInstance(EffectInit.STUN_EFFECT.holder(), 100, 0, false, false, true));
+                hurtEntity.addEffect(new MobEffectInstance(EffectInit.STUN_EFFECT.get(), 100, 0, false, false, true));
             }
         }
 
@@ -227,7 +227,7 @@ public final class ServerEventHandler {
             if (hurtMemoryCapability != null) hurtMemoryCapability.recordDamage(hurtEntity, attacker, amount);
         }
 
-        AttributeInstance attribute = hurtEntity.getAttribute(AttributeInit.CRIT_CHANCE.holder());
+        AttributeInstance attribute = hurtEntity.getAttribute(AttributeInit.CRIT_CHANCE.get());
         Entity attacker = source.getEntity();
         if (attribute != null && attacker != null) {
             double chance = attribute.getValue() - 1D;
@@ -266,7 +266,7 @@ public final class ServerEventHandler {
                         if (player.level() instanceof ServerLevel serverLevel) {
                             Vec3 lookVec = player.getLookAngle();
                             Vec3 eyePos = player.getEyePosition(1.0F);
-                            Vec3 endPos = eyePos.add(lookVec.scale(player.entityInteractionRange()));
+                            Vec3 endPos = eyePos.add(lookVec.scale(player.isCreative() ? 5.0D : 3.0D));
                             Optional<Vec3> hit = hurtEntity.getBoundingBox().clip(eyePos, endPos);
                             Vec3 hitPos;
                             if (hit.isPresent()) {
@@ -293,7 +293,7 @@ public final class ServerEventHandler {
 
     // 实体治疗时
     public static float onLivingEntityHeal(LivingEntity entity, float amount) {
-        MobEffectInstance instance = entity.getEffect(EffectInit.ERODE_EFFECT.holder());
+        MobEffectInstance instance = entity.getEffect(EffectInit.ERODE_EFFECT.get());
         if (instance != null) {
             float newAmount = Mth.clamp(1F - (instance.getAmplifier() + 1) * 0.1F, 0F, 1F);
             return amount * newAmount;
@@ -303,7 +303,7 @@ public final class ServerEventHandler {
 
     // 实体呼吸事件 - return true to force "can breathe" (was event.setCanBreathe(true)).
     public static boolean onLivingEntityBreathe(LivingEntity entity) {
-        return entity.hasEffect(EffectInit.FRENZY_EFFECT.holder());
+        return entity.hasEffect(EffectInit.FRENZY_EFFECT.get());
     }
 
     // 当弹射物触及到物体时 - return true to cancel the impact (projectile keeps flying through), called from
@@ -314,7 +314,7 @@ public final class ServerEventHandler {
         }
         if (projectile instanceof net.minecraft.world.entity.projectile.AbstractArrow arrow) {
             if (arrow.getPierceLevel() == 0 && !arrow.fireImmune() && !arrow.isOnFire() && hitResult.getEntity() instanceof EntityImmortalExecutioner) {
-                arrow.igniteForSeconds(100);
+                arrow.setSecondsOnFire(100);
             }
             if (arrow.getOwner() instanceof EntityAbsImmortal immortal1 && hitResult.getEntity() instanceof EntityAbsImmortal immortal2 && immortal1.isAlliedTo(immortal2)) {
                 return true;
@@ -324,15 +324,16 @@ public final class ServerEventHandler {
     }
 
     private static float calculateThreatDamage(ItemStack stack, Player player) {
-        FoodProperties food = stack.get(net.minecraft.core.component.DataComponents.FOOD);
-        if (food != null) {
-            float i = food.nutrition() + food.saturation();
-            if (!food.effects().isEmpty()) i *= 1.5F;
-            return i;
+        if (stack.isEdible()) {
+            FoodProperties food = stack.getItem().getFoodProperties();
+            if (food != null) {
+                float i = food.getNutrition() + food.getSaturationModifier();
+                if (!food.getEffects().isEmpty()) i *= 1.5F;
+                return i;
+            }
         }
         if (stack.getItem() instanceof PotionItem) {
-            PotionContents potionContents = stack.getOrDefault(net.minecraft.core.component.DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
-            if (!com.google.common.collect.Iterables.isEmpty(potionContents.getAllEffects())) {
+            if (!PotionUtils.getMobEffects(stack).isEmpty()) {
                 return 15F;
             }
         }
@@ -346,7 +347,7 @@ public final class ServerEventHandler {
     // aggro tracking, not core boss logic).
     public static void onItemUseFinish(Player player, ItemStack usedItem) {
         if (player.isCreative() || player.isSpectator()) return;
-        boolean isFood = usedItem.has(net.minecraft.core.component.DataComponents.FOOD);
+        boolean isFood = usedItem.isEdible();
         boolean isPotion = usedItem.getItem() instanceof PotionItem;
         if (!isFood && !isPotion) return;
         LivingEntity target = player.getLastHurtMob();
@@ -362,7 +363,7 @@ public final class ServerEventHandler {
     }
 
     private static boolean onPlayerAttack(Player player, Entity target) {
-        if (player.hasEffect(EffectInit.STUN_EFFECT.holder())) return true;
+        if (player.hasEffect(EffectInit.STUN_EFFECT.get())) return true;
 
         ItemStack itemStack = player.getMainHandItem();
         if (itemStack.is(ItemInit.CHAINSWORD.get()) && target instanceof LivingEntity) {
@@ -390,7 +391,7 @@ public final class ServerEventHandler {
                 }
             } else if (itemStack.is(ItemInit.GUARDIAN_CORE.get())) {
                 if (itemStack.getDamageValue() + 1 < itemStack.getMaxDamage()) {
-                    itemStack.hurtAndBreak(1, player, player.getUsedItemHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? net.minecraft.world.entity.EquipmentSlot.MAINHAND : net.minecraft.world.entity.EquipmentSlot.OFFHAND);
+                    itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(player.getUsedItemHand()));
                 } else {
                     ability.end();
                 }
@@ -403,14 +404,14 @@ public final class ServerEventHandler {
     private static boolean doCapabilityEffect(MobEffectInstance effectInstance, LivingEntity entity, boolean added) {
         CapabilityHandler.CapabilityToken<?> capabilityToken = null;
         GeneralCapability capability = null;
-        Holder<MobEffect> effect = effectInstance.getEffect();
-        if (effect.is(EffectInit.STUN_EFFECT.holder())) {
+        MobEffect effect = effectInstance.getEffect();
+        if (effect == EffectInit.STUN_EFFECT.get()) {
             capabilityToken = CapabilityHandler.STUN_CAPABILITY;
             capability = CapabilityHandler.getCapability(entity, CapabilityHandler.STUN_CAPABILITY);
-        } else if (effect.is(EffectInit.FRENZY_EFFECT.holder())) {
+        } else if (effect == EffectInit.FRENZY_EFFECT.get()) {
             capabilityToken = CapabilityHandler.FRENZY_CAPABILITY;
             capability = CapabilityHandler.getCapability(entity, CapabilityHandler.FRENZY_CAPABILITY);
-        } else if (effect.is(EffectInit.ELECTRIFIED_EFFECT.holder())) {
+        } else if (effect == EffectInit.ELECTRIFIED_EFFECT.get()) {
             capabilityToken = CapabilityHandler.ELECTRICITY_CAPABILITY;
             capability = CapabilityHandler.getCapability(entity, CapabilityHandler.ELECTRICITY_CAPABILITY);
         }
@@ -428,7 +429,7 @@ public final class ServerEventHandler {
 
     private static void tryTriggerOverloadExplosion(LivingEntity entity) {
         float baseDamage = ModConfigHandler.COMMON.potions.electrifiedConfig1.get().floatValue();
-        if (baseDamage > 0F && entity.removeEffect(EffectInit.ELECTRIFIED_EFFECT.holder())) {
+        if (baseDamage > 0F && entity.removeEffect(EffectInit.ELECTRIFIED_EFFECT.get())) {
             double radians = Math.toRadians(entity.getYRot() + 90);
             EntityOverloadExplode.explode(entity.level(), entity.position().add(Math.cos(radians), entity.getBbHeight() * 0.3, Math.sin(radians)), entity, 2F, baseDamage);
             entity.clearFire();

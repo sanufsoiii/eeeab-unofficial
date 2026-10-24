@@ -3,16 +3,18 @@ package com.eeeab.eeeabsmobs.client.particle;
 import com.eeeab.eeeabsmobs.client.render.ModRenderType;
 import com.eeeab.eeeabsmobs.server.init.ParticleInit;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.serialization.MapCodec;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import java.util.Locale;
 public class ParticleOrb extends TextureSheetParticle {
     private final double duration;
 
@@ -111,29 +113,51 @@ public class ParticleOrb extends TextureSheetParticle {
             return this.duration;
         }
 
-        // ParticleOptions lost writeToNetwork/writeToString/Deserializer entirely in 1.21 (see
-        // net.minecraft.core.particles.ParticleOptions in the sources jar - it is now just getType()).
-        // Serialization moved onto ParticleType itself via codec()/streamCodec(); these two static factories
-        // are what ParticleInit's anonymous ParticleType<OrbData> subclass delegates to.
-        public static MapCodec<OrbData> codec(ParticleType<OrbData> particleType) {
-            return RecordCodecBuilder.mapCodec((codecBuilder) -> codecBuilder.group(
-                    com.mojang.serialization.Codec.FLOAT.fieldOf("r").forGetter(OrbData::getR),
-                    com.mojang.serialization.Codec.FLOAT.fieldOf("g").forGetter(OrbData::getG),
-                    com.mojang.serialization.Codec.FLOAT.fieldOf("b").forGetter(OrbData::getB),
-                    com.mojang.serialization.Codec.FLOAT.fieldOf("scale").forGetter(OrbData::getScale),
-                    com.mojang.serialization.Codec.INT.fieldOf("duration").forGetter(OrbData::getDuration)
-                    ).apply(codecBuilder, OrbData::new)
-            );
+        @Override
+        public void writeToNetwork(FriendlyByteBuf buffer) {
+            buffer.writeFloat(this.r);
+            buffer.writeFloat(this.g);
+            buffer.writeFloat(this.b);
+            buffer.writeFloat(this.scale);
+            buffer.writeInt(this.duration);
         }
 
-        public static StreamCodec<RegistryFriendlyByteBuf, OrbData> streamCodec(ParticleType<OrbData> particleType) {
-            return StreamCodec.composite(
-                    ByteBufCodecs.FLOAT, OrbData::getR,
-                    ByteBufCodecs.FLOAT, OrbData::getG,
-                    ByteBufCodecs.FLOAT, OrbData::getB,
-                    ByteBufCodecs.FLOAT, OrbData::getScale,
-                    ByteBufCodecs.INT, OrbData::getDuration,
-                    OrbData::new
+        @Override
+        public String writeToString() {
+            return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %d",
+                    BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()), this.r, this.g, this.b, this.scale, this.duration);
+        }
+
+        public static final ParticleOptions.Deserializer<OrbData> DESERIALIZER = new ParticleOptions.Deserializer<OrbData>() {
+            @Override
+            public OrbData fromCommand(ParticleType<OrbData> type, StringReader reader) throws CommandSyntaxException {
+                reader.expect(' ');
+                float r = reader.readFloat();
+                reader.expect(' ');
+                float g = reader.readFloat();
+                reader.expect(' ');
+                float b = reader.readFloat();
+                reader.expect(' ');
+                float scale = reader.readFloat();
+                reader.expect(' ');
+                int duration = reader.readInt();
+                return new OrbData(r, g, b, scale, duration);
+            }
+
+            @Override
+            public OrbData fromNetwork(ParticleType<OrbData> type, FriendlyByteBuf buffer) {
+                return new OrbData(buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readInt());
+            }
+        };
+
+        public static Codec<OrbData> codec(ParticleType<OrbData> particleType) {
+            return RecordCodecBuilder.create((codecBuilder) -> codecBuilder.group(
+                    Codec.FLOAT.fieldOf("r").forGetter(OrbData::getR),
+                    Codec.FLOAT.fieldOf("g").forGetter(OrbData::getG),
+                    Codec.FLOAT.fieldOf("b").forGetter(OrbData::getB),
+                    Codec.FLOAT.fieldOf("scale").forGetter(OrbData::getScale),
+                    Codec.INT.fieldOf("duration").forGetter(OrbData::getDuration)
+                    ).apply(codecBuilder, OrbData::new)
             );
         }
     }

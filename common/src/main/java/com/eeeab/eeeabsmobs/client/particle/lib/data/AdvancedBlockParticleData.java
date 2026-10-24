@@ -3,17 +3,21 @@ package com.eeeab.eeeabsmobs.client.particle.lib.data;
 import com.eeeab.eeeabsmobs.client.particle.lib.component.ParticleComponent;
 import com.eeeab.eeeabsmobs.client.particle.lib.ParticleRotation;
 import com.eeeab.eeeabsmobs.server.init.ParticleInit;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
+import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.Locale;
+
 public class AdvancedBlockParticleData extends AdvancedParticleData {
     private final BlockState state;
     private final BlockPos pos;
@@ -35,56 +39,85 @@ public class AdvancedBlockParticleData extends AdvancedParticleData {
         return pos;
     }
 
-    // See AdvancedParticleData for why writeToNetwork/writeToString/Deserializer are gone.
-    public static MapCodec<AdvancedBlockParticleData> codecBlock() {
-        return RecordCodecBuilder.mapCodec((codecBuilder) -> codecBuilder.group(
-                        Codec.DOUBLE.fieldOf("scale").forGetter(AdvancedBlockParticleData::getScale),
-                        Codec.DOUBLE.fieldOf("r").forGetter(AdvancedBlockParticleData::getRed),
-                        Codec.DOUBLE.fieldOf("g").forGetter(AdvancedBlockParticleData::getGreen),
-                        Codec.DOUBLE.fieldOf("b").forGetter(AdvancedBlockParticleData::getBlue),
-                        Codec.DOUBLE.fieldOf("a").forGetter(AdvancedBlockParticleData::getAlpha),
-                        Codec.DOUBLE.fieldOf("airDiffusionSpeed").forGetter(AdvancedBlockParticleData::getAirDiffusionSpeed),
-                        Codec.DOUBLE.fieldOf("duration").forGetter(AdvancedBlockParticleData::getDuration),
-                        Codec.BOOL.fieldOf("emissive").forGetter(AdvancedBlockParticleData::isEmissive),
-                        Codec.BOOL.fieldOf("canCollide").forGetter(AdvancedParticleData::getCanCollide),
-                        BlockState.CODEC.fieldOf("getState").forGetter(AdvancedBlockParticleData::getState),
-                        BlockPos.CODEC.fieldOf("getPos").forGetter(AdvancedBlockParticleData::getPos)
-                ).apply(codecBuilder, (scale, r, g, b, a, drag, duration, emissive, canCollide, state, pos) ->
-                        new AdvancedBlockParticleData( scale, r, g, b, a, drag, duration, emissive, canCollide, new ParticleComponent[]{}, state, pos))
-        );
+    @Override
+    public void writeToNetwork(FriendlyByteBuf buffer) {
+        super.writeToNetwork(buffer);
+        buffer.writeId(Block.BLOCK_STATE_REGISTRY, this.state);
+        buffer.writeBlockPos(this.pos);
     }
 
-    // StreamCodec.composite tops out at 6 fields; grouped into Head (5 color/scale floats), Mid (4 remaining
-    // AdvancedParticleData fields), then combined with block state + pos (4 items total, within the limit).
-    private record Head(float scale, float red, float green, float blue, float alpha) {
-        static final StreamCodec<ByteBuf, Head> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.FLOAT, Head::scale,
-                ByteBufCodecs.FLOAT, Head::red,
-                ByteBufCodecs.FLOAT, Head::green,
-                ByteBufCodecs.FLOAT, Head::blue,
-                ByteBufCodecs.FLOAT, Head::alpha,
-                Head::new
-        );
+    @Override
+    public String writeToString() {
+        return String.format(Locale.ROOT, "%s %s %s %s %s %s %s %s %s %s %s %s %s",
+                BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
+                this.scale, this.red, this.green, this.blue, this.alpha,
+                this.airDiffusionSpeed, this.duration, this.emissive, this.canCollide, this.isAnimation,
+                BlockStateParser.serialize(this.state), this.pos.asLong());
     }
 
-    private record Mid(float airDiffusionSpeed, float duration, boolean emissive, boolean canCollide) {
-        static final StreamCodec<ByteBuf, Mid> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.FLOAT, Mid::airDiffusionSpeed,
-                ByteBufCodecs.FLOAT, Mid::duration,
-                ByteBufCodecs.BOOL, Mid::emissive,
-                ByteBufCodecs.BOOL, Mid::canCollide,
-                Mid::new
-        );
-    }
+    public static final ParticleOptions.Deserializer<AdvancedBlockParticleData> DESERIALIZER = new ParticleOptions.Deserializer<AdvancedBlockParticleData>() {
+        @Override
+        public AdvancedBlockParticleData fromCommand(ParticleType<AdvancedBlockParticleData> type, StringReader reader) throws CommandSyntaxException {
+            reader.expect(' ');
+            float scale = reader.readFloat();
+            reader.expect(' ');
+            float r = reader.readFloat();
+            reader.expect(' ');
+            float g = reader.readFloat();
+            reader.expect(' ');
+            float b = reader.readFloat();
+            reader.expect(' ');
+            float a = reader.readFloat();
+            reader.expect(' ');
+            float airDiffusionSpeed = reader.readFloat();
+            reader.expect(' ');
+            float duration = reader.readFloat();
+            reader.expect(' ');
+            boolean emissive = reader.readBoolean();
+            reader.expect(' ');
+            boolean canCollide = reader.readBoolean();
+            reader.expect(' ');
+            boolean isAnimation = reader.readBoolean();
+            reader.expect(' ');
+            BlockStateParser.BlockResult blockResult = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), reader, false);
+            reader.expect(' ');
+            long posLong = reader.readLong();
+            return new AdvancedBlockParticleData(scale, r, g, b, a, airDiffusionSpeed, duration, emissive, canCollide, new ParticleComponent[]{}, blockResult.blockState(), BlockPos.of(posLong));
+        }
 
-    public static StreamCodec<RegistryFriendlyByteBuf, AdvancedBlockParticleData> streamCodecBlock() {
-        return StreamCodec.composite(
-                Head.STREAM_CODEC, data -> new Head((float) data.getScale(), (float) data.getRed(), (float) data.getGreen(), (float) data.getBlue(), (float) data.getAlpha()),
-                Mid.STREAM_CODEC, data -> new Mid((float) data.getAirDiffusionSpeed(), (float) data.getDuration(), data.isEmissive(), data.getCanCollide()),
-                ByteBufCodecs.idMapper(Block.BLOCK_STATE_REGISTRY), AdvancedBlockParticleData::getState,
-                BlockPos.STREAM_CODEC, AdvancedBlockParticleData::getPos,
-                (head, mid, state, pos) -> new AdvancedBlockParticleData(head.scale(), head.red(), head.green(), head.blue(), head.alpha(),
-                        mid.airDiffusionSpeed(), mid.duration(), mid.emissive(), mid.canCollide(), new ParticleComponent[]{}, state, pos)
+        @Override
+        public AdvancedBlockParticleData fromNetwork(ParticleType<AdvancedBlockParticleData> type, FriendlyByteBuf buffer) {
+            float scale = buffer.readFloat();
+            float r = buffer.readFloat();
+            float g = buffer.readFloat();
+            float b = buffer.readFloat();
+            float a = buffer.readFloat();
+            float airDiffusionSpeed = buffer.readFloat();
+            float duration = buffer.readFloat();
+            boolean emissive = buffer.readBoolean();
+            boolean canCollide = buffer.readBoolean();
+            boolean isAnimation = buffer.readBoolean();
+            BlockState state = buffer.readById(Block.BLOCK_STATE_REGISTRY);
+            BlockPos pos = buffer.readBlockPos();
+            return new AdvancedBlockParticleData(scale, r, g, b, a, airDiffusionSpeed, duration, emissive, canCollide, new ParticleComponent[]{}, state, pos);
+        }
+    };
+
+    public static Codec<AdvancedBlockParticleData> codecBlock(ParticleType<AdvancedBlockParticleData> particleType) {
+        return RecordCodecBuilder.create((codecBuilder) -> codecBuilder.group(
+                Codec.DOUBLE.fieldOf("scale").forGetter(AdvancedBlockParticleData::getScale),
+                Codec.DOUBLE.fieldOf("r").forGetter(AdvancedBlockParticleData::getRed),
+                Codec.DOUBLE.fieldOf("g").forGetter(AdvancedBlockParticleData::getGreen),
+                Codec.DOUBLE.fieldOf("b").forGetter(AdvancedBlockParticleData::getBlue),
+                Codec.DOUBLE.fieldOf("a").forGetter(AdvancedBlockParticleData::getAlpha),
+                Codec.DOUBLE.fieldOf("airDiffusionSpeed").forGetter(AdvancedBlockParticleData::getAirDiffusionSpeed),
+                Codec.DOUBLE.fieldOf("duration").forGetter(AdvancedBlockParticleData::getDuration),
+                Codec.BOOL.fieldOf("emissive").forGetter(AdvancedBlockParticleData::isEmissive),
+                Codec.BOOL.fieldOf("canCollide").forGetter(AdvancedParticleData::getCanCollide),
+                BlockState.CODEC.fieldOf("getState").forGetter(AdvancedBlockParticleData::getState),
+                BlockPos.CODEC.fieldOf("getPos").forGetter(AdvancedBlockParticleData::getPos)
+        ).apply(codecBuilder, (scale, r, g, b, a, drag, duration, emissive, canCollide, state, pos) ->
+                new AdvancedBlockParticleData(scale, r, g, b, a, drag, duration, emissive, canCollide, new ParticleComponent[]{}, state, pos))
         );
     }
 }

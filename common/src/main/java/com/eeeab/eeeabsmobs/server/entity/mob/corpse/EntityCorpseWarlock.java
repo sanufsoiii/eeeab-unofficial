@@ -110,6 +110,7 @@ public class EntityCorpseWarlock extends EntityAbsCorpse implements RangedAttack
 
     public EntityCorpseWarlock(EntityType<? extends EntityAbsCorpse> type, Level level) {
         super(type, level);
+        this.setMaxUpStep(1.0F);
         this.active = true;
         if (this.level().isClientSide) {
             myPos = new Vec3[]{new Vec3(0, 0, 0), new Vec3(0, 0, 0)};
@@ -240,7 +241,7 @@ public class EntityCorpseWarlock extends EntityAbsCorpse implements RangedAttack
                 this.playAnimation(ATTACK_ANIMATION);
             }
             if (this.isNoAnimation() && this.tickCount % 40 == 0 && (this.getTarget() != null || this.getHealthPercentage() != 1) && this.nextHealTick <= 0) {
-                this.entities = this.level().getNearbyEntities(EntityCorpse.class, TargetingConditions.forNonCombat().selector(e -> this.getTarget() == null || (e instanceof EntityCorpse c && (!c.hasEffect(EffectInit.FRENZY_EFFECT.holder()) || this.getHealthPercentage() < 0.5F) && !c.valuable)), this, this.getBoundingBox().inflate(32, 16, 32))
+                this.entities = this.level().getNearbyEntities(EntityCorpse.class, TargetingConditions.forNonCombat().selector(e -> this.getTarget() == null || (e instanceof EntityCorpse c && (!c.hasEffect(EffectInit.FRENZY_EFFECT.get()) || this.getHealthPercentage() < 0.5F) && !c.valuable)), this, this.getBoundingBox().inflate(32, 16, 32))
                         .stream()
                         .filter(e -> this == e.getOwner() || e instanceof EntityCorpseToPlayer)
                         .limit(10)
@@ -451,9 +452,9 @@ public class EntityCorpseWarlock extends EntityAbsCorpse implements RangedAttack
     }
 
     @Override
-    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData) {
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag dataTag) {
         //this.setRestPos(this.blockPosition());
-        return super.finalizeSpawn(level, instance, spawnType, groupData);
+        return super.finalizeSpawn(level, instance, spawnType, groupData, dataTag);
     }
 
     public boolean tryTeleportToTargetBehind(@Nullable Entity target) {
@@ -510,7 +511,7 @@ public class EntityCorpseWarlock extends EntityAbsCorpse implements RangedAttack
         EntityCorpse entity = entityType.create(this.level());
         if (entity != null && vec3 != null) {
             if (!this.level().isClientSide) {
-                entity.finalizeSpawn((ServerLevel) this.level(), this.level().getCurrentDifficultyAt(BlockPos.containing(vec3.x, vec3.y, vec3.z)), MobSpawnType.MOB_SUMMONED, null);
+                entity.finalizeSpawn((ServerLevel) this.level(), this.level().getCurrentDifficultyAt(BlockPos.containing(vec3.x, vec3.y, vec3.z)), MobSpawnType.MOB_SUMMONED, null, null);
                 entity.setOwner(this);
                 entity.moveTo(vec3);
                 this.level().addFreshEntity(entity);
@@ -591,10 +592,10 @@ public class EntityCorpseWarlock extends EntityAbsCorpse implements RangedAttack
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_IS_HEAL, false);
-        builder.define(DATA_REST_POSITION, Optional.empty());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_IS_HEAL, false);
+        this.entityData.define(DATA_REST_POSITION, Optional.empty());
     }
 
     @Override
@@ -640,7 +641,7 @@ public class EntityCorpseWarlock extends EntityAbsCorpse implements RangedAttack
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        NbtUtils.readBlockPos(compound, "spawnPos").ifPresent(this::setRestPos);
+        if (compound.contains("spawnPos", 10)) this.setRestPos(NbtUtils.readBlockPos(compound.getCompound("spawnPos")));
     }
 
     @Override
@@ -679,8 +680,7 @@ public class EntityCorpseWarlock extends EntityAbsCorpse implements RangedAttack
                 .add(Attributes.MOVEMENT_SPEED, 0.32D)
                 .add(Attributes.FOLLOW_RANGE, 36.0D)
                 .add(Attributes.ATTACK_DAMAGE, 5.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1D)
-                .add(Attributes.STEP_HEIGHT, 1D);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1D);
     }
 
     @Override
@@ -805,14 +805,14 @@ public class EntityCorpseWarlock extends EntityAbsCorpse implements RangedAttack
         @Override
         protected void inSpellCasting() {
             if (this.list != null && !this.list.isEmpty()) {
-                this.list.stream().filter(e -> e.isAlive() && (this.spellCaster == e.getOwner() || e instanceof EntityCorpseToPlayer) && !e.hasEffect(EffectInit.FRENZY_EFFECT.holder()))
+                this.list.stream().filter(e -> e.isAlive() && (this.spellCaster == e.getOwner() || e instanceof EntityCorpseToPlayer) && !e.hasEffect(EffectInit.FRENZY_EFFECT.get()))
                         .forEach(corpse -> {
                             if (corpse instanceof EntityCorpseToPlayer corpseToPlayer) {
                                 corpseToPlayer.brainwashing();
                             }
                             if (corpse.valuable) {
                                 int type = this.spellCaster.assessTargetAI().type;
-                                corpse.addEffect(new MobEffectInstance(EffectInit.FRENZY_EFFECT.holder(), 200 + 100 * type, type));
+                                corpse.addEffect(new MobEffectInstance(EffectInit.FRENZY_EFFECT.get(), 200 + 100 * type, type));
                                 corpse.valuable = false;
                             }
                             corpse.setTarget(this.spellCaster.getTarget());

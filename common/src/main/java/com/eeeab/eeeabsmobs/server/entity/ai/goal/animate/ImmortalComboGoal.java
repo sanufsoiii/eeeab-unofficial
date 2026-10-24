@@ -54,7 +54,7 @@ public class ImmortalComboGoal extends AnimationGroupAI<EntityImmortalBoss> {
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - entity.getZ()) * (entityHit.getZ() - entity.getZ()) + (entityHit.getX() - entity.getX()) * (entityHit.getX() - entity.getX())) - entityHit.getBbWidth() / 2f;
             if (canHit && entityHitDistance <= attackDistance && (entityRelativeAngle >= -leftAttackArc / 2 && entityRelativeAngle <= rightAttackArc / 2) || (entityRelativeAngle >= 360 - leftAttackArc / 2 || entityRelativeAngle <= -360 + rightAttackArc / 2)) {
                 if (canStun) entity.stun(null, entityHit, 30, false);
-                boolean hit = entity.doHurtTarget(entityHit, disableShied, entityHit.hasEffect(EffectInit.ERODE_EFFECT.holder()), ignoreArmor, baseDamageMultiplier, damageMultiplier);
+                boolean hit = entity.doHurtTarget(entityHit, disableShied, entityHit.hasEffect(EffectInit.ERODE_EFFECT.get()), ignoreArmor, baseDamageMultiplier, damageMultiplier);
                 if (!disableShied) entity.disableShield(entityHit, 40);
                 if (!hitFlag) {
                     hitFlag = true;

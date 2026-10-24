@@ -98,7 +98,7 @@ public abstract class LivingEntityHandlerMixin {
     // is the entry point that curative items/commands call, so cancelling here before removal happens is the
     // correct equivalent of NeoForge's event.setCanceled(true).
     @Inject(method = "removeEffect", at = @At("HEAD"), cancellable = true)
-    private void eeeabmobs$removeEffect(Holder<MobEffect> effect, CallbackInfoReturnable<Boolean> cir) {
+    private void eeeabmobs$removeEffect(MobEffect effect, CallbackInfoReturnable<Boolean> cir) {
         if (ServerEventHandler.onRemoveEffectAttempt((LivingEntity) (Object) this, effect)) {
             cir.setReturnValue(false);
         }

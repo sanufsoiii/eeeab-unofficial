@@ -32,7 +32,7 @@ public class ModEntityPart<T extends LivingEntity> extends Entity {
 
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    protected void defineSynchedData() {
     }
 
     @Override

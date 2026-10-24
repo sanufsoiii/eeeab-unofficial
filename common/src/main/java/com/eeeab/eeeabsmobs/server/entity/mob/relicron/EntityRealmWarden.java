@@ -180,6 +180,7 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
         this.active = false;
         this.dropAfterDeathAnim = false;
         this.clearRedundantAnimationsOnDeath = true;
+        this.setMaxUpStep(4.0F);
         if (this.level().isClientSide) {
             modelParts = new Vec3[]{new Vec3(0, 0, 0), new Vec3(0, 0, 0)};
         }
@@ -245,9 +246,8 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
     // Entity#getEyeHeight is now final in 1.21.1; eye height is derived from getDimensions(pose)
     // instead, so the old getStandingEyeHeight(Pose, EntityDimensions) hook is replaced with this.
     @Override
-    protected EntityDimensions getDefaultDimensions(Pose pose) {
-        EntityDimensions dimensions = super.getDefaultDimensions(pose);
-        return dimensions.withEyeHeight(dimensions.height() * 0.875F);
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.875F;
     }
 
     @Override
@@ -294,18 +294,18 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_LEAP_HOLD, LeapStage.LEAP.id);
-        builder.define(DATA_SEC_PHASE, false);
-        builder.define(DATA_REST_POS, Optional.empty());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_LEAP_HOLD, LeapStage.LEAP.id);
+        this.entityData.define(DATA_SEC_PHASE, false);
+        this.entityData.define(DATA_REST_POS, Optional.empty());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setSecondPhase(compound.getBoolean("isSecondPhase"));
-        NbtUtils.readBlockPos(compound, "restPos").ifPresent(this::setRestPos);
+        if (compound.contains("restPos", 10)) this.setRestPos(NbtUtils.readBlockPos(compound.getCompound("restPos")));
     }
 
     @Override
@@ -515,13 +515,13 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
     public boolean doHurtTarget(DamageSource damageSource, Entity entity, float damageMultiplier, float knockBackMultiplier, int disableShieldTime) {
         boolean secondPhase = this.isSecondPhase();
         if (secondPhase && entity instanceof LivingEntity target) {
-            MobEffectInstance instance = target.getEffect(EffectInit.ELECTRIFIED_EFFECT.holder());
+            MobEffectInstance instance = target.getEffect(EffectInit.ELECTRIFIED_EFFECT.get());
             if (instance != null) damageMultiplier += Mth.clamp((instance.getAmplifier() + 1) * 0.05F, 0F, 0.5F);
         }
         if (super.doHurtTarget(damageSource, entity, damageMultiplier, knockBackMultiplier, disableShieldTime)) {
             if (secondPhase && entity instanceof LivingEntity target) {
                 boolean hardMode = this.level().getDifficulty() == Difficulty.HARD;
-                ModEntityUtils.addEffectStackingAmplifier(null, target, EffectInit.ELECTRIFIED_EFFECT.holder(), 200,
+                ModEntityUtils.addEffectStackingAmplifier(null, target, EffectInit.ELECTRIFIED_EFFECT.get(), 200,
                         hardMode ? 10 : 5, false, true, true, false);
             }
             return true;
@@ -530,7 +530,7 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
     }
 
     @Override
-    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData) {
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable net.minecraft.nbt.CompoundTag dataTag) {
         this.isAprilFoolsDay = LocalDate.now().getMonth() == Month.APRIL && LocalDate.now().getDayOfMonth() == 1;
         this.setRestPos(this.blockPosition());
         return groupData;
@@ -663,7 +663,7 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
             AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
             if (attack == null) return;
             if (attack.getModifier(SEC_PHASE_ATTACK_ID) != null) attack.removeModifier(SEC_PHASE_ATTACK_ID);
-            attack.addPermanentModifier(new AttributeModifier(SEC_PHASE_ATTACK_ID, "Realm warden second phase attack", 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            attack.addPermanentModifier(new AttributeModifier(SEC_PHASE_ATTACK_ID, "Realm warden second phase attack", 0.2, AttributeModifier.Operation.MULTIPLY_BASE));
         }
     }
 
@@ -1223,9 +1223,7 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
                 .add(Attributes.ATTACK_DAMAGE, 15.0D)
                 .add(Attributes.FOLLOW_RANGE, 48.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.32D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
-                .add(Attributes.GRAVITY, 0.125D)
-                .add(Attributes.STEP_HEIGHT, 4D);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
 
     private void spawnAnnihilatorMissiles() {
@@ -1804,7 +1802,7 @@ public class EntityRealmWarden extends AbstractRelicron implements CrackinessEnt
                     double desiredDistance = 20;
                     double verticalSpeed = 0.8;
                     double drag = 0.93;
-                    double airTicks = 2 * verticalSpeed / entity.getAttributeValue(Attributes.GRAVITY);
+                    double airTicks = 2 * verticalSpeed / 0.125D;
                     double factor = drag * (1 - Math.pow(drag, airTicks)) / (1 - drag);
                     if (factor < 1e-6) factor = 1;
                     double horizontalSpeed = desiredDistance / factor;

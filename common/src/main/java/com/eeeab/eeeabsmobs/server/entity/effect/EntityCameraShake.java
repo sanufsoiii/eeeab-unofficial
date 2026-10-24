@@ -57,11 +57,11 @@ public class EntityCameraShake extends Entity implements IEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(RADIUS, 10.0f);
-        builder.define(MAGNITUDE, 1.0f);
-        builder.define(DURATION, 0);
-        builder.define(FADE_DURATION, 5);
+    protected void defineSynchedData() {
+        this.entityData.define(RADIUS, 10.0f);
+        this.entityData.define(MAGNITUDE, 1.0f);
+        this.entityData.define(DURATION, 0);
+        this.entityData.define(FADE_DURATION, 5);
     }
 
     public float getRadius() {

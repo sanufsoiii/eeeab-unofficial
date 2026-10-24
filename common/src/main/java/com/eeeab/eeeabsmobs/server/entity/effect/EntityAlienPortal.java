@@ -68,9 +68,9 @@ public class EntityAlienPortal extends EntityMagicEffects {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_FLAG, false);
-        builder.define(DATA_PHASE, 0);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_FLAG, false);
+        this.entityData.define(DATA_PHASE, 0);
     }
 
     @Override

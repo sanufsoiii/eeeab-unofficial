@@ -51,6 +51,11 @@ public abstract class EntityAbsCorpse extends EEEABMobLibrary implements Enemy, 
     // the appropriate tag (e.g. minecraft:undead) in datagen restores the old "extra Smite damage"
     // behaviour; that is a datagen/tags concern outside this file's scope.
     @Override
+    public net.minecraft.world.entity.MobType getMobType() {
+        return net.minecraft.world.entity.MobType.UNDEAD;
+    }
+
+    @Override
     protected void makePoofParticles() {
         for (int i = 0; i < 10; ++i) {
             double d0 = this.random.nextGaussian() * 0.02D;
@@ -68,9 +73,9 @@ public abstract class EntityAbsCorpse extends EEEABMobLibrary implements Enemy, 
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_ACTIVE, true);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_ACTIVE, true);
     }
 
     @Override
@@ -96,7 +101,7 @@ public abstract class EntityAbsCorpse extends EEEABMobLibrary implements Enemy, 
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag dataTag) {
         return groupData;
     }
 

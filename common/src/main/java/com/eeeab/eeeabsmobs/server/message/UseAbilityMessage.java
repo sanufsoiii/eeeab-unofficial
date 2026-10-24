@@ -1,34 +1,25 @@
 package com.eeeab.eeeabsmobs.server.message;
 
-import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.server.capability.AbilityCapability;
 import com.eeeab.eeeabsmobs.server.handler.CapabilityHandler;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-public record UseAbilityMessage(int entityID, int index) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<UseAbilityMessage> TYPE =
-            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "use_ability"));
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, UseAbilityMessage> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, UseAbilityMessage::entityID,
-            ByteBufCodecs.VAR_INT, UseAbilityMessage::index,
-            UseAbilityMessage::new
-    );
+public record UseAbilityMessage(int entityID, int index) {
 
     public UseAbilityMessage(LivingEntity entity, int index) {
         this(entity.getId(), index);
     }
 
-    @Override
-    public CustomPacketPayload.Type<UseAbilityMessage> type() {
-        return TYPE;
+    public void encode(FriendlyByteBuf buffer) {
+        buffer.writeVarInt(this.entityID);
+        buffer.writeVarInt(this.index);
+    }
+
+    public static UseAbilityMessage decode(FriendlyByteBuf buffer) {
+        return new UseAbilityMessage(buffer.readVarInt(), buffer.readVarInt());
     }
 
     public static void handleClient(UseAbilityMessage message, Level level) {

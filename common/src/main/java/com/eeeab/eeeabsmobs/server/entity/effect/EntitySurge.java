@@ -84,7 +84,7 @@ public class EntitySurge extends EntityMagicEffects implements IEntity {
                 if (owner == null) {
                     net.minecraft.world.damagesource.DamageSource damageSource = ModDamageSource.surge(this, this);
                     if (useItemStack != null) {
-                        damage += EnchantmentHelper.getDamageBonus(this.useItemStack, hitEntity.getType());
+                        damage += EnchantmentHelper.getDamageBonus(this.useItemStack, hitEntity.getMobType());
                     }
                     hitEntity.hurt(damageSource, damage);
                 } else {
@@ -92,7 +92,7 @@ public class EntitySurge extends EntityMagicEffects implements IEntity {
                     if (owner instanceof IMob iMob) damage += iMob.getDamageAmountByTargetHealthPct(hitEntity);
                     net.minecraft.world.damagesource.DamageSource damageSource = ModDamageSource.surge(this, owner);
                     if (useItemStack != null) {
-                        damage += EnchantmentHelper.getDamageBonus(this.useItemStack, hitEntity.getType());
+                        damage += EnchantmentHelper.getDamageBonus(this.useItemStack, hitEntity.getMobType());
                     }
                     hitEntity.hurt(damageSource, damage);
                 }

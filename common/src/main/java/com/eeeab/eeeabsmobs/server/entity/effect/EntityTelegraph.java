@@ -49,10 +49,10 @@ public class EntityTelegraph extends Entity implements IEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_RADIUS, 0F);
-        builder.define(DATA_COLOR, 0);
-        builder.define(DATA_DURATION, 0);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_RADIUS, 0F);
+        this.entityData.define(DATA_COLOR, 0);
+        this.entityData.define(DATA_DURATION, 0);
     }
 
     @Override

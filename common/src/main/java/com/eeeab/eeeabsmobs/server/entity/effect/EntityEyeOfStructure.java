@@ -61,8 +61,8 @@ public class EntityEyeOfStructure extends Entity implements ItemSupplier, IEntit
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_ITEM_STACK, ItemStack.EMPTY);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_ITEM_STACK, ItemStack.EMPTY);
     }
 
     @Override
@@ -176,14 +176,14 @@ public class EntityEyeOfStructure extends Entity implements ItemSupplier, IEntit
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         ItemStack itemstack = this.getItemRaw();
         if (!itemstack.isEmpty()) {
-            compoundTag.put("Item", itemstack.save(this.level().registryAccess()));
+            compoundTag.put("Item", itemstack.save(new CompoundTag()));
         }
         compoundTag.putBoolean("CanConsumeItem", this.canConsumeItem);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
-        ItemStack itemstack = ItemStack.parseOptional(this.level().registryAccess(), compoundTag.getCompound("Item"));
+        ItemStack itemstack = ItemStack.of(compoundTag.getCompound("Item"));
         this.setItem(itemstack);
         this.canConsumeItem = compoundTag.getBoolean("CanConsumeItem");
     }

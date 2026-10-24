@@ -41,7 +41,7 @@ public class ItemGuardianCore extends Item {
             if (itemStack.getDamageValue() + 1 < itemStack.getMaxDamage()) {
                 if (!level.isClientSide)
                     AbilityHandler.INSTANCE.sendAbilityMessage(player, AbilityHandler.GUARDIAN_LASER_ABILITY);
-                itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+                itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
                 player.playSound(SoundInit.NAMELESS_GUARDIAN_ACCUMULATING.get(), 1.5F, (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.2F + 3.5F);
                 player.startUsingItem(hand);
                 return InteractionResultHolder.consume(player.getItemInHand(hand));
@@ -98,8 +98,8 @@ public class ItemGuardianCore extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         tooltip.add(TranslateUtils.simpleItemText(this.getDescriptionId(), Component.literal(ModConfigHandler.COMMON.items.guardianCoreConfig1.get() + "").withStyle(ChatFormatting.YELLOW)));
         //tooltip.addAll(TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 2, ChatFormatting.GRAY, this.getDescriptionId()));
         tooltip.addAll(TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 1, ChatFormatting.GRAY, this.getDescriptionId()));

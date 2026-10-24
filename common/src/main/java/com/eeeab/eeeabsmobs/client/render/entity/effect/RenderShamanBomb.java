@@ -66,7 +66,7 @@ public class RenderShamanBomb extends FlatTextureRenderer<EntityShamanBomb> {
                 .uv(textureX, textureY)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(packedLightIn)
-                .normal(pose, 0F, 1F, 0F)
+                .normal(pose.normal(), 0F, 1F, 0F)
                 .endVertex();
     }
 }

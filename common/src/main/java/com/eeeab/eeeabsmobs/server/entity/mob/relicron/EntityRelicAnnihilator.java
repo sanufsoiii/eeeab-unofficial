@@ -81,7 +81,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -165,7 +165,8 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
         // unique id from that same counter, exactly like vanilla EnderDragon's constructor does (verified with
         // javap: EnderDragon never renumbers its parts' ids at construction, only IDs from ClientboundAddEntityPacket
         // on resync in recreateFromPacket).
-        this.setPathfindingMalus(PathType.UNPASSABLE_RAIL, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
+        this.setMaxUpStep(4.0F);
         if (this.level().isClientSide) {
             this.muzzle = new Vec3(0, 0, 0);
         }
@@ -202,9 +203,8 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
     }
 
     @Override
-    protected EntityDimensions getDefaultDimensions(Pose pose) {
-        EntityDimensions size = super.getDefaultDimensions(pose);
-        return size.withEyeHeight(size.height());
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height;
     }
 
     @Override//被方块阻塞
@@ -322,7 +322,7 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
         this.goalSelector.addGoal(1, new AnimationRepel<>(this, GROUND_POUND_ANIMATION2, 3F, 7F, 20, 1.25F, 1.3F, true) {
             @Override
             protected void onHit(LivingEntity entity) {
-                entity.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true));
+                entity.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 200, 0, false, false, true));
             }
         });
         this.goalSelector.addGoal(1, new AnimationActivate<>(this, ACTIVE_ANIMATION));
@@ -451,11 +451,11 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
     }
 
     @Override
-    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData) {
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag dataTag) {
         if (spawnType == MobSpawnType.STRUCTURE) this.setYRot(yBodyRot = 180);
         this.LRFlag = level.getRandom().nextBoolean();
         this.setRestPos(this.blockPosition());
-        return super.finalizeSpawn(level, instance, spawnType, groupData);
+        return super.finalizeSpawn(level, instance, spawnType, groupData, dataTag);
     }
 
     @Override
@@ -469,16 +469,16 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_BLIND, false);
-        builder.define(DATA_REST_POS, Optional.empty());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_BLIND, false);
+        this.entityData.define(DATA_REST_POS, Optional.empty());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        NbtUtils.readBlockPos(compound, "restPos").ifPresent(this::setRestPos);
+        if (compound.contains("restPos", 10)) this.setRestPos(NbtUtils.readBlockPos(compound.getCompound("restPos")));
     }
 
     @Override
@@ -493,9 +493,7 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
                 add(Attributes.FOLLOW_RANGE, 48.0D).
                 add(Attributes.ATTACK_DAMAGE, 12.0D).
                 add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).
-                add(Attributes.ARMOR, 12.0D).
-                add(Attributes.GRAVITY, 0.125D).
-                add(Attributes.STEP_HEIGHT, 4D);
+                add(Attributes.ARMOR, 12.0D);
     }
 
     @Override
@@ -912,7 +910,7 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
                 boolean hard = this.level().getDifficulty() == Difficulty.HARD;
                 if (this.random.nextFloat() < (hard ? 0.75F : 0.25F)) this.stun(null, entity, 30, false);
             }
-            if (charged) entity.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true));
+            if (charged) entity.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 200, 0, false, false, true));
             return true;
         }
         return false;
@@ -942,7 +940,7 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
         Vec3 dir = new Vec3(Math.cos(forwardRad), 0.0, Math.sin(forwardRad)).normalize();
         AABB futureBox = currentBox.move(dir.x * dist, 0, dir.z * dist);
         double footY = this.getY();
-        double topY = footY + this.getAttributeValue(Attributes.STEP_HEIGHT);
+        double topY = footY + this.maxUpStep();
         int minX = Mth.floor(futureBox.minX);
         int maxX = Mth.floor(futureBox.maxX - 1e-7);
         int minZ = Mth.floor(futureBox.minZ);
@@ -1103,7 +1101,7 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
         LivingEntity target = this.getTarget();
         Vec3 shootVec;
         if (target != null) {
-            element = target.hasEffect(EffectInit.ELECTRIFIED_EFFECT.holder()) ? EntityAnnihilatorMissile.ElementType.BLAZE : EntityAnnihilatorMissile.ElementType.VOLT;
+            element = target.hasEffect(EffectInit.ELECTRIFIED_EFFECT.get()) ? EntityAnnihilatorMissile.ElementType.BLAZE : EntityAnnihilatorMissile.ElementType.VOLT;
             if (this.getHealthPercentage() < 0.5F && this.random.nextFloat() < 0.2F) element = EntityAnnihilatorMissile.ElementType.SPARKFERNO;
             Vec3 targetPos = target.position().add(0, target.getBbHeight() * 0.4, 0);
             Vec3 projectileMid = muzzlePos.add(0, 0.25, 0);

@@ -1,10 +1,8 @@
 package com.eeeab.animate.client.util;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -13,11 +11,6 @@ import java.util.UUID;
  * 物品动画工具类
  *
  * @author EEEAB
- *
- * ItemStack#getOrCreateTag() (arbitrary item NBT) was removed in 1.21 in favor of data components; there is no
- * need to register a brand-new DataComponentType here though - DataComponents.CUSTOM_DATA is vanilla's own
- * general-purpose "arbitrary NBT blob on a stack" component (net.minecraft.world.item.component.CustomData in
- * the sources jar), and is exactly the same shape this class used to reach for with getOrCreateTag().
  */
 public class ItemAnimationUtils {
     private static final Map<UUID, AnimationState> ANIMATIONS = new HashMap<>();
@@ -31,12 +24,12 @@ public class ItemAnimationUtils {
     }
 
     private static UUID getOrCreateAnimationUUID(ItemStack stack) {
-        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        CompoundTag tag = stack.getOrCreateTag();
         if (tag.hasUUID(ANIMATION_UUID_KEY)) {
             return tag.getUUID(ANIMATION_UUID_KEY);
         } else {
             UUID uuid = UUID.randomUUID();
-            CustomData.update(DataComponents.CUSTOM_DATA, stack, t -> t.putUUID(ANIMATION_UUID_KEY, uuid));
+            tag.putUUID(ANIMATION_UUID_KEY, uuid);
             return uuid;
         }
     }
@@ -72,9 +65,14 @@ public class ItemAnimationUtils {
     }
 
     public static void stop(ItemStack stack) {
-        UUID uuid = getOrCreateAnimationUUID(stack);
-        CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.remove(ANIMATION_UUID_KEY));
-        ANIMATIONS.remove(uuid);
+        if (stack.hasTag()) {
+            CompoundTag tag = stack.getTag();
+            if (tag != null && tag.hasUUID(ANIMATION_UUID_KEY)) {
+                UUID uuid = tag.getUUID(ANIMATION_UUID_KEY);
+                tag.remove(ANIMATION_UUID_KEY);
+                ANIMATIONS.remove(uuid);
+            }
+        }
     }
 
     public static long getAccumulatedTime(ItemStack stack) {

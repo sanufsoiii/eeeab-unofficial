@@ -28,6 +28,6 @@ public class ModLookAtGoal extends LookAtPlayerGoal {
     }
 
     private boolean test() {
-        return this.mobEntity.isAlive() && this.mobEntity.active && !this.mobEntity.hasEffect(EffectInit.STUN_EFFECT.holder());
+        return this.mobEntity.isAlive() && this.mobEntity.active && !this.mobEntity.hasEffect(EffectInit.STUN_EFFECT.get());
     }
 }

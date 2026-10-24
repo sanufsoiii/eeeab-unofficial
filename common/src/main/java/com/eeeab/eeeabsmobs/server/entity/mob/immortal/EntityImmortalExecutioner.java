@@ -49,7 +49,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -116,8 +116,9 @@ public class EntityImmortalExecutioner extends EntityAbsImmortal {
         if (this.level().isClientSide) {
             this.fire = new Vec3[]{new Vec3(0, 0, 0)};
         }
-        this.setPathfindingMalus(PathType.UNPASSABLE_RAIL, 0.0F);
-        this.setPathfindingMalus(PathType.LAVA, 8.0F);
+        this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, 8.0F);
+        this.setMaxUpStep(2.0F);
     }
 
     @Override
@@ -131,9 +132,8 @@ public class EntityImmortalExecutioner extends EntityAbsImmortal {
     }
 
     @Override
-    protected EntityDimensions getDefaultDimensions(Pose pose) {
-        EntityDimensions size = super.getDefaultDimensions(pose);
-        return size.withEyeHeight(size.height() * 1.1F);
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 1.1F;
     }
 
     @Override
@@ -304,7 +304,7 @@ public class EntityImmortalExecutioner extends EntityAbsImmortal {
                 AABB attackRange = ModEntityUtils.makeAABBWithSize(this.getX(), this.getY(), this.getZ(), 0F, 6F, 12F, 6F);
                 for (LivingEntity hitEntity : this.level().getEntitiesOfClass(LivingEntity.class, attackRange, e -> !this.isAlliedTo(e))) {
                     if (this.executionerHurtTarget(hitEntity)) {
-                        hitEntity.igniteForSeconds((int) Math.round(2.5 * this.getFlameStrength()));
+                        hitEntity.setSecondsOnFire((int) Math.round(2.5 * this.getFlameStrength()));
                     }
                 }
             }
@@ -413,9 +413,9 @@ public class EntityImmortalExecutioner extends EntityAbsImmortal {
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_FLAME_STRENGTH, 1F);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_FLAME_STRENGTH, 1F);
     }
 
 
@@ -484,8 +484,7 @@ public class EntityImmortalExecutioner extends EntityAbsImmortal {
                 .add(Attributes.MOVEMENT_SPEED, 0.34D)
                 .add(Attributes.FOLLOW_RANGE, 48.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.85D)
-                .add(Attributes.ATTACK_KNOCKBACK, 0.15D)
-                .add(Attributes.STEP_HEIGHT, 2D);
+                .add(Attributes.ATTACK_KNOCKBACK, 0.15D);
     }
 
     /**
@@ -517,11 +516,11 @@ public class EntityImmortalExecutioner extends EntityAbsImmortal {
         boolean flag = hitEntity.hurt(this.damageSources().mobAttack(this), (float) (baseDamage * Math.max(this.getFirePower(), 0)) + getDamageAmountByTargetHealthPct(hitEntity));
         if (this.random.nextFloat() < Math.max(this.getFlameStrength() - 1F, 0F)) {
             if (hitEntity instanceof Player player && player.isBlocking()) {
-                player.disableShield();
+                player.disableShield(true);
             }
         }
         if (flag) {
-            hitEntity.addEffect(new MobEffectInstance(EffectInit.ERODE_EFFECT.holder(), 200), this);
+            hitEntity.addEffect(new MobEffectInstance(EffectInit.ERODE_EFFECT.get(), 200), this);
         }
         return flag;
     }
@@ -685,7 +684,7 @@ public class EntityImmortalExecutioner extends EntityAbsImmortal {
                     //计算两点之间路径含有方块碰撞 则添加撞击后的眩晕效果
                     if (hitResult.getBlockHit() != null && hitResult.getBlockHit().getType() == HitResult.Type.BLOCK) {
                         this.entity.setPos(hitResult.getBlockHit().getLocation().add(0, 0.5, 0));
-                        this.entity.addEffect(new MobEffectInstance(EffectInit.STUN_EFFECT.holder(), 50, 0, false, false));
+                        this.entity.addEffect(new MobEffectInstance(EffectInit.STUN_EFFECT.get(), 50, 0, false, false));
                     }
                 }
                 this.nextAnimation(animation, IMPACT_STOP_ANIMATION);

@@ -2,30 +2,22 @@ package com.eeeab.animate.server.message;
 
 import com.eeeab.animate.server.animation.AnimatedEntity;
 import com.eeeab.animate.server.animation.Animation;
-import com.eeeab.eeeabsmobs.EEEABMobs;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public record MessageStopAnimation(int entityID, boolean onlyStopOverlapAnimation) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<MessageStopAnimation> TYPE =
-            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "stop_animation"));
+public record MessageStopAnimation(int entityID, boolean onlyStopOverlapAnimation) {
 
-    public static final StreamCodec<net.minecraft.network.FriendlyByteBuf, MessageStopAnimation> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, MessageStopAnimation::entityID,
-            ByteBufCodecs.BOOL, MessageStopAnimation::onlyStopOverlapAnimation,
-            MessageStopAnimation::new
-    );
+    public void encode(FriendlyByteBuf buffer) {
+        buffer.writeVarInt(this.entityID);
+        buffer.writeBoolean(this.onlyStopOverlapAnimation);
+    }
 
-    @Override
-    public CustomPacketPayload.Type<MessageStopAnimation> type() {
-        return TYPE;
+    public static MessageStopAnimation decode(FriendlyByteBuf buffer) {
+        return new MessageStopAnimation(buffer.readVarInt(), buffer.readBoolean());
     }
 
     public static void handleClient(MessageStopAnimation message, Level level) {

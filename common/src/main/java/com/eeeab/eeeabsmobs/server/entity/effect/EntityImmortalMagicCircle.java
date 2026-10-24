@@ -40,7 +40,7 @@ public class EntityImmortalMagicCircle extends EntityMagicEffects {
         BENEFICIAL(0F, 0.72F, 0.47F, MobEffects.REGENERATION, MobEffects.ABSORPTION);
 
         @SafeVarargs
-        MagicCircleType(float r, float g, float b, Holder<MobEffect>... effect) {
+        MagicCircleType(float r, float g, float b, MobEffect... effect) {
             this.r = r;
             this.g = g;
             this.b = b;
@@ -54,7 +54,7 @@ public class EntityImmortalMagicCircle extends EntityMagicEffects {
         public final float r;
         public final float g;
         public final float b;
-        public final Holder<MobEffect>[] effect;
+        public final MobEffect[] effect;
     }
 
     public EntityImmortalMagicCircle(EntityType<EntityImmortalMagicCircle> type, Level level) {
@@ -94,10 +94,10 @@ public class EntityImmortalMagicCircle extends EntityMagicEffects {
                 if (processController.decreaseTimerChain().isStop()) discard();
             } else {
                 if (!level().isClientSide) {
-                    Holder<MobEffect>[] effects = this.getMagicCircleType().effect;
+                    MobEffect[] effects = this.getMagicCircleType().effect;
                     if (effects.length > 0) {
                         for (LivingEntity inRange : level().getEntitiesOfClass(LivingEntity.class, ModEntityUtils.makeAABBWithSize(getX(), getY(), getZ(), 0, getScale(), 1, getScale()), LivingEntity::isAlive)) {
-                            for (Holder<MobEffect> effect : effects) {
+                            for (MobEffect effect : effects) {
                                 if (inRange.hasEffect(effect)) {
                                     MobEffectInstance instance = inRange.getEffect(effect);
                                     if (instance != null && instance.getAmplifier() >= 1) continue;
@@ -130,13 +130,13 @@ public class EntityImmortalMagicCircle extends EntityMagicEffects {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_SCALE, 2F);
-        builder.define(DATA_SPEED, 0F);
-        builder.define(DATA_YAW, 0F);
-        builder.define(DATA_DURATION, 20);
-        builder.define(DATA_TYPE, MagicCircleType.NONE.toString());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_SCALE, 2F);
+        this.entityData.define(DATA_SPEED, 0F);
+        this.entityData.define(DATA_YAW, 0F);
+        this.entityData.define(DATA_DURATION, 20);
+        this.entityData.define(DATA_TYPE, MagicCircleType.NONE.toString());
     }
 
     @Override

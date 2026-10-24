@@ -23,8 +23,8 @@ public class BlockSteppingShockTrap extends BlockStepOnTrap {
         if (state.getValue(OPEN)) {
             if (entity instanceof LivingEntity livingEntity) {
                 if (level.getGameTime() % 5 == 0) livingEntity.hurt(entity.damageSources().magic(), 0.5F);
-                if (!livingEntity.hasEffect(EffectInit.ELECTRIFIED_EFFECT.holder())) {
-                    livingEntity.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true), null);
+                if (!livingEntity.hasEffect(EffectInit.ELECTRIFIED_EFFECT.get())) {
+                    livingEntity.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 200, 0, false, false, true), null);
                 }
             }
         }

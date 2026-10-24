@@ -35,7 +35,7 @@ public class GuardianLobedAttackGoal extends AnimationSimpleAI<EntityNamelessGua
         if ((!isPowered && tick >= 22 && tick < 27) || (isPowered && tick >= 22 && tick < 31)) {
             if (tick == 23) {
                 if (isPowered) doSpawnBlade();
-                entity.playSound(SoundEvents.GENERIC_EXPLODE.value(), 1.5F, 1F + entity.getRandom().nextFloat() * 0.1F);
+                entity.playSound(SoundEvents.GENERIC_EXPLODE, 1.5F, 1F + entity.getRandom().nextFloat() * 0.1F);
                 EntityCameraShake.cameraShake(entity.level(), entity.position(), 20, 0.125F, 5, 20);
             } else if (tick == 24) {
                 entity.playSound(SoundEvents.STONE_BREAK, 1.5F, 1.0F);

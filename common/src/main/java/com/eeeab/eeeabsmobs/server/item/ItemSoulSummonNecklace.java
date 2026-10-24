@@ -16,8 +16,8 @@ public class ItemSoulSummonNecklace extends Item implements ICuriosItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         ModConfigHandler.Item item = ModConfigHandler.COMMON.items;
         if (TranslateUtils.SHOW_ITEM_CD) tooltip.add(TranslateUtils.itemCoolTime(item.summoningSoulNecklaceConfig2.get()));
         tooltip.add(TranslateUtils.simpleItemText(this.getDescriptionId(), item.summoningSoulNecklaceConfig1.get()));

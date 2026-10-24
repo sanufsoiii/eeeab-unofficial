@@ -1,28 +1,19 @@
 package com.eeeab.eeeabsmobs.server.message;
 
-import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.server.ability.AbilityHandler;
 import com.eeeab.eeeabsmobs.server.capability.AbilityCapability;
 import com.eeeab.eeeabsmobs.server.handler.CapabilityHandler;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 
-public record PlayerUseAbilityMessage(int index) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<PlayerUseAbilityMessage> TYPE =
-            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "player_use_ability"));
+public record PlayerUseAbilityMessage(int index) {
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, PlayerUseAbilityMessage> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, PlayerUseAbilityMessage::index,
-            PlayerUseAbilityMessage::new
-    );
+    public void encode(FriendlyByteBuf buffer) {
+        buffer.writeVarInt(this.index);
+    }
 
-    @Override
-    public CustomPacketPayload.Type<PlayerUseAbilityMessage> type() {
-        return TYPE;
+    public static PlayerUseAbilityMessage decode(FriendlyByteBuf buffer) {
+        return new PlayerUseAbilityMessage(buffer.readVarInt());
     }
 
     public static void handleServer(PlayerUseAbilityMessage message, ServerPlayer player) {

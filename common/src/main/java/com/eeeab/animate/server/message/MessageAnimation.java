@@ -2,27 +2,19 @@ package com.eeeab.animate.server.message;
 
 import com.eeeab.animate.server.animation.AnimatedEntity;
 import com.eeeab.animate.server.animation.Animation;
-import com.eeeab.eeeabsmobs.EEEABMobs;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
-public record MessageAnimation(int entityID, int animationsIndex) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<MessageAnimation> TYPE =
-            new CustomPacketPayload.Type<>(new ResourceLocation(EEEABMobs.MOD_ID, "animation"));
+public record MessageAnimation(int entityID, int animationsIndex) {
 
-    public static final StreamCodec<net.minecraft.network.FriendlyByteBuf, MessageAnimation> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, MessageAnimation::entityID,
-            ByteBufCodecs.VAR_INT, MessageAnimation::animationsIndex,
-            MessageAnimation::new
-    );
+    public void encode(FriendlyByteBuf buffer) {
+        buffer.writeVarInt(this.entityID);
+        buffer.writeVarInt(this.animationsIndex);
+    }
 
-    @Override
-    public CustomPacketPayload.Type<MessageAnimation> type() {
-        return TYPE;
+    public static MessageAnimation decode(FriendlyByteBuf buffer) {
+        return new MessageAnimation(buffer.readVarInt(), buffer.readVarInt());
     }
 
     public static void handleClient(MessageAnimation message, Level level) {

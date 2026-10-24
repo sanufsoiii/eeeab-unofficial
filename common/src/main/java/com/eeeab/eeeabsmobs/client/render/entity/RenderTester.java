@@ -30,7 +30,7 @@ public class RenderTester extends MobRenderer<EntityTester, ModelTester> {
     }
 
     @Override
-    protected void renderNameTag(EntityTester pEntity, Component pDisplayName, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, float partialTick) {
+    protected void renderNameTag(EntityTester pEntity, Component pDisplayName, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
         double distance = this.entityRenderDispatcher.distanceToSqr(pEntity);
         // Was ClientHooks.isNameplateInRenderDistance(pEntity, distance) - a NeoForge client convenience wrapper
         // with no Fabric equivalent. 4096.0 (64 blocks squared) is vanilla's own nameplate cutoff distance,

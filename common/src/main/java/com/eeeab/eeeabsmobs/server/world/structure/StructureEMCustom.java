@@ -2,7 +2,6 @@ package com.eeeab.eeeabsmobs.server.world.structure;
 
 import com.eeeab.eeeabsmobs.server.init.StructuresInit;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -21,7 +20,7 @@ import java.util.Optional;
 //参考自: https://github.com/TelepathicGrunt/StructureTutorialMod
 public class StructureEMCustom extends Structure {
 
-    public static final MapCodec<StructureEMCustom> CODEC = RecordCodecBuilder.<StructureEMCustom>mapCodec(instance ->
+    public static final Codec<StructureEMCustom> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(StructureEMCustom.settingsCodec(instance),
                     StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(structure -> structure.startPool),
                     ResourceLocation.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(structure -> structure.startJigsawName),

@@ -45,10 +45,9 @@ public class BlockTombstone extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-    // Block#use(...) with InteractionHand was split; this override reads the held item, so it belongs in
-    // useItemOn(...) (see BlockSlidingDoor for the same pattern).
     @Override
-    public net.minecraft.world.ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        ItemStack itemStack = player.getItemInHand(hand);
         EntityBlockTombstone blockEntity = (EntityBlockTombstone) level.getBlockEntity(blockPos);
         if (blockEntity != null && itemStack.getItem() != this.asItem()) {
             ItemStack copy = itemStack.copy();
@@ -62,9 +61,9 @@ public class BlockTombstone extends BaseEntityBlock {
                 popResource(level, blockPos, blockEntity.getItem(0).copy());
                 blockEntity.setItem(0, ItemStack.EMPTY);
             }
-            return net.minecraft.world.ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 
     @Nullable

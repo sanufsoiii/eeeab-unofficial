@@ -137,7 +137,7 @@ public class EntityMagicGolem extends EntityAbsImmortal {
     @Nullable
     @Override
     //在初始生成时调用
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         RandomSource randomsource = worldIn.getRandom();
         if (MobSpawnType.TRIGGERED == reason) {
             this.setSummonAliveTime(20 * (15 + randomsource.nextInt(15)));

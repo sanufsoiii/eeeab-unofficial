@@ -85,7 +85,7 @@ public class EntityCrimsonCrack extends EntityMagicEffects {
                                 net.minecraft.world.damagesource.DamageSource damageSource = this.damageSources().indirectMagic(this, owner);
                                 boolean flag = target.hurt(damageSource, finalDamage);
                                 if (flag && target.isAlive()) {
-                                    ModEntityUtils.addEffectStackingAmplifier(null, target, EffectInit.ARMOR_LOWER_EFFECT.holder(), 300, 5, false, true, true, false);
+                                    ModEntityUtils.addEffectStackingAmplifier(null, target, EffectInit.ARMOR_LOWER_EFFECT.get(), 300, 5, false, true, true, false);
                                     if (owner != null) {
                                         net.minecraft.world.item.enchantment.EnchantmentHelper.doPostHurtEffects(target, owner);
                                         net.minecraft.world.item.enchantment.EnchantmentHelper.doPostDamageEffects(owner, target);
@@ -130,9 +130,9 @@ public class EntityCrimsonCrack extends EntityMagicEffects {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_PHASE, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_PHASE, 0);
     }
 
     @Override

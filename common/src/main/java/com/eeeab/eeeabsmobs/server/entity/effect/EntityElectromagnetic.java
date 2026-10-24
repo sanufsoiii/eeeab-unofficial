@@ -91,8 +91,8 @@ public class EntityElectromagnetic extends EntityMagicEffects implements Trigger
                     float finalDamage = this.getDamage();
                     if (owner instanceof IMob mob) finalDamage += mob.getDamageAmountByTargetHealthPct(hitEntity);
                     if (hitEntity != owner && !owner.isAlliedTo(hitEntity) && hitEntity.hurt(this.damageSources().mobAttack(owner), finalDamage)) {
-                        if (this.entityData.get(DATA_FIRE) && !hitEntity.fireImmune()) hitEntity.igniteForSeconds(5);
-                        else hitEntity.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(), 200, 0, false, false, true), this);
+                        if (this.entityData.get(DATA_FIRE) && !hitEntity.fireImmune()) hitEntity.setSecondsOnFire(5);
+                        else hitEntity.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(), 200, 0, false, false, true), this);
                         this.strongKnockBlock(hitEntity);
                     }
                 }
@@ -111,10 +111,10 @@ public class EntityElectromagnetic extends EntityMagicEffects implements Trigger
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_SIZE, 2.0F);
-        builder.define(DATA_FIRE, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_SIZE, 2.0F);
+        this.entityData.define(DATA_FIRE, false);
     }
 
     @Override

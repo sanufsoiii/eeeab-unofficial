@@ -65,7 +65,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import org.jetbrains.annotations.NotNull;
@@ -188,12 +188,13 @@ public class EntityNamelessGuardian extends AbstractRelicron implements Powerabl
         //this.dynamicListener = new DynamicGameEventListener<>(new Listener());
         // See EntityRelicAnnihilator for why this manual ENTITY_COUNTER renumbering was dropped: each part
         // already gets its own unique id from Entity's own constructor, same as vanilla EnderDragon's parts.
-        this.setPathfindingMalus(PathType.UNPASSABLE_RAIL, 0.0F);
-        this.setPathfindingMalus(PathType.DAMAGE_OTHER, 8.0F);
-        this.setPathfindingMalus(PathType.POWDER_SNOW, 8.0F);
-        this.setPathfindingMalus(PathType.LAVA, 0.0F);
-        this.setPathfindingMalus(PathType.DAMAGE_FIRE, 0.0F);
-        this.setPathfindingMalus(PathType.DANGER_FIRE, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, 8.0F);
+        this.setPathfindingMalus(BlockPathTypes.POWDER_SNOW, 8.0F);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
+        this.setMaxUpStep(2.5F);
     }
 
     @Override
@@ -236,9 +237,8 @@ public class EntityNamelessGuardian extends AbstractRelicron implements Powerabl
     // Entity#getEyeHeight is now final in 1.21.1; eye height is derived from getDimensions(pose)
     // instead, so the old getStandingEyeHeight(Pose, EntityDimensions) hook is replaced with this.
     @Override
-    protected EntityDimensions getDefaultDimensions(Pose pose) {
-        EntityDimensions dimensions = super.getDefaultDimensions(pose);
-        return dimensions.withEyeHeight(dimensions.height() * 0.97F);
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.97F;
     }
 
     @Override
@@ -376,7 +376,7 @@ public class EntityNamelessGuardian extends AbstractRelicron implements Powerabl
                 if (tick >= 2 && tick < 6) {
                     entity.shockAttack(entity.damageSources().mobAttack(entity), tick + 1, 1.5F, 2F, 0F, 0.5F, (entity.isPowered() ? 0.8F : 0.6F), false, true, false);
                     if (tick == 2) {
-                        entity.playSound(SoundEvents.GENERIC_EXPLODE.value(), 1.0F, 1F + entity.getRandom().nextFloat() * 0.1F);
+                        entity.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1F + entity.getRandom().nextFloat() * 0.1F);
                         EntityCameraShake.cameraShake(entity.level(), entity.position(), 20, 0.125F, 8, 17);
                     }
                 }
@@ -766,16 +766,16 @@ public class EntityNamelessGuardian extends AbstractRelicron implements Powerabl
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_POWER, false);
-        builder.define(DATA_REST_POSITION, Optional.empty());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_POWER, false);
+        this.entityData.define(DATA_REST_POSITION, Optional.empty());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        NbtUtils.readBlockPos(compound, "spawnPos").ifPresent(this::setRestPos);
+        if (compound.contains("spawnPos", 10)) this.setRestPos(NbtUtils.readBlockPos(compound.getCompound("spawnPos")));
         this.fmFlag = compound.getBoolean("fmFlag");
         this.setPowered(compound.getBoolean("power"));
         this.setMadnessTick(compound.getInt("madnessCountdownTick"));
@@ -801,14 +801,12 @@ public class EntityNamelessGuardian extends AbstractRelicron implements Powerabl
                 add(Attributes.ATTACK_DAMAGE, 15.0D).
                 add(Attributes.FOLLOW_RANGE, 50.0D).
                 add(Attributes.MOVEMENT_SPEED, 0.3D).
-                add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).
-                add(Attributes.GRAVITY, 0.1D).
-                add(Attributes.STEP_HEIGHT, 2.5D);
+                add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable net.minecraft.nbt.CompoundTag dataTag) {
         this.setRestPos(this.blockPosition());
         return groupData;
     }
@@ -1117,7 +1115,7 @@ public class EntityNamelessGuardian extends AbstractRelicron implements Powerabl
         }
         if (disableShield && blocking) {
             Player player = (Player) hitEntity;
-            player.disableShield();
+            player.disableShield(true);
             flag = true;
         }
         return flag;

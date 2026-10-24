@@ -188,10 +188,10 @@ public class EntityAnnihilatorMissile extends Projectile implements IEntity, Var
                     double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
                     if (d3 != 0) {
                         if (volt && target instanceof LivingEntity living) {
-                            living.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.holder(),
+                            living.addEffect(new MobEffectInstance(EffectInit.ELECTRIFIED_EFFECT.get(),
                                     300, 0, false, false, true), this);
                         }
-                        if (fire && !target.fireImmune()) target.igniteForSeconds(5);
+                        if (fire && !target.fireImmune()) target.setSecondsOnFire(5);
                         float damage = getDamage();
                         float percent = 1;
                         if (!(owner instanceof EntityRealmWarden)) {
@@ -226,7 +226,7 @@ public class EntityAnnihilatorMissile extends Projectile implements IEntity, Var
             double x = this.getX();
             double y = this.getY(0.5);
             double z = this.getZ();
-            this.level().playLocalSound(x, y, z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 1.5F, (1.0F + (this.level().random.nextFloat() - this.level().random.nextFloat()) * 0.2F) * 0.7F, false);
+            this.level().playLocalSound(x, y, z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.5F, (1.0F + (this.level().random.nextFloat() - this.level().random.nextFloat()) * 0.2F) * 0.7F, false);
             ElementType variant = this.getVariant();
             if (variant == ElementType.BLAZE) {
                 this.level().addParticle(ParticleInit.BLAZE_EXPLOSION_EMITTER.get(), x, y, z, 2.0D, 2.0D, 0.0D);
@@ -257,8 +257,8 @@ public class EntityAnnihilatorMissile extends Projectile implements IEntity, Var
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_ELEMENT, 0);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_ELEMENT, 0);
     }
 
     @Override

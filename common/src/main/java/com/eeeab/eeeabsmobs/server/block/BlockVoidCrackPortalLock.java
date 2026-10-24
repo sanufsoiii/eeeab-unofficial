@@ -26,11 +26,8 @@ public class BlockVoidCrackPortalLock extends HorizontalDirectionalBlock {
         super(properties);
     }
 
-    // Block#use(BlockState,Level,BlockPos,Player,InteractionHand,BlockHitResult) was split into
-    // useWithoutItem(...) (no InteractionHand - the hand-carried ItemStack is handled separately via
-    // useItemOn) and useItemOn(ItemStack,...). This block never used the held item, so useWithoutItem covers it.
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         //ItemStack itemStack = player.getItemInHand(hand);
         //if (itemStack.getItem() instanceof ItemGuardianCore && !player.isShiftKeyDown()) {
         //    if (!level.isClientSide) {
@@ -40,7 +37,7 @@ public class BlockVoidCrackPortalLock extends HorizontalDirectionalBlock {
         //    }
         //    return InteractionResult.sidedSuccess(level.isClientSide);
         //}
-        return super.useWithoutItem(state, level, pos, player, hit);
+        return super.use(state, level, pos, player, hand, hit);
     }
 
     @Override
