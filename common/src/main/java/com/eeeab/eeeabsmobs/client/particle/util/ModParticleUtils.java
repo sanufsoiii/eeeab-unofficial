@@ -78,7 +78,7 @@ public class ModParticleUtils {
             double velocityZ = Math.sin(theta) * radius;
             float sideOffset = (float) (random.nextGaussian() * 0.2D);
             for (ParticleOptions particle : particles) {
-                level.addParticle(particle, true, false, x, y, z, velocityX * (sizeModifier + sideOffset), velocityY * sizeModifier, velocityZ * (sizeModifier + sideOffset));
+                level.addParticle(particle, true, x, y, z, velocityX * (sizeModifier + sideOffset), velocityY * sizeModifier, velocityZ * (sizeModifier + sideOffset));
             }
         }
     }

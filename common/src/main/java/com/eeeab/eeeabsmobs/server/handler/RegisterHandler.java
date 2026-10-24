@@ -157,5 +157,6 @@ public class RegisterHandler {
     }
 
     public static void registerModels() {
+        com.eeeab.eeeabsmobs.platform.PlatformServices.get().registerSpecialModels();
     }
 }

@@ -124,8 +124,8 @@ public class EntityRelicObserver extends AbstractRelicron implements CrackinessE
     }
 
     @Override
-    protected AABB makeBoundingBox(net.minecraft.world.phys.Vec3 pos) {
-        return this.isActive() ? super.makeBoundingBox(pos) : DEACTIVATE_SIZE.makeBoundingBox(pos);
+    protected AABB makeBoundingBox() {
+        return this.isActive() ? super.makeBoundingBox() : DEACTIVATE_SIZE.makeBoundingBox(this.position());
     }
 
     @Override

@@ -5,12 +5,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.client.renderer.RenderType;
-public class ModItemStackRender {
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+
+public class ModItemStackRender extends BlockEntityWithoutLevelRenderer {
     private static boolean init;
     private static boolean THE_NETHERWORLD_KATANA_modelBaked;
     private static boolean THE_GUARDIAN_BATTLEAXE_modelBaked;
@@ -23,6 +25,7 @@ public class ModItemStackRender {
     private static final ResourceLocation THE_NETHERWORLD_KATANA_TEX = ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "textures/entity/immortal_netherworld_katana.png");
 
     public ModItemStackRender() {
+        super(null, null);
     }
 
     public static void initStaticModel() {
@@ -35,13 +38,8 @@ public class ModItemStackRender {
         BUSTER_GAUNTLET_modelBaked = true;
     }
 
-    /**
-     * Renders an item stack by looking up the appropriate model and rendering it.
-     * This mirrors the former BlockEntityWithoutLevelRenderer#renderByItem behavior but without
-     * extending the removed base class. Uses JSON baked models for inventory rendering
-     * and custom Java models for specific items in hand.
-     */
-    public static void renderByItem(ItemStack itemStackIn, ItemDisplayContext transformType, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    @Override
+    public void renderByItem(ItemStack itemStackIn, ItemDisplayContext transformType, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         if (!init) {
             initStaticModel();
             init = true;

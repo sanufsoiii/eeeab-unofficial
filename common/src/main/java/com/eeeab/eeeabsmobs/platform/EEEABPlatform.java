@@ -20,6 +20,10 @@ public interface EEEABPlatform {
 
     void initAttributes();
 
+    net.minecraft.client.resources.model.ModelResourceLocation getModelHandId(String item);
+
+    void registerSpecialModels();
+
     void registerItemRenderers();
 
     void registerWorldRender();

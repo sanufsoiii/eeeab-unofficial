@@ -112,7 +112,7 @@ public class EntitySurge extends EntityMagicEffects implements IEntity {
         ParticleRotation.FaceCameraVertical vertical = new ParticleRotation.FaceCameraVertical();
         int duration = 12 + this.random.nextInt(5);
         this.level().addParticle(AdvancedParticleBase.createParticleData(ParticleInit.SURGE.get(), vertical, 20F, 1, 1, 1, 1, 1,
-                duration, true, false, COMPONENTS, true), true, false, getX(), getY() + 2, getZ(), 0, 0, 0);
+                duration, true, false, COMPONENTS, true), true, getX(), getY() + 2, getZ(), 0, 0, 0);
         this.level().addParticle(AdvancedParticleBase.createParticleData(ParticleInit.GLOW.get(), new ParticleRotation.EulerAngles(0, (float) (Math.PI / 2F), 0), 10F, 1, 1, 1, 1, 1,
                 duration - 2, true, false, new ParticleComponent[]{
                         //new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, AnimData.oscillate(0.2F, 0.6F, 8), false),

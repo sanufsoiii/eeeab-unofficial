@@ -12,9 +12,7 @@
     "BlockEntityTypeInvoker"
   ],
   "client": [
-    "BossHealthOverlayMixin",
-    "SpecialModelRenderersMixin",
-    "SpecialModelRenderersAccessor"
+    "BossHealthOverlayMixin"
   ],
   "injectors": {
     "defaultRequire": 1

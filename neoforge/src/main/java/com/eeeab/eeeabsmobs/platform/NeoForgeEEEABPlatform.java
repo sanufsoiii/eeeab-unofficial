@@ -1,8 +1,12 @@
 package com.eeeab.eeeabsmobs.platform;
 
 import com.eeeab.eeeabsmobs.EEEABMobs;
+import com.eeeab.eeeabsmobs.client.model.util.ModItemModels;
 import com.eeeab.eeeabsmobs.client.render.BossBarTexReloadListener;
 import com.eeeab.eeeabsmobs.client.render.util.ModArmorStackRenderProperties;
+import com.eeeab.eeeabsmobs.client.render.util.ModItemStackRenderProperties;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.neoforged.neoforge.client.event.ModelEvent;
 import com.eeeab.eeeabsmobs.server.capability.*;
 import com.eeeab.eeeabsmobs.server.handler.CapabilityHandler;
 import com.eeeab.eeeabsmobs.server.handler.ClientEventHandler;
@@ -27,7 +31,7 @@ import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -155,9 +159,30 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
     }
 
     @Override
+    public ModelResourceLocation getModelHandId(String item) {
+        return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"), "standalone");
+    }
+
+    @Override
+    public void registerSpecialModels() {
+        if (MOD_BUS != null) {
+            MOD_BUS.addListener((ModelEvent.RegisterAdditional event) -> {
+                for (String item : ModItemModels.HAND_MODEL_ITEMS) {
+                    event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"), "standalone"));
+                }
+            });
+        }
+    }
+
+    @Override
     public void registerItemRenderers() {
         if (MOD_BUS != null) {
             MOD_BUS.addListener((RegisterClientExtensionsEvent event) -> {
+                event.registerItem(new ModItemStackRenderProperties(),
+                        ItemInit.THE_NETHERWORLD_KATANA.get(),
+                        ItemInit.GUARDIAN_AXE.get(),
+                        ItemInit.BUSTER_GAUNTLET.get()
+                );
                 event.registerItem(new ModArmorStackRenderProperties(),
                         ItemInit.GHOST_WARRIOR_HELMET.get(),
                         ItemInit.GHOST_WARRIOR_CHESTPLATE.get(),
@@ -189,8 +214,8 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
     @Override
     public void registerClientReloadListener() {
         if (MOD_BUS != null) {
-            MOD_BUS.addListener((AddClientReloadListenersEvent event) ->
-                    event.addListener(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "boss_bar_textures"), new BossBarTexReloadListener())
+            MOD_BUS.addListener((RegisterClientReloadListenersEvent event) ->
+                    event.registerReloadListener(new BossBarTexReloadListener())
             );
         }
     }

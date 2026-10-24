@@ -173,7 +173,28 @@ public class FabricEEEABPlatform implements EEEABPlatform {
     }
 
     @Override
+    public net.minecraft.client.resources.model.ModelResourceLocation getModelHandId(String item) {
+        return new net.minecraft.client.resources.model.ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"), "fabric_resource");
+    }
+
+    @Override
+    public void registerSpecialModels() {
+        net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.register(context -> {
+            ResourceLocation[] ids = java.util.Arrays.stream(com.eeeab.eeeabsmobs.client.model.util.ModItemModels.HAND_MODEL_ITEMS)
+                    .map(item -> ResourceLocation.fromNamespaceAndPath(EEEABMobs.MOD_ID, "item/" + item + "_in_hand"))
+                    .toArray(ResourceLocation[]::new);
+            context.addModels(ids);
+        });
+    }
+
+    @Override
     public void registerItemRenderers() {
+        com.eeeab.eeeabsmobs.client.render.util.ModItemStackRender bewlr = new com.eeeab.eeeabsmobs.client.render.util.ModItemStackRender();
+        net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry.INSTANCE.register(ItemInit.THE_NETHERWORLD_KATANA.get(), bewlr::renderByItem);
+        net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry.INSTANCE.register(ItemInit.GUARDIAN_AXE.get(), bewlr::renderByItem);
+        net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry.INSTANCE.register(ItemInit.BUSTER_GAUNTLET.get(), bewlr::renderByItem);
+        net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry.INSTANCE.register(ItemInit.IMMORTAL_STAFF.get(), new com.eeeab.eeeabsmobs.client.model.util.ModItemModels()::renderByItem);
+
         ModArmorStackRenderProperties armorRenderer = new ModArmorStackRenderProperties();
         ArmorRenderer.register(armorRenderer,
                 ItemInit.GHOST_WARRIOR_HELMET.get(), ItemInit.GHOST_WARRIOR_CHESTPLATE.get(),

@@ -20,9 +20,9 @@
   "accessWidener": "eeeabsmobs.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
-    "minecraft": "1.21.4",
+    "minecraft": "1.21.3",
     "java": ">=21",
     "fabric-api": "*",
-    "architectury": ">=15.0.3"
+    "architectury": ">=14.0.4"
   }
 }
