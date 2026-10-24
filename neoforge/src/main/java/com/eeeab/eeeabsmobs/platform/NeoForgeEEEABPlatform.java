@@ -139,6 +139,17 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
     }
 
     @Override
+    public void registerStrippable(Supplier<Block> input, Supplier<Block> stripped) {
+        if (MOD_BUS != null) {
+            MOD_BUS.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) -> event.enqueueWork(() -> {
+                registerStrippable(input.get(), stripped.get());
+            }));
+        } else {
+            registerStrippable(input.get(), stripped.get());
+        }
+    }
+
+    @Override
     public void initWorldgen() {
         // Handled via data/eeeabsmobs/neoforge/biome_modifier/add_ancient_boundary_stone.json
     }
@@ -198,6 +209,15 @@ public class NeoForgeEEEABPlatform implements EEEABPlatform {
                         ItemInit.GHOST_WARRIOR_LEGGINGS.get(),
                         ItemInit.GHOST_WARRIOR_BOOTS.get()
                 );
+            });
+        }
+    }
+
+    @Override
+    public void registerMenuScreens() {
+        if (MOD_BUS != null) {
+            MOD_BUS.addListener((net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) -> {
+                event.register(com.eeeab.eeeabsmobs.server.init.MenuInit.ANIMATION_CONTROLLER.get(), com.eeeab.animate.client.gui.AnimationControllerScreen::new);
             });
         }
     }

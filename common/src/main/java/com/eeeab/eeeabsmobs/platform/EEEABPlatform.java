@@ -14,6 +14,9 @@ public interface EEEABPlatform {
     void registerFlammable(Block block, int flammability, int fireSpreadSpeed);
 
     void registerStrippable(Block input, Block stripped);
+    default void registerStrippable(java.util.function.Supplier<Block> input, java.util.function.Supplier<Block> stripped) {
+        registerStrippable(input.get(), stripped.get());
+    }
 
     void initWorldgen();
 
@@ -26,6 +29,8 @@ public interface EEEABPlatform {
     void registerSpecialModels();
 
     void registerItemRenderers();
+
+    void registerMenuScreens();
 
     void registerWorldRender();
 

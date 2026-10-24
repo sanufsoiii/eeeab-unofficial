@@ -268,7 +268,7 @@ public class BlockInit {
         // Was BlockRotatedPillar#getToolModifiedState overriding NeoForge's ItemAbility-based tool-modification
         // hook (getToolModifiedState/ItemAbilities.AXE_STRIP), which has no Fabric equivalent - vanilla's
         // AxeItem instead consults a static stripped-block map that Fabric exposes as StrippableBlockRegistry
-        com.eeeab.eeeabsmobs.platform.PlatformServices.get().registerStrippable(BLIGHTED_OAK_LOG.get(), STRIPPED_BLIGHTED_OAK_LOG.get());
-        com.eeeab.eeeabsmobs.platform.PlatformServices.get().registerStrippable(BLIGHTED_OAK_WOOD.get(), STRIPPED_BLIGHTED_OAK_WOOD.get());
+        com.eeeab.eeeabsmobs.platform.PlatformServices.get().registerStrippable(BLIGHTED_OAK_LOG, STRIPPED_BLIGHTED_OAK_LOG);
+        com.eeeab.eeeabsmobs.platform.PlatformServices.get().registerStrippable(BLIGHTED_OAK_WOOD, STRIPPED_BLIGHTED_OAK_WOOD);
     }
 }

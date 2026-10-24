@@ -59,7 +59,9 @@ public class EEEABMobs {
         PROXY.initBrewing();
 
         CombatTriggerHandler.init();
-        ItemInit.initializeAttributes();
-        PROXY.loadComplete();
+        dev.architectury.event.events.common.LifecycleEvent.SETUP.register(() -> {
+            ItemInit.initializeAttributes();
+            PROXY.loadComplete();
+        });
     }
 }

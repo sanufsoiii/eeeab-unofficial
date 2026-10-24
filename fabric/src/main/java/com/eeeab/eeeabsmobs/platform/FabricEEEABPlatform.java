@@ -208,6 +208,11 @@ public class FabricEEEABPlatform implements EEEABPlatform {
     }
 
     @Override
+    public void registerMenuScreens() {
+        net.minecraft.client.gui.screens.MenuScreens.register(com.eeeab.eeeabsmobs.server.init.MenuInit.ANIMATION_CONTROLLER.get(), com.eeeab.animate.client.gui.AnimationControllerScreen::new);
+    }
+
+    @Override
     public void registerWorldRender() {
         WorldRenderEvents.AFTER_ENTITIES.register(context -> {
             PoseStack poseStack = context.matrixStack();

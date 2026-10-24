@@ -119,42 +119,44 @@ public class RegisterHandler {
         EntityRendererRegistry.register(EntityInit.IMMORTAL_SHURIKEN, RenderImmortalShuriken::new);
         EntityRendererRegistry.register(EntityInit.IMMORTAL_LASER, RenderImmortalLaser::new);
 
-        BlockEntityRendererRegistry.register(BlockEntityInit.SLIDING_DOOR_BE.get(), RenderSlidingDoor::new);
+        dev.architectury.event.events.client.ClientLifecycleEvent.CLIENT_SETUP.register(minecraft -> {
+            BlockEntityRendererRegistry.register(BlockEntityInit.SLIDING_DOOR_BE.get(), RenderSlidingDoor::new);
+        });
     }
 
     public static void registerParticleProviders() {
-        ParticleProviderRegistry.register(ParticleInit.SPELL_CASTING.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.ADV_ORB.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.GLOW.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.ADV_RING.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.ADV_RING2.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.ADV_RING3.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.CRIMSON.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.CRIMSON_EYE.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.STRIP_SOUL_FIRE.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.CROSS_FLASH.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.VORTEX.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.CRIT_RING.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.THUMP_RING.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.PUNCTURED_AIR_RING.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.SURGE.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.SPARK.get(), AdvancedParticleBase.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.FLAT_RIBBON.get(), ParticleRibbon.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.BLOCK.get(), AdvancedBlockParticle.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.DUST.get(), ParticleDust.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.ORB.get(), ParticleOrb.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.GUARDIAN_SPARK.get(), ParticleGuardianSpark.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.HIT_CUT.get(), ParticleHitCut.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.POISON.get(), ParticlePoison.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.WARLOCK_HEAL.get(), FlameParticle.Provider::new);
-        ParticleProviderRegistry.register(ParticleInit.IMMORTAL_EXPLOSION.get(), ParticleImmortalExplosion.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.BLAZE_EXPLOSION.get(), ParticleLastingExplosion.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.VOLT_EXPLOSION.get(), ParticleLastingExplosion.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.RING.get(), ParticleRing.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.BIG_RING.get(), ParticleRing.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.RADIAL_OPACITY_RING.get(), ParticleRing.Factory::new);
-        ParticleProviderRegistry.register(ParticleInit.BLAZE_EXPLOSION_EMITTER.get(), new ParticleBlazeExplosionSeed.Factory());
-        ParticleProviderRegistry.register(ParticleInit.VOLT_EXPLOSION_EMITTER.get(), new ParticleVoltExplosionSeed.Factory());
+        ParticleProviderRegistry.register(ParticleInit.SPELL_CASTING.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.ADV_ORB.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.GLOW.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.ADV_RING.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.ADV_RING2.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.ADV_RING3.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.CRIMSON.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.CRIMSON_EYE.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.STRIP_SOUL_FIRE.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.CROSS_FLASH.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.VORTEX.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.CRIT_RING.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.THUMP_RING.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.PUNCTURED_AIR_RING.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.SURGE.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.SPARK.getSupplier(), AdvancedParticleBase.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.FLAT_RIBBON.getSupplier(), ParticleRibbon.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.BLOCK.getSupplier(), AdvancedBlockParticle.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.DUST.getSupplier(), ParticleDust.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.ORB.getSupplier(), ParticleOrb.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.GUARDIAN_SPARK.getSupplier(), ParticleGuardianSpark.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.HIT_CUT.getSupplier(), ParticleHitCut.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.POISON.getSupplier(), ParticlePoison.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.WARLOCK_HEAL.getSupplier(), FlameParticle.Provider::new);
+        ParticleProviderRegistry.register(ParticleInit.IMMORTAL_EXPLOSION.getSupplier(), ParticleImmortalExplosion.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.BLAZE_EXPLOSION.getSupplier(), ParticleLastingExplosion.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.VOLT_EXPLOSION.getSupplier(), ParticleLastingExplosion.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.RING.getSupplier(), ParticleRing.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.BIG_RING.getSupplier(), ParticleRing.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.RADIAL_OPACITY_RING.getSupplier(), ParticleRing.Factory::new);
+        ParticleProviderRegistry.register(ParticleInit.BLAZE_EXPLOSION_EMITTER.getSupplier(), new ParticleBlazeExplosionSeed.Factory());
+        ParticleProviderRegistry.register(ParticleInit.VOLT_EXPLOSION_EMITTER.getSupplier(), new ParticleVoltExplosionSeed.Factory());
     }
 
     public static void registerModels() {
