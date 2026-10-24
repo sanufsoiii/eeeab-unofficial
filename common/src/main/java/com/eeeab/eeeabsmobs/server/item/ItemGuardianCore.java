@@ -101,11 +101,11 @@ public class ItemGuardianCore extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipDisplay, java.util.function.Consumer<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltip, flagIn);
-        tooltip.accept(TranslateUtils.simpleItemText(this.getDescriptionId(), Component.literal(ModConfigHandler.COMMON.items.guardianCoreConfig1.get() + "").withStyle(ChatFormatting.YELLOW)));
-        //TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 2, ChatFormatting.GRAY, this.getDescriptionId()).forEach(tooltip);
-        TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 1, ChatFormatting.GRAY, this.getDescriptionId()).forEach(tooltip);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, java.util.List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, context, tooltip, flagIn);
+        tooltip.add(TranslateUtils.simpleItemText(this.getDescriptionId(), Component.literal(ModConfigHandler.COMMON.items.guardianCoreConfig1.get() + "").withStyle(ChatFormatting.YELLOW)));
+        //TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 2, ChatFormatting.GRAY, this.getDescriptionId()).forEach(tooltip::add);
+        tooltip.addAll(TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 1, ChatFormatting.GRAY, this.getDescriptionId()));
     }
 
     // initializeClient/IClientItemExtensions#getArmPose removed: a per-item held-arm-pose override

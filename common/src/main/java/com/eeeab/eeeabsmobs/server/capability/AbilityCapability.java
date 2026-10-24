@@ -119,7 +119,7 @@ public class AbilityCapability {
 
         @Override
         public void deserializeNBT(CompoundTag nbt) {
-            Set<String> nbtSet = nbt.keySet();
+            Set<String> nbtSet = nbt.getAllKeys();
             for (String key : nbtSet) {
                 nbtMap.put(key, nbt.get(key));
             }

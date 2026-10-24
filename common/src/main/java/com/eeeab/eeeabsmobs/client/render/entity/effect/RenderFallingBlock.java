@@ -62,10 +62,7 @@ public class RenderFallingBlock extends EntityRenderer<EntityFallingBlock, EMFal
                     poseStack.translate(0, -1, 0);
                     poseStack.translate(-0.5f, -0.5f, -0.5f);
                 }
-                BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-                var model = dispatcher.getBlockModel(blockState);
-                var parts = model.collectParts(RandomSource.create(state.startBlockPos.asLong()));
-                dispatcher.getModelRenderer().tesselateBlock(state.level, parts, blockState, state.blockPos, poseStack, buffer.getBuffer(ItemBlockRenderTypes.getMovingBlockRenderType(blockState)), false, OverlayTexture.NO_OVERLAY);
+                Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockState, poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
                 poseStack.popPose();
             }
         }

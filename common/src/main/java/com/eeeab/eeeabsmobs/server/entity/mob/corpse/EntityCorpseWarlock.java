@@ -1,6 +1,7 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.corpse;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 
 import com.eeeab.animate.server.ai.AnimationSimpleAI;
 import com.eeeab.animate.server.ai.AnimationSpellAI;
@@ -513,7 +514,7 @@ public Vec3[] myPos;
             if (!this.level().isClientSide()) {
                 entity.finalizeSpawn((ServerLevel) this.level(), ((net.minecraft.server.level.ServerLevel) this.level()).getCurrentDifficultyAt(BlockPos.containing(vec3.x, vec3.y, vec3.z)), EntitySpawnReason.MOB_SUMMONED, null);
                 entity.setOwner(this);
-                entity.snapTo(vec3);
+                entity.moveTo(vec3);
                 this.level().addFreshEntity(entity);
                 entity.afterSpawn();
             }
@@ -635,13 +636,13 @@ public Vec3[] myPos;
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        this.getRestPos().ifPresent(pos -> compound.store("spawnPos", net.minecraft.core.BlockPos.CODEC, pos));
+        this.getRestPos().ifPresent(pos -> compound.put("spawnPos", NbtUtils.writeBlockPos(pos)));
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        compound.read("spawnPos", net.minecraft.core.BlockPos.CODEC).ifPresent(this::setRestPos);
+        NbtUtils.readBlockPos(compound, "spawnPos").ifPresent(this::setRestPos);
     }
 
     @Override

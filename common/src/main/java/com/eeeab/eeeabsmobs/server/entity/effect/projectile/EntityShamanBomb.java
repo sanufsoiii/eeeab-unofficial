@@ -95,7 +95,7 @@ public class EntityShamanBomb extends AbstractHurtingProjectile implements IEnti
                 }
 
                 if (!isDangerous()) {
-                    livingEntity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20 * duration, amplifier));
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20 * duration, amplifier));
                 } else {
                     livingEntity.addEffect(new MobEffectInstance(EffectInit.ERODE_EFFECT.holder(), 20 * duration, amplifier));
                 }
@@ -175,8 +175,8 @@ public class EntityShamanBomb extends AbstractHurtingProjectile implements IEnti
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        setIsPlayer(compoundTag.getBooleanOr("isPlayer", false));
-        this.tickCount = compoundTag.getIntOr("tickTimer", 0);
+        setIsPlayer(compoundTag.getBoolean("isPlayer"));
+        this.tickCount = compoundTag.getInt("tickTimer");
     }
 
     @Override

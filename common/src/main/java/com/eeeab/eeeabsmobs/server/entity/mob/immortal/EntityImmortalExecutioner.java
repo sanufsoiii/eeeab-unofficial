@@ -430,8 +430,8 @@ public Vec3[] fire;
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.setFlameStrength(compound.getFloatOr("flameStrength", 0F));
-        this.detonationCount = compound.getIntOr("detonationCount", 0);
+        this.setFlameStrength(compound.getFloat("flameStrength"));
+        this.detonationCount = compound.getInt("detonationCount");
     }
 
     // Mob#getMeleeAttackRangeSqr(LivingEntity) was replaced by isWithinMeleeAttackRange(LivingEntity)

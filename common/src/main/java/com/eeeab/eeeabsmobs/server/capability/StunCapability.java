@@ -59,7 +59,7 @@ public class StunCapability {
 
         @Override
         public void deserializeNBT(CompoundTag nbt) {
-            setInStun(nbt.getBooleanOr("inStun", false));
+            setInStun(nbt.getBoolean("inStun"));
         }
     }
 }

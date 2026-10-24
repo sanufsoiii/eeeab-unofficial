@@ -121,7 +121,7 @@ public class StructureBloodyAltar extends Structure {
         }
 
         public Piece(StructureTemplateManager templateManagerIn, CompoundTag tagCompound) {
-            super(StructuresInit.BA.get(), tagCompound, templateManagerIn, (location) -> makeSettings(Rotation.valueOf(tagCompound.getStringOr("Rot", ""))));
+            super(StructuresInit.BA.get(), tagCompound, templateManagerIn, (location) -> makeSettings(Rotation.valueOf(tagCompound.getString("Rot"))));
         }
 
         public Piece(StructurePieceSerializationContext context, CompoundTag tag) {
@@ -149,7 +149,7 @@ public class StructureBloodyAltar extends Structure {
                 levelAccessor.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
                 EntityCorpseWarlock warlock = (EntityInit.CORPSE_WARLOCK.get()).create(levelAccessor.getLevel(), net.minecraft.world.entity.EntitySpawnReason.MOB_SUMMONED);
                 if (warlock != null) {
-                    warlock.snapTo(blockPos, 0, 0);
+                    warlock.moveTo(blockPos, 0, 0);
                     warlock.finalizeSpawn(levelAccessor, levelAccessor.getLevel().getCurrentDifficultyAt(blockPos), EntitySpawnReason.STRUCTURE, null);
                     warlock.setRestPos(blockPos);
                     levelAccessor.addFreshEntity(warlock);

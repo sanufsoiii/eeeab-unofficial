@@ -134,11 +134,11 @@ public abstract class Ability<T extends LivingEntity> {
         CompoundTag compoundTag = (CompoundTag) nbt;
         boolean inUse = compoundTag.contains("tick");
         if (inUse) {
-            tick = compoundTag.getIntOr("tick", 0);
-            sectionIndex = compoundTag.getIntOr("sectionIndex", 0);
-            sectionTick = compoundTag.getIntOr("sectionTick", 0);
+            tick = compoundTag.getInt("tick");
+            sectionIndex = compoundTag.getInt("sectionIndex");
+            sectionTick = compoundTag.getInt("sectionTick");
         } else {
-            coolingTimer = compoundTag.getIntOr("coolingTick", 0);
+            coolingTimer = compoundTag.getInt("coolingTick");
         }
     }
 }

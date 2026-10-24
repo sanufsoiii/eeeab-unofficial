@@ -44,10 +44,7 @@ public class ItemGuardianAxe extends Item implements ConfigurableItem, IUnbreaka
     private ItemAttributeModifiers defaultModifiers;
 
     public ItemGuardianAxe(ToolMaterial tier, Properties properties) {
-        // getDefaultAttributeModifiers(ItemStack) has no vanilla equivalent (NeoForge-only, dynamically
-        // re-queried per stack); DataComponents.ATTRIBUTE_MODIFIERS is baked into the default template once
-        // here instead, same approach as ItemChainsword/ItemImmortalSword elsewhere in this package.
-        super(properties.axe(tier, 0F, 0F).component(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, buildDefaultAttributes()));
+        super(tier.applyToolProperties(properties, net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE, 0F, 0F).component(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, buildDefaultAttributes()));
         this.defaultModifiers = this.creatAttributesFromConfig();
     }
 
@@ -106,21 +103,21 @@ public class ItemGuardianAxe extends Item implements ConfigurableItem, IUnbreaka
     }
 
     @Override
-    public void hurtEnemy(ItemStack itemStack, LivingEntity hitEntity, LivingEntity livingEntity) {
+    public boolean hurtEnemy(ItemStack itemStack, LivingEntity hitEntity, LivingEntity livingEntity) {
         if (!hitEntity.level().isClientSide()) {
             hitEntity.playSound(SoundInit.GIANT_AXE_HIT.get(), 1F, 0.2F);
         }
-        super.hurtEnemy(itemStack, hitEntity, livingEntity);
+        return super.hurtEnemy(itemStack, hitEntity, livingEntity);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipDisplay, java.util.function.Consumer<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltip, flagIn);
-        if (TranslateUtils.SHOW_ITEM_CD) tooltip.accept(TranslateUtils.itemCoolTime(ModConfigHandler.COMMON.items.doomboltAxeConfig.get()));
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, context, tooltip, flagIn);
+        if (TranslateUtils.SHOW_ITEM_CD) tooltip.add(TranslateUtils.itemCoolTime(ModConfigHandler.COMMON.items.doomboltAxeConfig.get()));
         //int i = (int) (SweepingEdgeEnchantment.getSweepingDamageRatio(ModConfigHandler.COMMON.items.judgmentAxeConfig1.get()) * 100);
         //扫荡边缘附魔的伤害比例公式：1 - 1/(level+1)，SweepingEdgeEnchantment类在1.21.1中已移除(附魔不再是可继承子类)，故内联该公式
         int i = (int) ((1.0F - 1.0F / (1 + 1.0F)) * 100);
-        TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 2, ChatFormatting.GRAY, this.getDescriptionId(), Component.literal(i > 0 ? i + "%" : "1.0").withStyle(ChatFormatting.YELLOW)).forEach(tooltip);
+        tooltip.addAll(TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 2, ChatFormatting.GRAY, this.getDescriptionId(), Component.literal(i > 0 ? i + "%" : "1.0").withStyle(ChatFormatting.YELLOW)));
     }
 
     // getEnchantmentLevel(ItemStack, Holder<Enchantment>) removed - NeoForge-only IItemExtension hook (used

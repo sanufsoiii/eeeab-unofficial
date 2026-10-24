@@ -34,7 +34,7 @@ public class GuardianLaserAbility extends Ability<Player> {
             double pz = player.getZ();
             EntityGuardianLaser guardianLaser = new EntityGuardianLaser(level, player, px, py, pz, 100);
             level.addFreshEntity(guardianLaser);
-            player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 100, 2, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2, false, false));
             this.guardianLaser = guardianLaser;
         }
         player.swing(InteractionHand.MAIN_HAND, true);
@@ -53,7 +53,7 @@ public class GuardianLaserAbility extends Ability<Player> {
         if (guardianLaser != null) {
             guardianLaser.discard();
         }
-        player.removeEffect(MobEffects.SLOWNESS);
+        player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
         if (player.level().isClientSide()) EEEABMobs.PROXY.stopTickableSound(player);
     }
 }

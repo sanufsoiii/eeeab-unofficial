@@ -40,9 +40,7 @@ public class ItemDoomboltAxe extends Item implements ConfigurableItem, SlidingDo
     private ItemAttributeModifiers defaultModifiers;
 
     public ItemDoomboltAxe(ToolMaterial tier, Properties properties) {
-        // getDefaultAttributeModifiers(ItemStack) has no vanilla equivalent; baked into the default template
-        // once here instead - see ItemChainsword for the full explanation.
-        super(properties.axe(tier, 0F, 0F).component(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, buildDefaultAttributes()));
+        super(tier.applyToolProperties(properties, net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE, 0F, 0F).component(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, buildDefaultAttributes()));
         this.defaultModifiers = this.creatAttributesFromConfig();
     }
 
@@ -129,17 +127,17 @@ public class ItemDoomboltAxe extends Item implements ConfigurableItem, SlidingDo
     }
 
     @Override
-    public void hurtEnemy(ItemStack itemStack, LivingEntity hitEntity, LivingEntity livingEntity) {
+    public boolean hurtEnemy(ItemStack itemStack, LivingEntity hitEntity, LivingEntity livingEntity) {
         if (!hitEntity.level().isClientSide()) {
             hitEntity.playSound(SoundInit.GIANT_AXE_HIT.get(), 1F, 0.2F);
         }
-        super.hurtEnemy(itemStack, hitEntity, livingEntity);
+        return super.hurtEnemy(itemStack, hitEntity, livingEntity);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipDisplay, java.util.function.Consumer<Component> tooltip, TooltipFlag flagIn) {
-        if (TranslateUtils.SHOW_ITEM_CD) tooltip.accept(TranslateUtils.itemCoolTime(ModConfigHandler.COMMON.items.doomboltAxeConfig.get()));
-        TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 2, ChatFormatting.GRAY, this.getDescriptionId()).forEach(tooltip);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+        if (TranslateUtils.SHOW_ITEM_CD) tooltip.add(TranslateUtils.itemCoolTime(ModConfigHandler.COMMON.items.doomboltAxeConfig.get()));
+        tooltip.addAll(TranslateUtils.complexText(TranslateUtils.ITEM_PREFIX, 2, ChatFormatting.GRAY, this.getDescriptionId()));
     }
 
     private static ItemAttributeModifiers buildDefaultAttributes() {

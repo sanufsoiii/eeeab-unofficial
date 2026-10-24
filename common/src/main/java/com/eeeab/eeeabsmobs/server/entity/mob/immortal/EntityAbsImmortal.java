@@ -183,17 +183,17 @@ public abstract class EntityAbsImmortal extends EEEABMobLibrary implements Enemy
             compound.putInt("countdown", countdown);
         }
         if (this.owner != null && this.owner.getHealth() > 0F) {
-            compound.store("owner", net.minecraft.core.UUIDUtil.CODEC, owner.getUUID());
+            compound.putUUID("owner", owner.getUUID());
         }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if (compound.getInt("countdown").isPresent()) {
-            this.setSummonAliveTime(compound.getIntOr("countdown", 0));
+        if (compound.contains("countdown")) {
+            this.setSummonAliveTime(compound.getInt("countdown"));
         }
-        this.setOwnerUUID(compound.read("owner", net.minecraft.core.UUIDUtil.CODEC).orElse(null));
+        this.setOwnerUUID(compound.hasUUID("owner") ? compound.getUUID("owner") : null);
     }
 
     protected Animation getSpawnAnimation() {

@@ -32,11 +32,11 @@ public class ItemAnimationUtils {
 
     private static UUID getOrCreateAnimationUUID(ItemStack stack) {
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (tag.read(ANIMATION_UUID_KEY, net.minecraft.core.UUIDUtil.CODEC).isPresent()) {
-            return tag.read(ANIMATION_UUID_KEY, net.minecraft.core.UUIDUtil.CODEC).orElse(null);
+        if (tag.hasUUID(ANIMATION_UUID_KEY)) {
+            return tag.getUUID(ANIMATION_UUID_KEY);
         } else {
             UUID uuid = UUID.randomUUID();
-            CustomData.update(DataComponents.CUSTOM_DATA, stack, t -> t.store(ANIMATION_UUID_KEY, net.minecraft.core.UUIDUtil.CODEC, uuid));
+            CustomData.update(DataComponents.CUSTOM_DATA, stack, t -> t.putUUID(ANIMATION_UUID_KEY, uuid));
             return uuid;
         }
     }

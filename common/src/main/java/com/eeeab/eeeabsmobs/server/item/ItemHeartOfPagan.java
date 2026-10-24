@@ -15,8 +15,8 @@ public class ItemHeartOfPagan extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipDisplay, java.util.function.Consumer<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltip, flagIn);
-        tooltip.accept(TranslateUtils.simpleItemText(this.getDescriptionId()));
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, context, tooltip, flagIn);
+        tooltip.add(TranslateUtils.simpleItemText(this.getDescriptionId()));
     }
 }

@@ -78,7 +78,7 @@ public abstract class EntityAbsCorpse extends EEEABMobLibrary implements Enemy, 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (this.owner != null && this.owner.getHealth() > 0F) {
-            compound.store("owner", net.minecraft.core.UUIDUtil.CODEC, owner.getUUID());
+            compound.putUUID("owner", owner.getUUID());
         }
         compound.putBoolean("isSummon", this.isSummon());
     }
@@ -86,8 +86,8 @@ public abstract class EntityAbsCorpse extends EEEABMobLibrary implements Enemy, 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.setOwnerUUID(compound.read("owner", net.minecraft.core.UUIDUtil.CODEC).isPresent() ? compound.read("owner", net.minecraft.core.UUIDUtil.CODEC).orElse(null) : null);
-        this.isSummon = compound.getBooleanOr("isSummon", false);
+        this.setOwnerUUID(compound.hasUUID("owner") ? compound.getUUID("owner") : null);
+        this.isSummon = compound.getBoolean("isSummon");
     }
 
     @Override

@@ -265,7 +265,7 @@ public class EntityAnnihilatorMissile extends Projectile implements IEntity, IVa
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.entityData.set(DATA_ELEMENT, compound.getIntOr("element", 0));
+        this.entityData.set(DATA_ELEMENT, compound.getInt("element"));
     }
 
     @Override

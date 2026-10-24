@@ -35,9 +35,9 @@ public class EntityImmortalMagicCircle extends EntityMagicEffects {
 
     public enum MagicCircleType {
         NONE,
-        SPEED(0.22F, 0.76F, 0.87F, MobEffects.SPEED, MobEffects.HASTE),
-        POWER(0.92F, 0.7F, 0.02F, MobEffects.STRENGTH),
-        HARMFUL(0.52F, 0.16F, 0.88F, MobEffects.SLOWNESS, MobEffects.WEAKNESS),
+        SPEED(0.22F, 0.76F, 0.87F, MobEffects.MOVEMENT_SPEED, MobEffects.DIG_SPEED),
+        POWER(0.92F, 0.7F, 0.02F, MobEffects.DAMAGE_BOOST),
+        HARMFUL(0.52F, 0.16F, 0.88F, MobEffects.MOVEMENT_SLOWDOWN, MobEffects.WEAKNESS),
         BENEFICIAL(0F, 0.72F, 0.47F, MobEffects.REGENERATION, MobEffects.ABSORPTION);
 
         @SafeVarargs
@@ -151,12 +151,12 @@ public class EntityImmortalMagicCircle extends EntityMagicEffects {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
-        setScale(compoundTag.getFloatOr("scale", 0F));
-        setSpeed(compoundTag.getFloatOr("speed", 0F));
-        setYaw(compoundTag.getFloatOr("yaw", 0F));
-        setDuration(compoundTag.getIntOr("duration", 0));
+        setScale(compoundTag.getFloat("scale"));
+        setSpeed(compoundTag.getFloat("speed"));
+        setYaw(compoundTag.getFloat("yaw"));
+        setDuration(compoundTag.getInt("duration"));
         try {
-            setMagicCircleType(MagicCircleType.valueOf(compoundTag.getStringOr("magicType", "")));
+            setMagicCircleType(MagicCircleType.valueOf(compoundTag.getString("magicType")));
         } catch (Exception ignored) {
         }
     }

@@ -179,18 +179,19 @@ public class EntityEyeOfStructure extends Entity implements ItemSupplier, IEntit
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag output) {
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
         ItemStack itemstack = this.getItemRaw();
         if (!itemstack.isEmpty()) {
-            output.store("Item", ItemStack.CODEC, itemstack);
+            compoundTag.put("Item", itemstack.save(this.level().registryAccess()));
         }
-        output.putBoolean("CanConsumeItem", this.canConsumeItem);
+        compoundTag.putBoolean("CanConsumeItem", this.canConsumeItem);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag input) {
-        this.setItem(input.read("Item", ItemStack.CODEC).orElse(ItemStack.EMPTY));
-        this.canConsumeItem = input.getBooleanOr("CanConsumeItem", false);
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        ItemStack itemstack = ItemStack.parseOptional(this.level().registryAccess(), compoundTag.getCompound("Item"));
+        this.setItem(itemstack);
+        this.canConsumeItem = compoundTag.getBoolean("CanConsumeItem");
     }
 
     @Override

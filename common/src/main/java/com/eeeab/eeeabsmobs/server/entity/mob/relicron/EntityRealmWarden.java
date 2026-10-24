@@ -1,6 +1,7 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.relicron;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 
 import com.eeeab.animate.server.ai.AnimationAI;
 import com.eeeab.animate.server.ai.AnimationGroupAI;
@@ -303,15 +304,15 @@ public Vec3[] modelParts;//0:left 1:right
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.setSecondPhase(compound.getBooleanOr("isSecondPhase", false));
-        compound.read("restPos", net.minecraft.core.BlockPos.CODEC).ifPresent(this::setRestPos);
+        this.setSecondPhase(compound.getBoolean("isSecondPhase"));
+        NbtUtils.readBlockPos(compound, "restPos").ifPresent(this::setRestPos);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("isSecondPhase", this.isSecondPhase());
-        this.getRestPos().ifPresent(pos -> compound.store("restPos", net.minecraft.core.BlockPos.CODEC, pos));
+        this.getRestPos().ifPresent(pos -> compound.put("restPos", NbtUtils.writeBlockPos(pos)));
     }
 
     @Override

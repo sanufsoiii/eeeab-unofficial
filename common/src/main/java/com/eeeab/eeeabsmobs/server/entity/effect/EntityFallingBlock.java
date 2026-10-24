@@ -1,6 +1,8 @@
 package com.eeeab.eeeabsmobs.server.entity.effect;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.core.registries.Registries;
 
 import com.eeeab.eeeabsmobs.server.init.EntityInit;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -127,18 +129,19 @@ public class EntityFallingBlock extends Entity implements IEntity {
         }
     }
 
-    protected void addAdditionalSaveData(CompoundTag output) {
-        output.store("block_state", BlockState.CODEC, this.getBlockState());
-        output.putInt("duration", getDuration());
-        output.putInt("tickTimer", tickCount);
-        output.putFloat("vy", getEntityData().get(ANIM_V_Y));
+    protected void addAdditionalSaveData(CompoundTag compoundTag) {
+        BlockState blockState = this.getBlockState();
+        compoundTag.put("block_state", NbtUtils.writeBlockState(blockState));
+        compoundTag.putInt("duration", getDuration());
+        compoundTag.putInt("tickTimer", tickCount);
+        compoundTag.putFloat("vy", getEntityData().get(ANIM_V_Y));
     }
 
-    protected void readAdditionalSaveData(CompoundTag input) {
-        this.setBlockState(input.read("block_state", BlockState.CODEC).orElse(Blocks.DIRT.defaultBlockState()));
-        setDuration(input.getIntOr("duration", 0));
-        tickCount = input.getIntOr("tickTimer", 0);
-        setAnimVY(input.getFloatOr("vy", 0F));
+    protected void readAdditionalSaveData(CompoundTag compoundTag) {
+        this.setBlockState(NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), compoundTag.getCompound("block_state")));
+        setDuration(compoundTag.getInt("duration"));
+        tickCount = compoundTag.getInt("tickTimer");
+        setAnimVY(compoundTag.getFloat("vy"));
     }
 
     public boolean displayFireAnimation() {

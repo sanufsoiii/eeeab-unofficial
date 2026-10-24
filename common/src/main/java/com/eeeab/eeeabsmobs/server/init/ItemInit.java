@@ -76,7 +76,7 @@ public class ItemInit {
     public static final FabricDeferredRegister.Entry<Item> GHOST_WARRIOR_BOOTS = reg("ghost_warrior_boots", p -> new ItemGhostWarriorArmor(ArmorType.BOOTS, p));
     public static final FabricDeferredRegister.Entry<Item> GHOST_WARRIOR_LEGGINGS = reg("ghost_warrior_leggings", p -> new ItemGhostWarriorArmor(ArmorType.LEGGINGS, p));
     public static final FabricDeferredRegister.Entry<Item> GHOST_WARRIOR_UPGRADE_SMITHING_TEMPLATE = reg("ghost_warrior_upgrade_smithing_template", ModSmithingTemplate::createGhostWarriorUpgradeTemplate);
-    public static final FabricDeferredRegister.Entry<Item> IMMORTAL_AXE = reg("immortal_axe", p -> new Item(p.axe(ModToolsTier.IMMORTAL_TIER, 6F, -3.1F)));
+    public static final FabricDeferredRegister.Entry<Item> IMMORTAL_AXE = reg("immortal_axe", p -> new AxeItem(ModToolsTier.IMMORTAL_TIER, 6F, -3.1F, p));
     public static final FabricDeferredRegister.Entry<Item> IMMORTAL_SWORD = reg("immortal_sword", p -> new ItemImmortalSword(ModToolsTier.IMMORTAL_TIER, 4, -2.4F, p));
     public static final FabricDeferredRegister.Entry<ItemNetherworldKatana> THE_NETHERWORLD_KATANA = reg("netherworld_katana", p -> new ItemNetherworldKatana(ModToolsTier.GHOST_STEEL_TIER, p.rarity(Rarity.EPIC).fireResistant()));
 

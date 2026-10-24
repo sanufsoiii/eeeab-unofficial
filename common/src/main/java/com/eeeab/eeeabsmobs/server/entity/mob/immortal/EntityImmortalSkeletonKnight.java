@@ -92,7 +92,7 @@ public class EntityImmortalSkeletonKnight extends EntityAbsImmortalSkeleton impl
             this.timeUntilNextAlert = ALERT_INTERVAL.sample(this.random);
         }
         if (entity instanceof Player) {
-            this.setLastHurtByPlayer((Player) entity, 100);
+            this.setLastHurtByPlayer((Player) entity);
         }
         super.setTarget(entity);
     }
@@ -178,9 +178,9 @@ public class EntityImmortalSkeletonKnight extends EntityAbsImmortalSkeleton impl
             for (EntityAbsImmortalSkeleton skeleton : this.level().getEntitiesOfClass(EntityAbsImmortalSkeleton.class, aabb,
                     skeleton -> ClassType.KNIGHT != skeleton.getVariant() && ClassType.MAGE != skeleton.getVariant() && isAlliedTo(skeleton))) {
                 this.level().broadcastEntityEvent(skeleton, (byte) 12);
-                skeleton.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 200, 0), this);
+                skeleton.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 0), this);
             }
-            this.addEffect(new MobEffectInstance(MobEffects.SPEED, 300, 0), this);
+            this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 300, 0), this);
         }
     }
 

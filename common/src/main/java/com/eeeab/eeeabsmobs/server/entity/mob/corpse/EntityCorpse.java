@@ -182,7 +182,7 @@ public class EntityCorpse extends EntityAbsCorpse {
             if (entity instanceof Zombie zombie && !zombie.isBaby()) {
                 return this.convertToCorpse(level, EntityInit.CORPSE.get(), zombie);
             }
-            if (entity instanceof Villager villager && !villager.isBaby() && villager.getVillagerData().level() == VillagerData.MIN_VILLAGER_LEVEL) {
+            if (entity instanceof Villager villager && !villager.isBaby() && villager.getVillagerData().getLevel() == VillagerData.MIN_VILLAGER_LEVEL) {
                 return this.convertToCorpse(level, EntityInit.CORPSE_VILLAGER.get(), villager);
             }
         }

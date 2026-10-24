@@ -107,18 +107,18 @@ public class EntityBlockTombstone extends BaseContainerBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(CompoundTag input, HolderLookup.Provider provider) {
-        super.loadAdditional(input, provider);
-        this.tick = input.getIntOr("tickCount", 0);
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.loadAdditional(compoundTag, provider);
+        this.tick = compoundTag.getInt("tickCount");
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(input, this.items, provider);
+        ContainerHelper.loadAllItems(compoundTag, this.items, provider);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag output, HolderLookup.Provider provider) {
-        super.saveAdditional(output, provider);
-        ContainerHelper.saveAllItems(output, this.items, provider);
-        output.putInt("tickCount", this.tick);
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.saveAdditional(compoundTag, provider);
+        ContainerHelper.saveAllItems(compoundTag, this.items, provider);
+        compoundTag.putInt("tickCount", this.tick);
     }
 
     @Override

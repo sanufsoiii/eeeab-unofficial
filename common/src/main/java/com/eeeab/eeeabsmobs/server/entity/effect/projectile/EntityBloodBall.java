@@ -214,24 +214,26 @@ public class EntityBloodBall extends Projectile implements IEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag output) {
-        super.addAdditionalSaveData(output);
+    public void addAdditionalSaveData(CompoundTag nbt) {
+        super.addAdditionalSaveData(nbt);
         if (getTargetUUID() != null) {
-            output.store("target_uuid", net.minecraft.core.UUIDUtil.CODEC, getTargetUUID());
+            nbt.putUUID("target_uuid", getTargetUUID());
         }
-        output.putBoolean("locating", locating);
-        output.putInt("power", getPower());
+        nbt.putBoolean("locating", locating);
+        nbt.putInt("power", getPower());
     }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-    public void readAdditionalSaveData(CompoundTag input) {
-        super.readAdditionalSaveData(input);
-        setTargetUUID(input.read("target_uuid", net.minecraft.core.UUIDUtil.CODEC).orElse(null));
-        locating = input.getBooleanOr("locating", false);
-        setPower(input.getIntOr("power", 0));
+    public void readAdditionalSaveData(CompoundTag nbt) {
+        super.readAdditionalSaveData(nbt);
+        if (nbt.hasUUID("target_uuid")) {
+            setTargetUUID(nbt.getUUID("target_uuid"));
+        }
+        locating = nbt.getBoolean("locating");
+        setPower(nbt.getInt("power"));
     }
 
     public float getBaseDamage() {

@@ -26,7 +26,7 @@ public class RenderSlidingDoor implements BlockEntityRenderer<EntitySlidingDoorB
     }
 
     @Override
-    public void render(EntitySlidingDoorBlock be, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay, Vec3 cameraPos) {
+    public void render(EntitySlidingDoorBlock be, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         BlockState state = be.getBlockState();
         if (!(state.getBlock() instanceof BlockSlidingDoor)) return;
         if (state.getValue(BlockSlidingDoor.PART) == BlockSlidingDoor.Part.CENTER && state.getValue(BlockSlidingDoor.Y_OFFSET) == 0) {

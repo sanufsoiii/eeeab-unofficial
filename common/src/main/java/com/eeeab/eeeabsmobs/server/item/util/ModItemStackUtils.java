@@ -37,7 +37,7 @@ public class ModItemStackUtils {
             putNBT(itemStack, keyName, new CompoundTag());
             tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         }
-        return tag.getCompoundOrEmpty(keyName);
+        return tag.getCompound(keyName);
     }
 
     /**

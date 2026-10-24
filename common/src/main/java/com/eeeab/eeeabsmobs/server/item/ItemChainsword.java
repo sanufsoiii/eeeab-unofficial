@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ItemChainsword extends Item implements ConfigurableItem, SlidingDoo
         // doesn't exist on vanilla Item; DataComponents.ATTRIBUTE_MODIFIERS is instead a fixed component baked
         // into the item's default template once, at construction (same approach as ItemImmortalSword/
         // ItemNetherworldKatana elsewhere in this package). Config values are read here at mod init.
-        super(properties.sword(tier, 0F, 0F).component(DataComponents.ATTRIBUTE_MODIFIERS, buildDefaultAttributes()));
+        super(tier.applySwordProperties(properties, 0F, 0F).component(DataComponents.ATTRIBUTE_MODIFIERS, buildDefaultAttributes()));
         this.damage = (float) ModConfigHandler.COMMON.items.chainsword.attackDamageValue;
         this.defaultModifiers = this.creatAttributesFromConfig();
     }
@@ -38,9 +39,24 @@ public class ItemChainsword extends Item implements ConfigurableItem, SlidingDoo
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipDisplay, java.util.function.Consumer<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
         ModConfigHandler.Item items = ModConfigHandler.COMMON.items;
-        tooltip.accept(TranslateUtils.simpleItemText(this.getDescriptionId(), Component.literal("+" + items.chainswordConfig1.get() + "%"), Component.literal(items.chainswordConfig2.get() + "")));
+        tooltip.add(TranslateUtils.simpleItemText(this.getDescriptionId(), Component.literal("+" + items.chainswordConfig1.get() + "%"), Component.literal(items.chainswordConfig2.get() + "")));
+    }
+
+    @Override
+    public boolean canAttackBlock(net.minecraft.world.level.block.state.BlockState state, Level level, net.minecraft.core.BlockPos pos, net.minecraft.world.entity.player.Player player) {
+        return !player.isCreative();
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack stack, net.minecraft.world.entity.LivingEntity target, net.minecraft.world.entity.LivingEntity attacker) {
+        return true;
+    }
+
+    @Override
+    public void postHurtEnemy(ItemStack stack, net.minecraft.world.entity.LivingEntity target, net.minecraft.world.entity.LivingEntity attacker) {
+        stack.hurtAndBreak(1, attacker, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
     }
 
     private static ItemAttributeModifiers buildDefaultAttributes() {

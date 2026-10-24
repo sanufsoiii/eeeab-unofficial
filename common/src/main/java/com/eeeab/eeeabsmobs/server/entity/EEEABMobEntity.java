@@ -181,9 +181,8 @@ public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
         ++this.deathTime;
         int deathDuration = getDeathDuration();
         if (this.deathTime >= deathDuration && !this.level().isClientSide()) {
-            if (killDataAttackingPlayer != null) {
-                this.setLastHurtByPlayer(killDataAttackingPlayer, killDataRecentlyHit);
-            }
+            this.lastHurtByPlayer = killDataAttackingPlayer;
+            this.lastHurtByPlayerTime = killDataRecentlyHit;
             if (dropAfterDeathAnim && killDataCause != null) {
                 this.dropAllDeathLoot((ServerLevel) this.level(), killDataCause);
             }
@@ -203,8 +202,8 @@ public abstract class EEEABMobEntity extends PathfinderMob implements IMob {
     public void die(DamageSource source) {
         if (!this.dead) {
             killDataCause = source;
-            killDataRecentlyHit = this.getLastHurtByPlayerMemoryTime();
-            killDataAttackingPlayer = this.getLastHurtByPlayer();
+            killDataRecentlyHit = this.lastHurtByPlayerTime;
+            killDataAttackingPlayer = this.lastHurtByPlayer;
         }
         super.die(source);
         if (!this.isRemoved()) {

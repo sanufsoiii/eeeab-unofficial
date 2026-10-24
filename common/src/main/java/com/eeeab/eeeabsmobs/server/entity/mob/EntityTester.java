@@ -180,7 +180,7 @@ public class EntityTester extends EEEABMobLibrary {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        setActive(compound.getBooleanOr("isActive", false));
+        setActive(compound.getBoolean("isActive"));
         active = isActive();
     }
 

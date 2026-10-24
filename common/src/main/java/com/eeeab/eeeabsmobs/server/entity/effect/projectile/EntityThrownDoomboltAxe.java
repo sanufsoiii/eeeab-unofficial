@@ -174,7 +174,7 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
             if (this.level().canSeeSky(blockpos)) {
                 LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(this.level(), net.minecraft.world.entity.EntitySpawnReason.MOB_SUMMONED);
                 if (lightningbolt != null) {
-                    lightningbolt.snapTo(Vec3.atBottomCenterOf(blockpos));
+                    lightningbolt.moveTo(Vec3.atBottomCenterOf(blockpos));
                     lightningbolt.setCause(owner instanceof ServerPlayer ? (ServerPlayer) owner : null);
                     this.level().addFreshEntity(lightningbolt);
                     if (!this.sentSpikeEvent) {
@@ -297,17 +297,19 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag input) {
-        super.readAdditionalSaveData(input);
-        this.doomboltAxeItem = input.read("doomboltAxe", ItemStack.CODEC).orElse(new ItemStack(ItemInit.DOOMBOLT_AXE.get()));
-        this.dealtDamage = input.getBooleanOr("dealtDamage", false);
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        if (pCompound.contains("doomboltAxe", 10)) {
+            this.doomboltAxeItem = ItemStack.parseOptional(this.level().registryAccess(), pCompound.getCompound("doomboltAxe"));
+        }
+        this.dealtDamage = pCompound.getBoolean("dealtDamage");
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag output) {
-        super.addAdditionalSaveData(output);
-        output.store("doomboltAxe", ItemStack.CODEC, this.doomboltAxeItem);
-        output.putBoolean("dealtDamage", this.dealtDamage);
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.put("doomboltAxe", this.doomboltAxeItem.save(this.level().registryAccess()));
+        pCompound.putBoolean("dealtDamage", this.dealtDamage);
     }
 
     @Override

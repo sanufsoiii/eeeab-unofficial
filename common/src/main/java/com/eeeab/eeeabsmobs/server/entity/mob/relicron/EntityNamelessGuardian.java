@@ -1,6 +1,7 @@
 package com.eeeab.eeeabsmobs.server.entity.mob.relicron;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 
 import com.eeeab.animate.server.ai.AnimationAI;
 import com.eeeab.animate.server.ai.AnimationSimpleAI;
@@ -601,7 +602,7 @@ public class EntityNamelessGuardian extends AbstractRelicron implements com.eeea
     private void floatGuardian() {
         if (this.isInLava()) {
             CollisionContext collisioncontext = CollisionContext.of(this);
-            if (collisioncontext.isAbove(LiquidBlock.SHAPE_STABLE, this.blockPosition(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
+            if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
                 this.setOnGround(true);
             } else {
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.5D).add(0.0D, 0.1D, 0.0D));
@@ -774,17 +775,17 @@ public class EntityNamelessGuardian extends AbstractRelicron implements com.eeea
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        compound.read("spawnPos", net.minecraft.core.BlockPos.CODEC).ifPresent(this::setRestPos);
-        this.fmFlag = compound.getBooleanOr("fmFlag", false);
-        this.setPowered(compound.getBooleanOr("power", false));
-        this.setMadnessTick(compound.getIntOr("madnessCountdownTick", 0));
-        this.setNextMadnessTick(compound.getIntOr("nextMadnessTick", 0));
+        NbtUtils.readBlockPos(compound, "spawnPos").ifPresent(this::setRestPos);
+        this.fmFlag = compound.getBoolean("fmFlag");
+        this.setPowered(compound.getBoolean("power"));
+        this.setMadnessTick(compound.getInt("madnessCountdownTick"));
+        this.setNextMadnessTick(compound.getInt("nextMadnessTick"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        this.getRestPos().ifPresent(spawnPos -> compound.store("spawnPos", net.minecraft.core.BlockPos.CODEC, spawnPos));
+        this.getRestPos().ifPresent(spawnPos -> compound.put("spawnPos", NbtUtils.writeBlockPos(spawnPos)));
         if (!this.isChallengeMode() && this.madnessTick != NEVER_STOP) {
             compound.putBoolean("power", this.entityData.get(DATA_POWER));
             compound.putInt("madnessCountdownTick", this.madnessTick);

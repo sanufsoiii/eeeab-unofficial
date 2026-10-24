@@ -142,11 +142,11 @@ public abstract class EntityAbsImmortalSkeleton extends EntityAbsImmortal implem
         if (source.getDirectEntity() instanceof AbstractArrow arrow) pierceLevel = arrow.getPierceLevel();
         if (hitFlag && this.checkHoldItemCanBlock() && entity instanceof LivingEntity livingEntity && !source.is(DamageTypeTags.BYPASSES_ARMOR) && !source.is(DamageTypeTags.BYPASSES_SHIELD) && (this.isNoAnimation() || this.getAnimation() == BLOCK_ANIMATION)) {
             this.blockEntity = livingEntity;
-            if (livingEntity.getSecondsToDisableBlocking() > 0 || damage >= this.getMaxHealth()) {
-                this.playSound(SoundEvents.SHIELD_BREAK.value());
+            if (livingEntity.canDisableShield() || damage >= this.getMaxHealth()) {
+                this.playSound(SoundEvents.SHIELD_BREAK);
                 this.timeUntilBlock = 100;
             } else if (pierceLevel == 0) {
-                this.playSound(SoundEvents.SHIELD_BLOCK.value());
+                this.playSound(SoundEvents.SHIELD_BLOCK);
             }
             if (this.getAnimation() != BLOCK_ANIMATION) this.playAnimation(BLOCK_ANIMATION);
             if (pierceLevel > 0) {

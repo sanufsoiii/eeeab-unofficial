@@ -54,7 +54,7 @@ public class ElectricityCapability {
 
         @Override
         public void deserializeNBT(CompoundTag nbt) {
-            this.isElectrified = nbt.getBooleanOr("isElectrified", false);
+            this.isElectrified = nbt.getBoolean("isElectrified");
         }
     }
 }

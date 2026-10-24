@@ -60,7 +60,7 @@ public class SoulSummonNecklaceAbility extends Ability<Player> {
                     EntityCorpseToPlayer entity = EntityInit.CORPSE_TO_PLAYER.get().create(player.level(), net.minecraft.world.entity.EntitySpawnReason.MOB_SUMMONED);
                     if (entity != null) {
                         entity.finalizeSpawn((ServerLevel) player.level(), ((net.minecraft.server.level.ServerLevel) player.level()).getCurrentDifficultyAt(BlockPos.containing(vec3.x, vec3.y, vec3.z)), EntitySpawnReason.MOB_SUMMONED, null);
-                        entity.snapTo(vec3);
+                        entity.moveTo(vec3);
                         entity.setOwner(player);
                         if (player != target && target instanceof LivingEntity livingEntity)
                             entity.setTarget(livingEntity);
@@ -90,7 +90,7 @@ public class SoulSummonNecklaceAbility extends Ability<Player> {
     public void readNBT(Tag nbt) {
         super.readNBT(nbt);
         CompoundTag compoundTag = (CompoundTag) nbt;
-        this.cumulativeDamage = compoundTag.getFloatOr("cumulativeDamage", 0F);
-        this.coolingTime = compoundTag.getIntOr("coolingTime", 0);
+        this.cumulativeDamage = compoundTag.getFloat("cumulativeDamage");
+        this.coolingTime = compoundTag.getInt("coolingTime");
     }
 }

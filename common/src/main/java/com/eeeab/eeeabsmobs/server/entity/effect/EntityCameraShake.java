@@ -103,11 +103,11 @@ public float getShakeAmount(Player player, float delta) {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
-        setRadius(compound.getFloatOr("radius", 0F));
-        setMagnitude(compound.getFloatOr("magnitude", 0F));
-        setDuration(compound.getIntOr("duration", 0));
-        setFadeDuration(compound.getIntOr("fade_duration", 0));
-        tickCount = compound.getIntOr("ticks_existed", 0);
+        setRadius(compound.getFloat("radius"));
+        setMagnitude(compound.getFloat("magnitude"));
+        setDuration(compound.getInt("duration"));
+        setFadeDuration(compound.getInt("fade_duration"));
+        tickCount = compound.getInt("ticks_existed");
     }
 
     @Override

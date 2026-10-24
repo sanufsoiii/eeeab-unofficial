@@ -49,7 +49,7 @@ public class ItemAnimationController extends Item {
             }
             if (entity instanceof AnimatedEntity) {
                 CompoundTag tag = new CompoundTag();
-                tag.store(NBT_ENTITY_UUID, net.minecraft.core.UUIDUtil.CODEC, entity.getUUID());
+                tag.putUUID(NBT_ENTITY_UUID, entity.getUUID());
                 ModItemStackUtils.putNBT(stack, NBT_ENTITY_UUID, tag);
                 if (level.isClientSide()) {
                     player.displayClientMessage(TranslateUtils.simpleOtherText(controller.getDescriptionId(), null, entity.getName().getString()), true);
@@ -65,16 +65,16 @@ public class ItemAnimationController extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipDisplay, java.util.function.Consumer<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltip, flagIn);
-        tooltip.accept(TranslateUtils.simpleItemText(this.getDescriptionId()));
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, java.util.List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, context, tooltip, flagIn);
+        tooltip.add(TranslateUtils.simpleItemText(this.getDescriptionId()));
     }
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (level instanceof ServerLevel serverLevel && itemStack.has(DataComponents.CUSTOM_DATA)) {
-            Entity entity = serverLevel.getEntity(ModItemStackUtils.getNBT(itemStack, NBT_ENTITY_UUID).read(NBT_ENTITY_UUID, net.minecraft.core.UUIDUtil.CODEC).orElse(null));
+            Entity entity = serverLevel.getEntity(ModItemStackUtils.getNBT(itemStack, NBT_ENTITY_UUID).getUUID(NBT_ENTITY_UUID));
             if (player instanceof ServerPlayer serverPlayer && entity instanceof LivingEntity livingEntity && entity instanceof AnimatedEntity && entity.isAlive()) {
                 dev.architectury.registry.menu.MenuRegistry.openExtendedMenu(serverPlayer, new net.minecraft.world.MenuProvider() {
                     @Override

@@ -35,7 +35,7 @@ public class ItemBusterGauntlet extends Item implements ConfigurableItem {
         // getDefaultAttributeModifiers(ItemStack) has no vanilla equivalent (NeoForge-only, dynamically
         // re-queried per stack to merge mainhand+offhand modifiers); baked into the default template once
         // here instead - see ItemChainsword for the full explanation.
-        super(properties.sword(tier, 0F, 0F).component(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, mergeModifiers(buildDefaultAttributes(), buildOffHandModifiers())));
+        super(tier.applySwordProperties(properties, 0F, 0F).component(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, mergeModifiers(buildDefaultAttributes(), buildOffHandModifiers())));
         this.offHandModifiers = buildOffHandModifiers();
         this.defaultModifiers = creatAttributesFromConfig();
     }
@@ -94,10 +94,25 @@ public class ItemBusterGauntlet extends Item implements ConfigurableItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipDisplay, java.util.function.Consumer<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltip, flagIn);
-        if (TranslateUtils.SHOW_ITEM_CD) tooltip.accept(TranslateUtils.itemCoolTime(ModConfigHandler.COMMON.items.busterGauntletConfig3.get()));
-        tooltip.accept(TranslateUtils.simpleItemText(this.getDescriptionId(), ModConfigHandler.COMMON.items.busterGauntletConfig1.get()));
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, context, tooltip, flagIn);
+        if (TranslateUtils.SHOW_ITEM_CD) tooltip.add(TranslateUtils.itemCoolTime(ModConfigHandler.COMMON.items.busterGauntletConfig3.get()));
+        tooltip.add(TranslateUtils.simpleItemText(this.getDescriptionId(), ModConfigHandler.COMMON.items.busterGauntletConfig1.get()));
+    }
+
+    @Override
+    public boolean canAttackBlock(net.minecraft.world.level.block.state.BlockState state, Level level, net.minecraft.core.BlockPos pos, Player player) {
+        return !player.isCreative();
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        return true;
+    }
+
+    @Override
+    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
     }
 
     private static ItemAttributeModifiers buildDefaultAttributes() {

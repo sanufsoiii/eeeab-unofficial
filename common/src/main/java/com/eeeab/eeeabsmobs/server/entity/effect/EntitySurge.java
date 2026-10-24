@@ -52,7 +52,7 @@ public class EntitySurge extends EntityMagicEffects implements IEntity {
     @Override
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.warmupDelayTicks = compoundTag.getIntOr("warmup", 0);
+        this.warmupDelayTicks = compoundTag.getInt("warmup");
     }
 
     @Override

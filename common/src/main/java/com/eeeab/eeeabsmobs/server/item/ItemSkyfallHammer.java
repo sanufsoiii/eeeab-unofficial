@@ -7,10 +7,11 @@ import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 
 //1.21.1中PickaxeItem已移除，所有工具类物品统一继承Item；
-//工具属性通过Properties.pickaxe(tier, dmg, spd)链式方法设置
-public class ItemSkyfallHammer extends Item {
+import net.minecraft.world.item.PickaxeItem;
+
+public class ItemSkyfallHammer extends PickaxeItem {
     public ItemSkyfallHammer(ToolMaterial tier, Properties properties) {
-        super(properties.pickaxe(tier, 8F, -2.8F));
+        super(tier, 8F, -2.8F, properties);
     }
 
     //@Override

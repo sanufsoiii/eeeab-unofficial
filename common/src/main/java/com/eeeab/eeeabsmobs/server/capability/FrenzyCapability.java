@@ -49,11 +49,11 @@ public class FrenzyCapability {
                                 if (ICuriosApi.INSTANCE.isPresentInventory(player, item)) {
                                     return;
                                 }
-                            } else if (player.getInventory().getNonEquipmentItems().stream().anyMatch(i -> i.is(item))) {
+                            } else if (player.getInventory().items.stream().anyMatch(i -> i.is(item))) {
                                 return;
                             }
                         }
-                        entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, durationTick, 1, false, true, true));
+                        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, durationTick, 1, false, true, true));
                         entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, durationTick, amplifier, false, true, true));
                         entity.addEffect(new MobEffectInstance(EffectInit.ARMOR_LOWER_EFFECT.holder(), durationTick, amplifier, false, true, true));
                     }
@@ -80,7 +80,7 @@ public class FrenzyCapability {
 
         @Override
         public void deserializeNBT(CompoundTag nbt) {
-            this.isFrenzy = nbt.getBooleanOr("isFrenzy", false);
+            this.isFrenzy = nbt.getBoolean("isFrenzy");
         }
     }
 }

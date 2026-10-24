@@ -9,14 +9,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 
+import net.minecraft.world.item.SwordItem;
+
 //1.21.1中SwordItem不再有(Tier,int,float,Properties)构造函数，攻击伤害/攻速固定值(8, -2.6F)改由
 //Properties携带的ATTRIBUTE_MODIFIERS数据组件(SwordItem.createAttributes)提供，其余按配置刷新的逻辑此前已被注释掉，保持原样
-public class ItemNetherworldKatana extends Item implements ConfigurableItem, IUnbreakableItem {
+public class ItemNetherworldKatana extends SwordItem implements ConfigurableItem, IUnbreakableItem {
     //private ItemAttributeModifiers defaultModifiers;
 
     public ItemNetherworldKatana(ToolMaterial tier, Properties properties) {
         //super(tier, (int) (-3D + ModConfigHandler.COMMON.items.netherworldKatana.attackDamageValue), (float) (-4D + ModConfigHandler.COMMON.items.netherworldKatana.attackSpeedValue), properties);
-        super(properties.sword(tier, 8F, -2.6F));
+        super(tier, 8F, -2.6F, properties);
         //this.defaultModifiers = this.creatAttributesFromConfig();
     }
 

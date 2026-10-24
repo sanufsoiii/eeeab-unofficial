@@ -578,7 +578,7 @@ public class EntityRelicEarthshaker extends AbstractRelicron implements RangedAt
         Vec3 vec3 = this.position().add(lookVec);
         EntityPulsedGrenade grenade = new EntityPulsedGrenade(this.level(), this, right);
         grenade.setRadius(Mth.randomBetween(this.random, 2F, 2.5F));
-        grenade.snapTo(vec3.x + xOffset, this.getY(0.49D), vec3.z + zOffset);
+        grenade.moveTo(vec3.x + xOffset, this.getY(0.49D), vec3.z + zOffset);
         double d1 = target.getX() - (this.getX() + xOffset);
         double d2 = target.getY(-0.5F) - this.getY();
         double d3 = target.getZ() - (this.getZ() + zOffset);

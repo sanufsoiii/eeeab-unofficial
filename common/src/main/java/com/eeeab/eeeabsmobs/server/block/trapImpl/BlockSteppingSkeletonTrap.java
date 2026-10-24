@@ -24,7 +24,7 @@ public class BlockSteppingSkeletonTrap extends BlockStepOnTrap {
             if (level instanceof ServerLevel server && golem != null) {
                 golem.finalizeSpawn(server, server.getCurrentDifficultyAt(BlockPos.containing(pos.getX(), pos.getY(), pos.getZ())), EntitySpawnReason.TRIGGERED, null);
                 golem.setDangerous(level.random.nextBoolean());
-                golem.snapTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0.0F, 0.0F);
+                golem.moveTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0.0F, 0.0F);
                 server.addFreshEntity(golem);
                 golem.afterSpawn();
             }

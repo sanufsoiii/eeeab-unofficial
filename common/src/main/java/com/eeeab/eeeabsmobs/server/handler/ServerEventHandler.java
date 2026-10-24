@@ -379,7 +379,7 @@ public final class ServerEventHandler {
         ItemStack itemStack = player.getUseItem();
         if (ability != null) {
             if (!ability.isUsing()) {
-                for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
+                for (ItemStack stack : player.getInventory().items) {
                     if (stack.is(ItemInit.GUARDIAN_CORE.get()))
                         stack.setDamageValue(Math.max(stack.getDamageValue() - 1, 0));
                 }

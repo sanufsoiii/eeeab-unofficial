@@ -180,7 +180,7 @@ public class EntityPulsedGrenade extends Projectile implements IEntity {
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.setRadius(compound.getFloatOr("radius", 0F));
+        this.setRadius(compound.getFloat("radius"));
     }
 
     private LivingEntity getLivingOwner() {

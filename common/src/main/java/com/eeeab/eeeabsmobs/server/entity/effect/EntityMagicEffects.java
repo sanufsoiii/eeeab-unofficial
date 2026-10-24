@@ -100,15 +100,15 @@ public abstract class EntityMagicEffects extends Entity implements IEntity, Trac
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
-        if (compoundTag.read("owner", net.minecraft.core.UUIDUtil.CODEC).isPresent()) {
-            this.casterUUID = compoundTag.read("owner", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
+        if (compoundTag.hasUUID("owner")) {
+            this.casterUUID = compoundTag.getUUID("owner");
         }
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compoundTag) {
         if (this.casterUUID != null) {
-            compoundTag.store("owner", net.minecraft.core.UUIDUtil.CODEC, this.casterUUID);
+            compoundTag.putUUID("owner", this.casterUUID);
         }
     }
 

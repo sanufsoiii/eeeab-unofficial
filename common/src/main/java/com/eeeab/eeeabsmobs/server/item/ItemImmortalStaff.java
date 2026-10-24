@@ -77,12 +77,12 @@ public class ItemImmortalStaff extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipDisplay, java.util.function.Consumer<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, context, tooltip, flagIn);
         //ModConfigHandler.Item item = ModConfigHandler.COMMON.items;
-        //if (TranslateUtils.SHOW_ITEM_CD) tooltip.accept(TranslateUtils.itemCoolTime(item.immortalStaffConfig1.get()));
-        if (TranslateUtils.SHOW_ITEM_CD) tooltip.accept(TranslateUtils.itemCoolTime(3));
-        tooltip.accept(TranslateUtils.simpleItemText(this.getDescriptionId()));
+        //if (TranslateUtils.SHOW_ITEM_CD) tooltip.add(TranslateUtils.itemCoolTime(item.immortalStaffConfig1.get()));
+        if (TranslateUtils.SHOW_ITEM_CD) tooltip.add(TranslateUtils.itemCoolTime(3));
+        tooltip.add(TranslateUtils.simpleItemText(this.getDescriptionId()));
     }
 
     /**

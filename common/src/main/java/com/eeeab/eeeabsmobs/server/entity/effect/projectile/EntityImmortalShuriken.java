@@ -221,7 +221,7 @@ public class EntityImmortalShuriken extends Projectile implements IEntity {
     @Override
     protected void addAdditionalSaveData(CompoundTag compoundTag) {
         if (this.target != null) {
-            compoundTag.store("target", net.minecraft.core.UUIDUtil.CODEC, this.target.getUUID());
+            compoundTag.putUUID("target", this.target.getUUID());
         }
         compoundTag.putInt("difficultyLevel", this.difficultyLevel);
         compoundTag.putInt("duration", this.getDuration());
@@ -232,14 +232,14 @@ public class EntityImmortalShuriken extends Projectile implements IEntity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
-        if (compoundTag.read("target", net.minecraft.core.UUIDUtil.CODEC).isPresent()) {
-            this.targetUUID = compoundTag.read("target", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
+        if (compoundTag.hasUUID("target")) {
+            this.targetUUID = compoundTag.getUUID("target");
         }
-        this.difficultyLevel = compoundTag.getIntOr("difficultyLevel", 0);
-        this.setDuration(compoundTag.getIntOr("duration", 0));
-        this.preX = compoundTag.getDoubleOr("preX", 0.0);
-        this.preY = compoundTag.getDoubleOr("preY", 0.0);
-        this.preZ = compoundTag.getDoubleOr("preZ", 0.0);
+        this.difficultyLevel = compoundTag.getInt("difficultyLevel");
+        this.setDuration(compoundTag.getInt("duration"));
+        this.preX = compoundTag.getDouble("preX");
+        this.preY = compoundTag.getDouble("preY");
+        this.preZ = compoundTag.getDouble("preZ");
     }
 
     private boolean checkCanShoot() {

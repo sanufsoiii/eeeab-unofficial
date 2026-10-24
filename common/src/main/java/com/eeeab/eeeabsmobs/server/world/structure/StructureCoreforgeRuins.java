@@ -97,7 +97,7 @@ public class StructureCoreforgeRuins extends Structure {
         }
 
         public Piece(StructureTemplateManager templateManagerIn, CompoundTag tagCompound) {
-            super(StructuresInit.GUL.get(), tagCompound, templateManagerIn, (location) -> makeSettings(Rotation.valueOf(tagCompound.getStringOr("Rot", ""))));
+            super(StructuresInit.GUL.get(), tagCompound, templateManagerIn, (location) -> makeSettings(Rotation.valueOf(tagCompound.getString("Rot"))));
         }
 
         public Piece(StructurePieceSerializationContext context, CompoundTag tag) {
@@ -147,7 +147,7 @@ public class StructureCoreforgeRuins extends Structure {
         private static void spawnRelicronEntity(AbstractRelicron relicron, BlockPos blockPos, ServerLevelAccessor levelAccessor) {
             levelAccessor.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
             if (relicron != null) {
-                relicron.snapTo(blockPos, 0, 0);
+                relicron.moveTo(blockPos, 0, 0);
                 relicron.finalizeSpawn(levelAccessor, levelAccessor.getLevel().getCurrentDifficultyAt(blockPos), EntitySpawnReason.STRUCTURE, null);
                 relicron.setActive(false);
                 relicron.setAlwaysActive(false);

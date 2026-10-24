@@ -60,7 +60,7 @@ public abstract class AbstractRelicron extends EEEABMobLibrary implements Enemy,
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
         Holder<MobEffect> effect = effectInstance.getEffect();
-        return MobEffects.POISON != effect && MobEffects.SLOWNESS != effect && super.canBeAffected(effectInstance);
+        return MobEffects.POISON != effect && MobEffects.MOVEMENT_SLOWDOWN != effect && super.canBeAffected(effectInstance);
     }
 
     @Override
@@ -168,9 +168,9 @@ public abstract class AbstractRelicron extends EEEABMobLibrary implements Enemy,
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.entityData.set(DATA_ACTIVE, compound.getBooleanOr("isActive", false));
-        this.entityData.set(DATA_ALWAYS_ACTIVE, compound.getBooleanOr("isAlwaysActive", false));
-        this.timeUntilDeactivate = compound.getIntOr("timeUntilDeactivate", 0);
+        this.entityData.set(DATA_ACTIVE, compound.getBoolean("isActive"));
+        this.entityData.set(DATA_ALWAYS_ACTIVE, compound.getBoolean("isAlwaysActive"));
+        this.timeUntilDeactivate = compound.getInt("timeUntilDeactivate");
         this.active = this.isActive();
     }
 

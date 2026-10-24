@@ -140,7 +140,7 @@ public class EntityElectromagnetic extends EntityMagicEffects implements Trigger
 
     public static void shoot(Level world, LivingEntity caster, Vec3 pos, float size, int range, int speed, float yaw, boolean fire) {
         EntityElectromagnetic entity = new EntityElectromagnetic(world, caster);
-        entity.snapTo(pos);
+        entity.moveTo(pos);
         entity.setSize(size);
         entity.setFire(fire);
         entity.shockRange = range;

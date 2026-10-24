@@ -156,18 +156,16 @@ public Vec3[] myPos;
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag input) {
-        super.readAdditionalSaveData(input);
-        this.setPhase(input.getIntOr("phase", 0));
+    protected void readAdditionalSaveData(CompoundTag compoundTag) {
+        this.setPhase(compoundTag.getInt("phase"));
         if (this.getPhase() < 3) {
             this.displayControlled.setTimer(20);
         }
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag output) {
-        super.addAdditionalSaveData(output);
-        output.putInt("phase", this.getPhase());
+    protected void addAdditionalSaveData(CompoundTag compoundTag) {
+        compoundTag.putInt("phase", this.getPhase());
     }
 
     @Override

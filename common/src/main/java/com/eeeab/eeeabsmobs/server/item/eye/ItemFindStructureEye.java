@@ -71,12 +71,12 @@ public abstract class ItemFindStructureEye extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay tooltipDisplay, java.util.function.Consumer<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, java.util.List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, context, tooltip, flagIn);
         if (TranslateUtils.SHOW_ITEM_CD && !ModConfigHandler.COMMON.items.eyeOfStructureConfig1.get()) {
-            tooltip.accept(TranslateUtils.itemCoolTime(ModConfigHandler.COMMON.items.eyeOfStructureConfig2.get()));
+            tooltip.add(TranslateUtils.itemCoolTime(ModConfigHandler.COMMON.items.eyeOfStructureConfig2.get()));
         }
-        tooltip.accept(TranslateUtils.simpleText(TranslateUtils.ITEM_STRUCTURE_PREFIX, FIND_STRUCTURE.location().getPath(), ChatFormatting.GRAY));
+        tooltip.add(TranslateUtils.simpleText(TranslateUtils.ITEM_STRUCTURE_PREFIX, FIND_STRUCTURE.location().getPath(), ChatFormatting.GRAY));
     }
 
     public ParticleOptions getTrailParticle() {

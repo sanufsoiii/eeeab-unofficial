@@ -707,10 +707,10 @@ public Vec3[] hand;//0:left 1:right
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.entityData.set(DATA_STAGE, compound.getByteOr("bossStage", ImmortalStage.STAGE1.id));
-        this.setActive(compound.getBooleanOr("isActive", false));
-        //this.setAlwaysActive(compound.getBooleanOr("isAlwaysActive", false));
-        this.setHoldKatana(compound.getBooleanOr("holdKatana", false));
+        this.entityData.set(DATA_STAGE, compound.getByte("bossStage"));
+        this.setActive(compound.getBoolean("isActive"));
+        //this.setAlwaysActive(compound.getBoolean("isAlwaysActive"));
+        this.setHoldKatana(compound.getBoolean("holdKatana"));
     }
 
     @Override
@@ -1247,7 +1247,7 @@ public Vec3[] hand;//0:left 1:right
     private void floatImmortal() {
         if (this.isInLava()) {
             CollisionContext collisioncontext = CollisionContext.of(this);
-            if (collisioncontext.isAbove(LiquidBlock.SHAPE_STABLE, this.blockPosition(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
+            if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
                 this.setOnGround(true);
             } else {
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.5D).add(0.0D, 0.15D, 0.0D));
