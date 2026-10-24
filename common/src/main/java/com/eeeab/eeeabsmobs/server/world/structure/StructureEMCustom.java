@@ -85,8 +85,7 @@ public class StructureEMCustom extends Structure {
                         // Here, blockpos's y value is 60 which means the structure spawn 60 blocks above terrain height.
                         // Set this to false for structure to be place only at the passed in blockpos's Y value instead.
                         // Definitely keep this false when placing structures in the nether as otherwise, heightmap placing will put the structure on the Bedrock roof.
-                        this.maxDistanceFromCenter, // Maximum limit for how far pieces can spawn from center. You cannot set this bigger than 128 or else pieces gets cutoff.
-                        net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup.EMPTY);
+                        this.maxDistanceFromCenter);
 
 //        if (structurePiecesGenerator.isPresent()) {
 //            EEEABMobs.LOGGER.log(org.apache.logging.log4j.Level.DEBUG, "Test:Configuration structure type at{}", blockPos);

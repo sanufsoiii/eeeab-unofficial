@@ -32,78 +32,69 @@ public class BlockInit {
     public static final FabricDeferredRegister<Block> BLOCKS = FabricDeferredRegister.create(BuiltInRegistries.BLOCK, EEEABMobs.MOD_ID);
 
     public static final FabricDeferredRegister.Entry<Block> DUNGEON_BRICK = registryBlock("dungeon_brick", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.BEDROCK).noLootTable()), false);
+            .copy(Blocks.BEDROCK).noLootTable()), false);
 
     public static final FabricDeferredRegister.Entry<Block> IRON_GRATE = registryBlock("iron_grate", () -> new BlockIronGrate(BlockBehaviour.Properties
             .of().strength(5.0F, 6.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(BlockInit::never)
             .isRedstoneConductor(BlockInit::never).isSuffocating(BlockInit::never).isViewBlocking(BlockInit::never)
     ), false);
     public static final FabricDeferredRegister.Entry<Block> BOUNDARY_LAMP = registryBlock("boundary_lamp", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.REDSTONE_LAMP).lightLevel((blockState) -> 15)), false);
-    public static final FabricDeferredRegister.Entry<Block> ANCIENT_BOUNDARY_STONE = registryBlock("ancient_boundary_stone", () -> new DropExperienceBlock(UniformInt.of(1, 2), BlockBehaviour.Properties
-            .ofFullCopy(Blocks.COBBLED_DEEPSLATE).strength(4F, 6F).requiresCorrectToolForDrops()), false);
+            .copy(Blocks.REDSTONE_LAMP).lightLevel((blockState) -> 15)), false);
+    public static final FabricDeferredRegister.Entry<Block> ANCIENT_BOUNDARY_STONE = registryBlock("ancient_boundary_stone", () -> new DropExperienceBlock(BlockBehaviour.Properties
+            .copy(Blocks.COBBLED_DEEPSLATE).strength(4F, 6F).requiresCorrectToolForDrops(), UniformInt.of(1, 2)), false);
 
     public static final FabricDeferredRegister.Entry<Block> POLISHED_ROUGH_BOUNDARY_STONE = registryBlock("polished_rough_boundary_stone", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.ANCIENT_BOUNDARY_STONE.get()).strength(4F, 6.0F).sound(SoundType.DEEPSLATE_BRICKS)), false);
+            .copy(BlockInit.ANCIENT_BOUNDARY_STONE.get()).strength(4F, 6.0F).sound(SoundType.DEEPSLATE_BRICKS)), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_ROUGH_BOUNDARY_STONE_STAIRS = registryBlock("polished_rough_boundary_stone_stairs", () -> new StairBlock(POLISHED_ROUGH_BOUNDARY_STONE.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_ROUGH_BOUNDARY_STONE.get())), false);
+            .copy(POLISHED_ROUGH_BOUNDARY_STONE.get())), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_ROUGH_BOUNDARY_STONE_SLAB = registryBlock("polished_rough_boundary_stone_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_ROUGH_BOUNDARY_STONE.get())), false);
+            .copy(POLISHED_ROUGH_BOUNDARY_STONE.get())), false);
 
     public static final FabricDeferredRegister.Entry<Block> ROUGH_BOUNDARY_BRICKS = registryBlock("rough_boundary_bricks", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.POLISHED_ROUGH_BOUNDARY_STONE.get())), false);
+            .copy(BlockInit.POLISHED_ROUGH_BOUNDARY_STONE.get())), false);
     public static final FabricDeferredRegister.Entry<Block> CRACKED_ROUGH_BOUNDARY_BRICKS = registryBlock("cracked_rough_boundary_bricks", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.ROUGH_BOUNDARY_BRICKS.get())), false);
+            .copy(BlockInit.ROUGH_BOUNDARY_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> CHISELED_ROUGH_BOUNDARY_BRICKS = registryBlock("chiseled_rough_boundary_bricks", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.ROUGH_BOUNDARY_BRICKS.get())), false);
+            .copy(BlockInit.ROUGH_BOUNDARY_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> ROUGH_BOUNDARY_STONE_PILLAR = registryBlock("rough_boundary_stone_pillar", () -> new BlockRotatedPillar(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.ROUGH_BOUNDARY_BRICKS.get())), false);
+            .copy(BlockInit.ROUGH_BOUNDARY_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> ROUGH_BOUNDARY_BRICK_STAIRS = registryBlock("rough_boundary_brick_stairs", () -> new StairBlock(ROUGH_BOUNDARY_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(ROUGH_BOUNDARY_BRICKS.get())), false);
+            .copy(ROUGH_BOUNDARY_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> ROUGH_BOUNDARY_BRICK_SLAB = registryBlock("rough_boundary_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(ROUGH_BOUNDARY_BRICKS.get())), false);
+            .copy(ROUGH_BOUNDARY_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> ROUGH_BOUNDARY_BRICK_WALL = registryBlock("rough_boundary_brick_wall", () -> new WallBlock(BlockBehaviour.Properties
-            .ofFullCopy(ROUGH_BOUNDARY_BRICKS.get())), false);
+            .copy(ROUGH_BOUNDARY_BRICKS.get())), false);
 
     public static final FabricDeferredRegister.Entry<Block> POLISHED_BOUNDARY_STONE = registryBlock("polished_boundary_stone", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.ROUGH_BOUNDARY_BRICKS.get()).strength(4.0F, 6.0F)), false);
+            .copy(BlockInit.ROUGH_BOUNDARY_BRICKS.get()).strength(4.0F, 6.0F)), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_BOUNDARY_STONE_STAIRS = registryBlock("polished_boundary_stone_stairs", () -> new StairBlock(ROUGH_BOUNDARY_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_BOUNDARY_STONE.get())), false);
+            .copy(POLISHED_BOUNDARY_STONE.get())), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_BOUNDARY_STONE_SLAB = registryBlock("polished_boundary_stone_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_BOUNDARY_STONE.get())), false);
+            .copy(POLISHED_BOUNDARY_STONE.get())), false);
 
     public static final FabricDeferredRegister.Entry<Block> POLISHED_BOUNDARY_BRICKS = registryBlock("polished_boundary_bricks", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.POLISHED_BOUNDARY_STONE.get())), false);
+            .copy(BlockInit.POLISHED_BOUNDARY_STONE.get())), false);
     public static final FabricDeferredRegister.Entry<Block> CRACKED_POLISHED_BOUNDARY_BRICKS = registryBlock("cracked_polished_boundary_bricks", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.POLISHED_BOUNDARY_BRICKS.get())), false);
+            .copy(BlockInit.POLISHED_BOUNDARY_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> CHISELED_POLISHED_BOUNDARY_BRICKS = registryBlock("chiseled_polished_boundary_bricks", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.POLISHED_BOUNDARY_BRICKS.get())), false);
+            .copy(BlockInit.POLISHED_BOUNDARY_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_BOUNDARY_STONE_PILLAR = registryBlock("polished_boundary_stone_pillar", () -> new BlockRotatedPillar(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.POLISHED_BOUNDARY_BRICKS.get())), false);
+            .copy(BlockInit.POLISHED_BOUNDARY_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_BOUNDARY_BRICK_STAIRS = registryBlock("polished_boundary_brick_stairs", () -> new StairBlock(POLISHED_BOUNDARY_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_BOUNDARY_BRICKS.get())), false);
+            .copy(POLISHED_BOUNDARY_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_BOUNDARY_BRICK_SLAB = registryBlock("polished_boundary_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_BOUNDARY_BRICKS.get())), false);
+            .copy(POLISHED_BOUNDARY_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_BOUNDARY_BRICK_WALL = registryBlock("polished_boundary_brick_wall", () -> new WallBlock(BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_BOUNDARY_BRICKS.get())), false);
+            .copy(POLISHED_BOUNDARY_BRICKS.get())), false);
 
     public static final FabricDeferredRegister.Entry<Block> REDSTONE_POISON_DART_TRAP = registryBlock("redstone_poison_dart_trap", () -> new BlockTomeArrowsTrap(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.DEEPSLATE_BRICKS).strength(50.0F, 1200.0F)), false);
+            .copy(Blocks.DEEPSLATE_BRICKS).strength(50.0F, 1200.0F)), false);
     public static final FabricDeferredRegister.Entry<Block> STEPPING_FLAME_TRAP = registryBlock("stepping_flame_trap", () -> new BlockSteppingFlameTrap(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.DEEPSLATE_BRICKS).strength(50.0F, 1200.0F).randomTicks().lightLevel(state -> state.getValue(BlockStateProperties.OPEN) ? 7 : 0)), false);
+            .copy(Blocks.DEEPSLATE_BRICKS).strength(50.0F, 1200.0F).randomTicks().lightLevel(state -> state.getValue(BlockStateProperties.OPEN) ? 7 : 0)), false);
     public static final FabricDeferredRegister.Entry<Block> STEPPING_SHOCK_TRAP = registryBlock("stepping_shock_trap", () -> new BlockSteppingShockTrap(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.DEEPSLATE_BRICKS).strength(50.0F, 1200.0F).randomTicks().lightLevel(state -> state.getValue(BlockStateProperties.OPEN) ? 2 : 0)), false);
-    // Block gained an abstract codec() (MapCodec<? extends Block>) in 1.20.5+ for block-state (de)serialization,
-    // so every Block subclass - including anonymous ones - must implement it now. This block isn't meant to be
-    // data-driven, so the codec just always yields this exact instance regardless of what Properties it's asked
-    // to build with, matching how vanilla's own one-off anonymous blocks (e.g. some flower pots) do it.
+            .copy(Blocks.DEEPSLATE_BRICKS).strength(50.0F, 1200.0F).randomTicks().lightLevel(state -> state.getValue(BlockStateProperties.OPEN) ? 2 : 0)), false);
     public static final FabricDeferredRegister.Entry<Block> UNCARVED_BOUNDARY_STONE = registryBlock("uncarved_boundary_stone", () -> new HorizontalDirectionalBlock(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.REINFORCED_DEEPSLATE).strength(-1.0F, 3600000.0F).noLootTable().lightLevel(value -> 3).sound(SoundType.STONE)) {
-        @Override
-        public com.mojang.serialization.MapCodec<? extends HorizontalDirectionalBlock> codec() {
-            return simpleCodec(properties -> this);
-        }
-
+            .copy(Blocks.REINFORCED_DEEPSLATE).strength(-1.0F, 3600000.0F).noLootTable().lightLevel(value -> 3).sound(SoundType.STONE)) {
         @Override
         public BlockState getStateForPlacement(BlockPlaceContext pContext) {
             return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
@@ -115,121 +106,117 @@ public class BlockInit {
         }
     }, false);
     public static final FabricDeferredRegister.Entry<Block> RUNIC_BOUNDARY_STONE = registryBlock("runic_boundary_stone", () -> new BlockGalacticAlphabet(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.UNCARVED_BOUNDARY_STONE.get()).noLootTable(), EnumSet.of(SGACharacter.V, SGACharacter.O, SGACharacter.I, SGACharacter.D)), false);
+            .copy(BlockInit.UNCARVED_BOUNDARY_STONE.get()).noLootTable(), EnumSet.of(SGACharacter.V, SGACharacter.O, SGACharacter.I, SGACharacter.D)), false);
     public static final FabricDeferredRegister.Entry<Block> BOUNDARY_CORE = registryBlock("boundary_core", () -> new BlockVoidCrackPortalLock(BlockBehaviour.Properties.of()
             .randomTicks().pushReaction(PushReaction.BLOCK).strength(-1.0F).sound(SoundType.STONE).lightLevel(s -> 3).noLootTable()), false);
     public static final FabricDeferredRegister.Entry<Block> VOID_CRACK_PORTAL = registryBlock("void_crack_portal", () -> new BlockVoidCrackPortal(BlockBehaviour.Properties.of()
             .noCollission().randomTicks().pushReaction(PushReaction.BLOCK).strength(-1.0F).isValidSpawn(BlockInit::never).sound(SoundType.GLASS).lightLevel(s -> 11).noLootTable()), false);
     public static final FabricDeferredRegister.Entry<Block> EROSION_DEEPSLATE_BRICKS = registryBlock("erosion_deepslate_bricks", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.DEEPSLATE_BRICKS).lightLevel(s -> 7).noLootTable()), false);
+            .copy(Blocks.DEEPSLATE_BRICKS).lightLevel(s -> 7).noLootTable()), false);
 
     public static final FabricDeferredRegister.Entry<Block> SLIDING_DOOR = registryBlock("sliding_door", BlockSlidingDoor::new, true);
     public static final FabricDeferredRegister.Entry<Block> TOMBSTONE = registryBlock("tombstone", BlockTombstone::new, true);
     public static final FabricDeferredRegister.Entry<Block> EROSION_ROCK_BRICKS = registryBlock("erosion_rock_bricks", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.DEEPSLATE_BRICKS).strength(10.0F, 1200.0F)), false);
+            .copy(Blocks.DEEPSLATE_BRICKS).strength(10.0F, 1200.0F)), false);
     public static final FabricDeferredRegister.Entry<Block> IMMORTAL_BLOCK = registryBlock("immortal_block", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.IRON_BLOCK).sound(SoundType.METAL)), false);
+            .copy(Blocks.IRON_BLOCK).sound(SoundType.METAL)), false);
     public static final FabricDeferredRegister.Entry<Block> GHOST_STEEL_BLOCK = registryBlock("ghost_steel_block", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.NETHERITE_BLOCK).sound(SoundType.METAL)), false, new Item.Properties().rarity(Rarity.EPIC).fireResistant());
+            .copy(Blocks.NETHERITE_BLOCK).sound(SoundType.METAL)), false, new Item.Properties().rarity(Rarity.EPIC).fireResistant());
     public static final FabricDeferredRegister.Entry<Block> CUT_GHOST_STEEL_BLOCK = registryBlock("cut_ghost_steel", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(BlockInit.GHOST_STEEL_BLOCK.get())), false, new Item.Properties().rarity(Rarity.EPIC).fireResistant());
+            .copy(BlockInit.GHOST_STEEL_BLOCK.get())), false, new Item.Properties().rarity(Rarity.EPIC).fireResistant());
     public static final FabricDeferredRegister.Entry<Block> CUT_GHOST_STEEL_BLOCK_STAIRS = registryBlock("cut_ghost_steel_stairs", () -> new StairBlock(CUT_GHOST_STEEL_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(CUT_GHOST_STEEL_BLOCK.get())), false, new Item.Properties().rarity(Rarity.EPIC).fireResistant());
+            .copy(CUT_GHOST_STEEL_BLOCK.get())), false, new Item.Properties().rarity(Rarity.EPIC).fireResistant());
     public static final FabricDeferredRegister.Entry<Block> CUT_GHOST_STEEL_BLOCK_SLAB = registryBlock("cut_ghost_steel_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(CUT_GHOST_STEEL_BLOCK.get())), false, new Item.Properties().rarity(Rarity.EPIC).fireResistant());
+            .copy(CUT_GHOST_STEEL_BLOCK.get())), false, new Item.Properties().rarity(Rarity.EPIC).fireResistant());
     public static final FabricDeferredRegister.Entry<Block> ERODED_SOIL = registryBlock("eroded_soil", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.MUD).sound(SoundType.MUD)), false);
-    public static final FabricDeferredRegister.Entry<Block> DARKENED_COAL_ORE = registryBlock("darkened_coal_ore", () -> new DropExperienceBlock(UniformInt.of(0, 2), BlockBehaviour.Properties
-            .ofFullCopy(Blocks.COAL_ORE)), false);
-    // DropExperienceBlock now requires an explicit IntProvider (no more implicit-zero constructor); ConstantInt.of(0)
-    // reproduces the old "block exists, drop no XP by default" behaviour verbatim.
-    public static final FabricDeferredRegister.Entry<Block> DARKENED_IRON_ORE = registryBlock("darkened_iron_ore", () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties
-            .ofFullCopy(Blocks.IRON_ORE)), false);
+            .copy(Blocks.MUD).sound(SoundType.MUD)), false);
+    public static final FabricDeferredRegister.Entry<Block> DARKENED_COAL_ORE = registryBlock("darkened_coal_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties
+            .copy(Blocks.COAL_ORE), UniformInt.of(0, 2)), false);
+    public static final FabricDeferredRegister.Entry<Block> DARKENED_IRON_ORE = registryBlock("darkened_iron_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties
+            .copy(Blocks.IRON_ORE), ConstantInt.of(0)), false);
     public static final FabricDeferredRegister.Entry<Block> BLIGHTED_STONE = registryBlock("blighted_stone", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.STONE).sound(SoundType.STONE)), false);
+            .copy(Blocks.STONE).sound(SoundType.STONE)), false);
     public static final FabricDeferredRegister.Entry<Block> BLIGHTED_STONE_STAIRS = registryBlock("blighted_stone_stairs", () -> new StairBlock(BLIGHTED_STONE.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_STONE.get())), false);
+            .copy(BLIGHTED_STONE.get())), false);
     public static final FabricDeferredRegister.Entry<Block> BLIGHTED_STONE_SLAB = registryBlock("blighted_stone_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_STONE.get())), false);
-    // PressurePlateBlock.Sensitivity was removed; PressurePlateBlock is now (BlockSetType, Properties) only.
-    // ButtonBlock dropped its trailing "arrows can press" boolean and is now (BlockSetType, int tickDelay, Properties).
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_STONE_PRESSURE_PLATE = registryBlock("blighted_stone_pressure_plate", () -> new PressurePlateBlock(BlockSetType.STONE, BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_STONE.get())), false);
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_STONE_BUTTON = registryBlock("blighted_stone_button", () -> new ButtonBlock(BlockSetType.STONE, 20, BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_STONE.get())), false);
+            .copy(BLIGHTED_STONE.get())), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_STONE_PRESSURE_PLATE = registryBlock("blighted_stone_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, BlockBehaviour.Properties
+            .copy(BLIGHTED_STONE.get()), BlockSetType.STONE), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_STONE_BUTTON = registryBlock("blighted_stone_button", () -> new ButtonBlock(BlockBehaviour.Properties
+            .copy(BLIGHTED_STONE.get()), BlockSetType.STONE, 20, false), false);
     public static final FabricDeferredRegister.Entry<Block> BLIGHTED_COBBLESTONE = registryBlock("blighted_cobblestone", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.COBBLESTONE).sound(SoundType.STONE)), false);
+            .copy(Blocks.COBBLESTONE).sound(SoundType.STONE)), false);
     public static final FabricDeferredRegister.Entry<Block> BLIGHTED_COBBLESTONE_STAIRS = registryBlock("blighted_cobblestone_stairs", () -> new StairBlock(BLIGHTED_COBBLESTONE.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_COBBLESTONE.get())), false);
+            .copy(BLIGHTED_COBBLESTONE.get())), false);
     public static final FabricDeferredRegister.Entry<Block> BLIGHTED_COBBLESTONE_SLAB = registryBlock("blighted_cobblestone_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_COBBLESTONE.get())), false);
+            .copy(BLIGHTED_COBBLESTONE.get())), false);
     public static final FabricDeferredRegister.Entry<Block> BLIGHTED_COBBLESTONE_WALL = registryBlock("blighted_cobblestone_wall", () -> new WallBlock(BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_COBBLESTONE.get())), false);
+            .copy(BLIGHTED_COBBLESTONE.get())), false);
     public static final FabricDeferredRegister.Entry<Block> VOIDSHARD = registryBlock("voidshard", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.GRANITE).sound(SoundType.STONE)), false);
+            .copy(Blocks.GRANITE).sound(SoundType.STONE)), false);
     public static final FabricDeferredRegister.Entry<Block> VOIDSHARD_STAIRS = registryBlock("voidshard_stairs", () -> new StairBlock(VOIDSHARD.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(VOIDSHARD.get())), false);
+            .copy(VOIDSHARD.get())), false);
     public static final FabricDeferredRegister.Entry<Block> VOIDSHARD_SLAB = registryBlock("voidshard_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(VOIDSHARD.get())), false);
+            .copy(VOIDSHARD.get())), false);
     public static final FabricDeferredRegister.Entry<Block> VOIDSHARD_WALL = registryBlock("voidshard_wall", () -> new WallBlock(BlockBehaviour.Properties
-            .ofFullCopy(VOIDSHARD.get())), false);
+            .copy(VOIDSHARD.get())), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_VOIDSHARD = registryBlock("polished_voidshard", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.POLISHED_GRANITE).sound(SoundType.STONE)), false);
+            .copy(Blocks.POLISHED_GRANITE).sound(SoundType.STONE)), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_VOIDSHARD_STAIRS = registryBlock("polished_voidshard_stairs", () -> new StairBlock(POLISHED_VOIDSHARD.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_VOIDSHARD.get())), false);
+            .copy(POLISHED_VOIDSHARD.get())), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_VOIDSHARD_SLAB = registryBlock("polished_voidshard_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_VOIDSHARD.get())), false);
+            .copy(POLISHED_VOIDSHARD.get())), false);
     public static final FabricDeferredRegister.Entry<Block> DARK_EROSION_ROCK = registryBlock("dark_erosion_rock", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.DEEPSLATE).sound(SoundType.STONE)), false);
+            .copy(Blocks.DEEPSLATE).sound(SoundType.STONE)), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_DARK_EROSION_ROCK = registryBlock("polished_dark_erosion_rock", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.COBBLED_DEEPSLATE).sound(SoundType.STONE)), false);
+            .copy(Blocks.COBBLED_DEEPSLATE).sound(SoundType.STONE)), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_DARK_EROSION_ROCK_STAIRS = registryBlock("polished_dark_erosion_rock_stairs", () -> new StairBlock(POLISHED_DARK_EROSION_ROCK.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_DARK_EROSION_ROCK.get())), false);
+            .copy(POLISHED_DARK_EROSION_ROCK.get())), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_DARK_EROSION_ROCK_SLAB = registryBlock("polished_dark_erosion_rock_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_DARK_EROSION_ROCK.get())), false);
+            .copy(POLISHED_DARK_EROSION_ROCK.get())), false);
     public static final FabricDeferredRegister.Entry<Block> POLISHED_DARK_EROSION_ROCK_WALL = registryBlock("polished_dark_erosion_rock_wall", () -> new WallBlock(BlockBehaviour.Properties
-            .ofFullCopy(POLISHED_DARK_EROSION_ROCK.get())), false);
+            .copy(POLISHED_DARK_EROSION_ROCK.get())), false);
     public static final FabricDeferredRegister.Entry<Block> CHISELED_DARK_EROSION_ROCK = registryBlock("chiseled_dark_erosion_rock", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.COBBLED_DEEPSLATE).sound(SoundType.STONE)), false);
+            .copy(Blocks.COBBLED_DEEPSLATE).sound(SoundType.STONE)), false);
     public static final FabricDeferredRegister.Entry<Block> DARK_EROSION_ROCK_BRICKS = registryBlock("dark_erosion_rock_bricks", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.COBBLED_DEEPSLATE).sound(SoundType.STONE)), false);
+            .copy(Blocks.COBBLED_DEEPSLATE).sound(SoundType.STONE)), false);
     public static final FabricDeferredRegister.Entry<Block> DARK_EROSION_ROCK_PILLAR = registryBlock("dark_erosion_rock_pillar", () -> new BlockRotatedPillar(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.COBBLED_DEEPSLATE).sound(SoundType.STONE)), false);
+            .copy(Blocks.COBBLED_DEEPSLATE).sound(SoundType.STONE)), false);
     public static final FabricDeferredRegister.Entry<Block> CRACKED_DARK_EROSION_ROCK_BRICKS = registryBlock("cracked_dark_erosion_rock_bricks", () -> new Block(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.COBBLED_DEEPSLATE).sound(SoundType.STONE)), false);
+            .copy(Blocks.COBBLED_DEEPSLATE).sound(SoundType.STONE)), false);
     public static final FabricDeferredRegister.Entry<Block> DARK_EROSION_ROCK_BRICKS_STAIRS = registryBlock("dark_erosion_rock_bricks_stairs", () -> new StairBlock(DARK_EROSION_ROCK_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(DARK_EROSION_ROCK_BRICKS.get())), false);
+            .copy(DARK_EROSION_ROCK_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> DARK_EROSION_ROCK_BRICKS_SLAB = registryBlock("dark_erosion_rock_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(DARK_EROSION_ROCK_BRICKS.get())), false);
+            .copy(DARK_EROSION_ROCK_BRICKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> DARK_EROSION_ROCK_BRICKS_WALL = registryBlock("dark_erosion_rock_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties
-            .ofFullCopy(DARK_EROSION_ROCK_BRICKS.get())), false);
+            .copy(DARK_EROSION_ROCK_BRICKS.get())), false);
 
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_LOG = registryBlock("blighted_oak_log", () -> new BlockRotatedPillar(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)), false);
-    public static final FabricDeferredRegister.Entry<Block> STRIPPED_BLIGHTED_OAK_LOG = registryBlock("stripped_blighted_oak", () -> new BlockRotatedPillar(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG), 5, 5), false);
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_WOOD = registryBlock("blighted_oak_wood", () -> new BlockRotatedPillar(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)), false);
-    public static final FabricDeferredRegister.Entry<Block> STRIPPED_BLIGHTED_OAK_WOOD = registryBlock("stripped_blighted_oak_wood", () -> new BlockRotatedPillar(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD), 5, 5), false);
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_SAPLING = registryBlock("blighted_oak_sapling", () -> new SaplingBlock(BlightedOakGrower.BLIGHTED_OAK, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)), false);
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_PLANKS = registryBlock("blighted_oak_planks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_LOG = registryBlock("blighted_oak_log", () -> new BlockRotatedPillar(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)), false);
+    public static final FabricDeferredRegister.Entry<Block> STRIPPED_BLIGHTED_OAK_LOG = registryBlock("stripped_blighted_oak", () -> new BlockRotatedPillar(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_LOG), 5, 5), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_WOOD = registryBlock("blighted_oak_wood", () -> new BlockRotatedPillar(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), false);
+    public static final FabricDeferredRegister.Entry<Block> STRIPPED_BLIGHTED_OAK_WOOD = registryBlock("stripped_blighted_oak_wood", () -> new BlockRotatedPillar(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_WOOD), 5, 5), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_SAPLING = registryBlock("blighted_oak_sapling", () -> new SaplingBlock(BlightedOakGrower.BLIGHTED_OAK, BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_PLANKS = registryBlock("blighted_oak_planks", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)), false);
     public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_STAIRS = registryBlock("blighted_oak_stairs", () -> new StairBlock(BLIGHTED_OAK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_OAK_PLANKS.get())), false);
+            .copy(BLIGHTED_OAK_PLANKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_SLAB = registryBlock("blighted_oak_slab", () -> new SlabBlock(BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_OAK_PLANKS.get())), false);
+            .copy(BLIGHTED_OAK_PLANKS.get())), false);
     public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_FENCE = registryBlock("blighted_oak_fence", () -> new FenceBlock(BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_OAK_PLANKS.get())), false);
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_FENCE_GATE = registryBlock("blighted_oak_fence_gate", () -> new FenceGateBlock(WoodType.OAK, BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_OAK_PLANKS.get())), false);
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_DOOR = registryBlock("blighted_oak_door", () -> new DoorBlock(BlockSetType.OAK, BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_OAK_PLANKS.get()).noOcclusion()), false);
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_TRAPDOOR = registryBlock("blighted_oak_trapdoor", () -> new TrapDoorBlock(BlockSetType.OAK, BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_OAK_PLANKS.get()).noOcclusion()), false);
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_PRESSURE_PLATE = registryBlock("blighted_oak_pressure_plate", () -> new PressurePlateBlock(BlockSetType.OAK, BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_OAK_PLANKS.get())), false);
-    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_BUTTON = registryBlock("blighted_oak_button", () -> new ButtonBlock(BlockSetType.OAK, 30, BlockBehaviour.Properties
-            .ofFullCopy(BLIGHTED_OAK_PLANKS.get())), false);
+            .copy(BLIGHTED_OAK_PLANKS.get())), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_FENCE_GATE = registryBlock("blighted_oak_fence_gate", () -> new FenceGateBlock(BlockBehaviour.Properties
+            .copy(BLIGHTED_OAK_PLANKS.get()), WoodType.OAK), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_DOOR = registryBlock("blighted_oak_door", () -> new DoorBlock(BlockBehaviour.Properties
+            .copy(BLIGHTED_OAK_PLANKS.get()).noOcclusion(), BlockSetType.OAK), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_TRAPDOOR = registryBlock("blighted_oak_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties
+            .copy(BLIGHTED_OAK_PLANKS.get()).noOcclusion(), BlockSetType.OAK), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_PRESSURE_PLATE = registryBlock("blighted_oak_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties
+            .copy(BLIGHTED_OAK_PLANKS.get()), BlockSetType.OAK), false);
+    public static final FabricDeferredRegister.Entry<Block> BLIGHTED_OAK_BUTTON = registryBlock("blighted_oak_button", () -> new ButtonBlock(BlockBehaviour.Properties
+            .copy(BLIGHTED_OAK_PLANKS.get()), BlockSetType.OAK, 30, true), false);
     public static final FabricDeferredRegister.Entry<Block> STEPPING_POISON_TRAP = registryBlock("stepping_poison_trap", () -> new BlockSteppingPoisonTrap(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.DEEPSLATE_BRICKS).randomTicks().strength(50.0F, 1200.0F)), false);
+            .copy(Blocks.DEEPSLATE_BRICKS).randomTicks().strength(50.0F, 1200.0F)), false);
     public static final FabricDeferredRegister.Entry<Block> STEPPING_SKELETON_TRAP = registryBlock("stepping_skeleton_trap", () -> new BlockSteppingSkeletonTrap(BlockBehaviour.Properties
-            .ofFullCopy(Blocks.DEEPSLATE_BRICKS).randomTicks().strength(50.0F, 1200.0F).lightLevel(state -> state.getValue(BlockStateProperties.OPEN) ? 2 : 0)), false);
+            .copy(Blocks.DEEPSLATE_BRICKS).randomTicks().strength(50.0F, 1200.0F).lightLevel(state -> state.getValue(BlockStateProperties.OPEN) ? 2 : 0)), false);
 
     private static boolean always(BlockState state, BlockGetter getter, BlockPos pos) {
         return true;

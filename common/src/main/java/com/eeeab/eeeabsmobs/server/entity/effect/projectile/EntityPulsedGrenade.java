@@ -99,7 +99,7 @@ public class EntityPulsedGrenade extends Projectile implements IEntity {
             float range = this.getRadius() * 2;
             AABB aabb = ModEntityUtils.makeAABBWithSize(x, y, z, 0, range, range, range);
             for (Entity target : this.level().getEntities(this, aabb, e -> e != owner && (owner == null || !owner.isAlliedTo(e)) && e.isAttackable())) {
-                if (target.ignoreExplosion(null)) continue;
+                if (target.ignoreExplosion()) continue;
                 double dist = Math.sqrt(target.distanceToSqr(center)) / range;
                 if (dist <= 1) {
                     double d0 = target.getX() - x;

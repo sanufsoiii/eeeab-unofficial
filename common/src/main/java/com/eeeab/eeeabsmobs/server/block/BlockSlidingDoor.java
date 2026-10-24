@@ -39,15 +39,6 @@ import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockSlidingDoor extends BaseEntityBlock {
-    // BaseEntityBlock#codec() became abstract in 1.21 (blocks need a MapCodec for potential re-serialization).
-    // This block is only ever constructed in code (never via datapack/JSON), so simpleCodec is a faithful
-    // stand-in - it just needs *a* codec to satisfy the abstract method, not a datapack-facing one.
-    private static final MapCodec<BlockSlidingDoor> CODEC = simpleCodec(properties -> new BlockSlidingDoor());
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
@@ -213,7 +204,7 @@ public class BlockSlidingDoor extends BaseEntityBlock {
     }
 
     @Override
-    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide && player.isCreative()) {
             BlockPos basePos = getBasePos(state, pos);
             BlockState baseState = level.getBlockState(basePos);
@@ -234,7 +225,7 @@ public class BlockSlidingDoor extends BaseEntityBlock {
                 level.levelEvent(player, 2001, basePos, Block.getId(baseState));
             }
         }
-        return super.playerWillDestroy(level, pos, state, player);
+        super.playerWillDestroy(level, pos, state, player);
     }
 
     /**

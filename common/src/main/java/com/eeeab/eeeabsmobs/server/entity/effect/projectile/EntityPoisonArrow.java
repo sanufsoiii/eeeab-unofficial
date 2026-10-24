@@ -17,7 +17,7 @@ public class EntityPoisonArrow extends AbstractArrow implements IEntity {
     private int duration;
 
     public EntityPoisonArrow(EntityType<? extends EntityPoisonArrow> entityType, Level level) {
-        super(entityType, level, new ItemStack(Items.ARROW));
+        super(entityType, level);
     }
 
     // AbstractArrow dropped its (EntityType,double,double,double,Level) position constructor - only the

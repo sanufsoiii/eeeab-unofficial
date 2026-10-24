@@ -69,7 +69,7 @@ public class EntityTelegraph extends Entity implements IEntity {
     }
 
     @Override
-    public boolean ignoreExplosion(net.minecraft.world.level.Explosion explosion) {
+    public boolean ignoreExplosion() {
         return true;
     }
 

@@ -12,6 +12,7 @@ import com.eeeab.eeeabsmobs.server.init.AttributeInit;
 import com.eeeab.eeeabsmobs.server.init.ItemInit;
 import com.eeeab.eeeabsmobs.server.init.PotionInit;
 import com.mojang.blaze3d.vertex.PoseStack;
+import java.lang.reflect.Method;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -211,7 +212,16 @@ public class ForgeEEEABPlatform implements EEEABPlatform {
     @Override
     public void registerFlammable(Block block, int flammability, int fireSpreadSpeed) {
         FireBlock fireBlock = (FireBlock) Blocks.FIRE;
-        fireBlock.setFlammable(block, flammability, fireSpreadSpeed);
+        try {
+            for (Method m : FireBlock.class.getDeclaredMethods()) {
+                if (m.getParameterCount() == 3 && m.getParameterTypes()[0] == Block.class && m.getParameterTypes()[1] == int.class && m.getParameterTypes()[2] == int.class) {
+                    m.setAccessible(true);
+                    m.invoke(fireBlock, block, flammability, fireSpreadSpeed);
+                    break;
+                }
+            }
+        } catch (Exception ignored) {
+        }
     }
 
     @Override

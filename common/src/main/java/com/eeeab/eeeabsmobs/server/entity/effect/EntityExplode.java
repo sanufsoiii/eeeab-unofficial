@@ -97,7 +97,7 @@ public class EntityExplode extends EntityMagicEffects {
         int i1 = Mth.floor(pos.y + (double) f2 + 1.0D);
         int j2 = Mth.floor(pos.z - (double) f2 - 1.0D);
         int j1 = Mth.floor(pos.z + (double) f2 + 1.0D);
-        List<Entity> list = this.level().getEntities(this.owner, new AABB(k1, i2, j2, l1, i1, j1), e -> e.isAttackable() && !e.ignoreExplosion(null));
+        List<Entity> list = this.level().getEntities(this.owner, new AABB(k1, i2, j2, l1, i1, j1), e -> e.isAttackable() && !e.ignoreExplosion());
         for (Entity hit : list) {
             double d12 = Math.sqrt(hit.distanceToSqr(pos)) / (double) f2;
             if (d12 <= 1.0D) {
@@ -166,7 +166,7 @@ public class EntityExplode extends EntityMagicEffects {
     }
 
     @Override
-    public boolean ignoreExplosion(net.minecraft.world.level.Explosion explosion) {
+    public boolean ignoreExplosion() {
         return true;
     }
 

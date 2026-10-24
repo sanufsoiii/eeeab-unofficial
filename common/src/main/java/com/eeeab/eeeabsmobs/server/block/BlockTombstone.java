@@ -26,14 +26,6 @@ import org.jetbrains.annotations.Nullable;
 //TODO 未完成方块
 public class BlockTombstone extends BaseEntityBlock {
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
-    // BaseEntityBlock#codec() became abstract in 1.21 - see BlockSlidingDoor for the same pattern; this block
-    // is code-constructed only, so simpleCodec just satisfies the abstract method.
-    private static final com.mojang.serialization.MapCodec<BlockTombstone> CODEC = simpleCodec(properties -> new BlockTombstone());
-
-    @Override
-    protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     public BlockTombstone() {
         super(BlockBehaviour.Properties.of().lightLevel(state -> state.getValue(POWER)).hasPostProcess((state, level, pos) -> state.getValue(POWER) > 0).strength(-1.0F, 3600000.0F).sound(SoundType.STONE).noLootTable());

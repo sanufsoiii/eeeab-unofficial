@@ -53,14 +53,11 @@ public class EntityThrownDoomboltAxe extends AbstractArrow implements IEntity {
     private boolean sentSpikeEvent;
 
     public EntityThrownDoomboltAxe(EntityType<? extends EntityThrownDoomboltAxe> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel, new ItemStack(ItemInit.DOOMBOLT_AXE.get()));
+        super(pEntityType, pLevel);
     }
 
-    // AbstractArrow's (EntityType,LivingEntity,Level) constructor was replaced by one that also takes the
-    // pickup ItemStack and the (nullable) weapon ItemStack it was fired from - pass the axe stack for both,
-    // since this isn't fired "from" a separate weapon item.
     public EntityThrownDoomboltAxe(Level pLevel, LivingEntity shooter, ItemStack stack) {
-        super(EntityInit.DOOMBOLT_AXE.get(), shooter, pLevel, stack);
+        super(EntityInit.DOOMBOLT_AXE.get(), shooter, pLevel);
         this.doomboltAxeItem = stack.copy();
         this.entityData.set(ID_FOIL, stack.hasFoil());
     }

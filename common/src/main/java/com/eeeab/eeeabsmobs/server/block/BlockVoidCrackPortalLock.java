@@ -14,14 +14,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class BlockVoidCrackPortalLock extends HorizontalDirectionalBlock {
-    // HorizontalDirectionalBlock#codec() became abstract in 1.21 - same pattern as BlockSlidingDoor/BlockTombstone.
-    private static final com.mojang.serialization.MapCodec<BlockVoidCrackPortalLock> CODEC = simpleCodec(BlockVoidCrackPortalLock::new);
-
-    @Override
-    protected com.mojang.serialization.MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
-    }
-
     public BlockVoidCrackPortalLock(Properties properties) {
         super(properties);
     }
