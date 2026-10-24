@@ -234,11 +234,6 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
     }
 
     @Override
-    public boolean isMultipartEntity() {
-        return true;
-    }
-
-    @Override
     @NotNull
     protected BodyRotationControl createBodyControl() {
         return new ModBodyRotationControl(this);
@@ -978,7 +973,7 @@ public class EntityRelicAnnihilator extends AbstractRelicron implements RangedAt
     }
 
     public static boolean canBeControlled(LivingEntity entity, LivingEntity target) {
-        if (!target.isAlive() || target.isSpectator() || (target instanceof com.eeeab.eeeabsmobs.server.entity.IMultipartMob mp && mp.isMultipartEntity()) || target.isPassenger()) return false;
+        if (!target.isAlive() || target.isSpectator() || (target instanceof com.eeeab.eeeabsmobs.server.entity.IMultipartMob) || target.isPassenger()) return false;
         AABB box1 = entity.getBoundingBox().inflate(0.5);
         double length1 = box1.getXsize();
         double width1 = box1.getZsize();
