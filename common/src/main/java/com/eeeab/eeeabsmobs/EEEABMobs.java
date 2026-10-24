@@ -38,17 +38,17 @@ public class EEEABMobs {
         }
         initialized = true;
 
-        ItemInit.register(null);
-        ModCriteriaTriggers.register(null);
+        SoundInit.register(null);
+        ParticleInit.register(null);
+        EffectInit.register(null);
+        PotionInit.register(null);
+        AttributeInit.register(null);
         BlockInit.register(null);
         BlockEntityInit.register(null);
         EntityInit.register(null);
+        ItemInit.register(null);
         CreativeTabInit.register(null);
-        AttributeInit.register(null);
-        EffectInit.register(null);
-        PotionInit.register(null);
-        ParticleInit.register(null);
-        SoundInit.register(null);
+        ModCriteriaTriggers.register(null);
         MenuInit.register(null);
         StructuresInit.register(null);
         WorldGenInit.register(null);
