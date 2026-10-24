@@ -3,15 +3,18 @@ package com.eeeab.eeeabsmobs.neoforge.client;
 import com.eeeab.eeeabsmobs.EEEABMobs;
 import com.eeeab.eeeabsmobs.client.ClientProxy;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 /**
  * NeoForge client-only entrypoint.
  */
-@Mod(value = EEEABMobs.MOD_ID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = EEEABMobs.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class EEEABMobsNeoForgeClient {
 
-    public EEEABMobsNeoForgeClient() {
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
         ClientProxy.init();
     }
 }

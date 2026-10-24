@@ -1,6 +1,6 @@
 plugins {
 	id 'architectury-plugin'
-	id 'net.neoforged.moddev'
+	id 'net.neoforged.gradle.userdev'
 }
 
 evaluationDependsOn(':common')
@@ -16,26 +16,18 @@ repositories {
 	maven { url = 'https://maven.neoforged.net/releases/' }
 }
 
-neoForge {
-	version = project.neo_version
-
-	runs {
-		client {
-			client()
-			jvmArguments.addAll '-Dmixin.debug=true', '-Dmixin.debug.verbose=true'
-		}
-		server {
-			server()
-			programArguments.addAll '--nogui'
-			gameDirectory = project.file('run-server')
-			jvmArguments.addAll '-Dmixin.debug=true', '-Dmixin.debug.verbose=true'
-		}
+runs {
+	configureEach {
+		modSource project.sourceSets.main
+		systemProperty 'mixin.debug', 'true'
+		systemProperty 'mixin.debug.verbose', 'true'
 	}
-
-	mods {
-		"${project.mod_id}" {
-			sourceSet sourceSets.main
-		}
+	client {
+		workingDirectory project.file('run')
+	}
+	server {
+		argument '--nogui'
+		workingDirectory project.file('run-server')
 	}
 }
 
@@ -43,20 +35,10 @@ dependencies {
 	implementation files(
 			project(':common').tasks.named('transformProductionNeoForge').flatMap { it.archiveFile }
 	)
+	implementation "net.neoforged:neoforge:${project.neo_version}"
 	implementation "dev.architectury:architectury-neoforge:${project.architectury_api_version}"
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }
-
-def explodedCommon = layout.buildDirectory.dir('explodedCommon')
-
-def explodeCommon = tasks.register('explodeCommon', Copy) {
-	duplicatesStrategy = DuplicatesStrategy.INCLUDE
-	dependsOn ':common:transformProductionNeoForge'
-	from { zipTree(project(':common').tasks.named('transformProductionNeoForge').get().archiveFile) }
-	into explodedCommon
-}
-
-sourceSets.main.output.dir(explodedCommon, builtBy: explodeCommon)
 
 processResources {
 	from(project(':common').file('src/main/resources/eeeabsmobs.accesswidener'))
